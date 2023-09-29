@@ -1,0 +1,7 @@
+name: Validate pull request
+on:
+  workflow_dispatch:
+  pull_request:
+jobs:
+  build-docs:
+    uses: envicutor/docs-workflows/.github/workflows/common.yml@main
