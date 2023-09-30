@@ -5,7 +5,7 @@ on:
     branches:
       - 'main'
 jobs:
-  build-docs:
+  run-push-workflow:
     uses: envicutor/docs-workflows/.github/workflows/push.yml@main
     with:
       target: spec
