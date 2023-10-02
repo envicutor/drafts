@@ -1,0 +1,49 @@
+are you sure you'll be able to provide APIs ?
+  - Our system = the code execution system part like Piston and Judge0
+  - The clients in our systems are other systems; not humans
+  - Providing an API is the only way for our system to be meaningful
+  - Our system is one of the building blocks that are used to build full systems that make use of remote code execution
+  - Client systems should be able to self-host their own instance of our system
+
+And is this enough as a contribution?
+  - Our unique value proposition is that our system is more general-purpose than similar systems (eg. replit)
+  - Providing an API in addition to some other differences is what allows such generality
+  - Replit is a full-stack website and hence the clients to such a system are humans
+  - For a more precise comparison, we will compare Replit's code execution subsystem with our system
+    since in both cases the clients are other systems
+
+  1.
+    - In the replit code execution subsystem, the client is the replit system
+    - In our system, the client is any system that uses our system
+
+  2.
+    - Both repls and workspaces are configurable environments in which code can be executed
+    - Code execution in Repls can only use files that are inside of that repl
+      - A request to run the code in the repl would be "run the code you are configured to run"
+    - Code execution in workspaces can do that,
+      and in addition, they can be provided additional files, scripts, inputs and arguments
+      - A request to run the code in the workspace would be "using your environment configuration, run this code with
+        these additional files, these inputs and these arguments"
+    - Might sound simple but it is a core difference
+      - Suppose we have a coding contests website in which each contest
+        has a certain environment configuration in which the code needs to run
+      - Let's pretend that Replit's code execution subsystem provided APIs to manage and execute code in the repls
+      - If we were using replit, we would have to create a repl that is configured with the target environment
+        for every contest submission
+      - If we were using our system, we would have to create a workspace that is configured with the target environment
+        for every contest
+        - This is because different pieces of code can be run in one workspace
+
+  - In conclusion, using our system, one can create a replit clone, a leetcode clone, a coding assignment grader and
+    many more systems that depend on remote code execution.
+
+What programming languages do they support?
+  - Since workspaces allow arbitrary packages to be installed, then any programming language is supported as long as
+    the client can provide the names of the required packages for the interpreters/compilers of these languages.
+  - This is similar to how replit has recently supported all languages. (https://blog.replit.com/nix)
+
+how similar/different your idea is than google colab ?
+  - Google Colab is a full-stack system that has the specific purpose of helping us use Jupyter notebooks in the browser
+  - In addition to the general-purpose use-cases mentioned above,
+    one might also be able to create a Google Colab clone using our system
+    since the dependencies for running a Jupyter notebook can be installed in a workspace

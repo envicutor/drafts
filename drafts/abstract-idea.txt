@@ -1,0 +1,51 @@
+- Come up with all possible interactions
+- Come up with some example scenarios to ensure interactions are exhaustive
+
+- Creating a workspace
+    - Client
+        - Create a workspace
+        - with packages 1, 2, 3
+    - System
+        - Your workspace is called W
+
+Let function execute() =
+    - On Workspace W
+    - With files Fs
+    - With inputs Is
+    - Execute script S
+
+- Manage workspace (privileged execution)
+    - Client
+        - execute()
+    - System
+        > Executes S
+        > It is allowed to move any F of Fs into the workspace
+        - Output
+
+- Expose workspace
+    - Workspace must include a file that defines the environment (for the default exposure script to work)
+    - Run the default exposure script that was automatically put on the workspace
+
+- Unprivileged execution
+    - Client
+        - execute()
+    - System
+        > Executes S
+        > It is not allowed to move any F of Fs out of the job folder
+        - Output
+
+Example scenarios
+    1. Programming contests website (https://emkc.org/contests clone)
+        - User's code is run with the inputs and the outputs the CES produces are checked against the expected outputs
+        > Client to CES: contests website
+        > Client to the client: human user
+    2. Online IDE with specific programming languages (https://emkc.org/snippets clone)
+        - User chooses language from a list
+        - Presses a button to execute a code they have written
+        > Client to CES: the online IDE
+        > Client to the client: human user
+    3. Online IDE with configurable environment for each developer (Repl.it clone)
+        - User configures a repl environment
+        - Executes code in it
+        > Client to CES: the online IDE
+        > Client to the client: human user
