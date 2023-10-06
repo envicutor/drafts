@@ -1,20 +1,15 @@
-.. Envicutor System Specification documentation master file, created by
-   sphinx-quickstart on Thu Sep 28 14:56:33 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+|product-name| System Specification
+===================================
 
-Envicutor System Specification
-==============================
+|product-name| is a remote :term:`code execution system`.
+It is inspired by projects like `Piston <piston-repo_>`_ and `Judge0 <judge0-repo_>`_.
+That said, |product-name| aims to be more general-purpose by providing the users with the ability to run their code in
+an arbitrary :term:`execution environment` of their specification (:ref:`see how it works <how-it-works>`).
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   :numbered:
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   overview.rst
+   glossary.rst
