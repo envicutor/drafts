@@ -21,6 +21,12 @@ Code execution systems are only back-end systems that are concerned with executi
 Online IDEs are full-stack systems that can integrate with these code execution systems to provide code execution
 functionalities.
 
+The clients of a code execution system
+**************************************
+
+The clients of a code execution system are other systems, like online IDEs or programming exercises websites, not human
+users. Human users are clients to the clients.
+
 How some code execution systems work (and the problem)
 ******************************************************
 Code execution systems like `Piston <piston-repo_>`_ and `Judge0 <judge0-repo_>`_ are typically coded with support for
