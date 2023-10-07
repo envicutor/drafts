@@ -56,8 +56,8 @@ A high-level view of how it works is as follows:
 - **Client to system:** please execute program P with configuration C and execution environment E.
 - **System:** sets up environment E, executes the program and returns the output.
 
-The ultimate goal is to provide an intersection between `Piston's <piston-repo_>`_/\ `Judge0's <judge0-repo_>`_ features
-and the ability to run programs in an arbitrary execution environment of the user's choice.
+The ultimate goal is to provide an intersection between `Piston's <piston-repo_>`_ (or `Judge0's <judge0-repo_>`_)
+features and the ability to run programs in an arbitrary execution environment of the user's choice.
 
 Questions
 *********
