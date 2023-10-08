@@ -1,0 +1,17 @@
+- Set up environment
+- Build additional dependencies
+- Compile code
+- Run code
+
+- Env received as shell.nix
+- Nix build shell.nix
+- Docker build base image
+- Docker run base image execute()
+
+- Micro-services
+  - Shared disk: contains /nix directory, shared with Executor and Cache warmer
+  - Stores: submissions store, requests queue, cache queue
+  - Interface: get requests from user, put requests metadata in requests queue and submissions store
+  - Executor: polls requests queue, sets up environment, puts environment metadata in cache store, executes request,
+    modifies submission in submissions store
+  - Cache warmer: polls cache queue, builds the environment from environment metadata to be cached in shared volume
