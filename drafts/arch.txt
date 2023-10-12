@@ -9,9 +9,34 @@
 - Docker run base image execute()
 
 - Micro-services
-  - Shared disk: contains /nix directory, shared with Executor and Cache warmer
+  - Shared disk: contains /nix directory, shared with Executor and Cache builder
   - Stores: submissions store, requests queue, cache queue
-  - Interface: get requests from user, put requests metadata in requests queue and submissions store
-  - Executor: polls requests queue, sets up environment, puts environment metadata in cache store, executes request,
+  - Requests handler: get requests from user, put requests metadata in requests queue and submissions store
+  - Executor: polls requests queue, sets up environment, puts environment metadata in cache queue, executes request,
     modifies submission in submissions store
-  - Cache warmer: polls cache queue, builds the environment from environment metadata to be cached in shared volume
+  - Cache builder: polls cache queue, builds the environment from environment metadata to be cached in shared volume
+
+- Iteration 1 activity flow:
+  - Client
+    - Sends execute request
+  - Requests handler:
+    - Puts request's metadata in requests queue
+    - Creates a new submission in the submission store
+  - Executor:
+    - Finds the request's metadata in the requests queue after polling
+    - Creates a docker container from the base image
+    - Run the container to build the nix environment
+    - Update the submission in the submissions store with the environment build result
+    - If environment got built successfully
+      - Run the container to execute the build script (if any)
+        - Update submission in submission store with the build result
+      - [If build is successful or None] Run the container to execute the compile script (if any)
+        - Update submission in submissions store with the compile result
+      - [If build and/or compile are successful or None] Run the container to execute the run script
+        - Update submission in submissions store with the run result
+    - Remove the docker container
+  - Client
+    - Sends get submission request
+  - Request handler
+    - Retrieves submission from the submissions store
+    - Sends it to the client
