@@ -1,5 +1,5 @@
 |product-name| System Specification
-===================================
+###################################
 
 |product-name| is a remote :term:`code execution system`.
 It is inspired by projects like `Piston <piston-repo_>`_ and `Judge0 <judge0-repo_>`_.
@@ -12,4 +12,5 @@ an arbitrary :term:`execution environment` of their specification (:ref:`see how
    :numbered:
 
    overview.rst
+   development-methodology.rst
    glossary.rst
