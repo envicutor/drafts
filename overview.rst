@@ -21,11 +21,14 @@ Code execution systems are only back-end systems that are concerned with executi
 Online IDEs are full-stack systems that can integrate with these code execution systems to provide code execution
 functionalities.
 
-The clients of a code execution system
-**************************************
+The clients and stakeholders of a code execution system
+*******************************************************
 
 The clients of a code execution system are other systems, like online IDEs or programming exercises websites, not human
 users. Human users are clients to the clients.
+
+Consequently, the stakeholders of a code execution system include any person who participates in building
+a system that makes use of remote code execution.
 
 How some code execution systems work (and the problem)
 ******************************************************

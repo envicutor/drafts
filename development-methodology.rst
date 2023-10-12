@@ -9,8 +9,8 @@ System implementation is a refinement of such abstraction.
 Abstracting the system in the form of specification documents helps developers focus on the core idea without getting
 stuck in implementation details; however, such abstraction doesn't come without its risks.
 
-Risks of abstractions
-**********************
+Risks of abstraction
+********************
 
 The human brain can unintentionally fall into some pitfalls while thinking of abstractions:
 
