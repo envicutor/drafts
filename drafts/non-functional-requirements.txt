@@ -1,0 +1,12 @@
+- 0.0.1 non-functional requirements
+  - Isolation
+    - Every code execution activity shall run in its own Docker container and shall not see nor affect other code
+      execution activities
+    - Every code execution activity shall not affect the underlying system
+  - Security
+    - Clients shall not be able to escape the code execution activity and gain access to the underlying system
+
+- Future iterations
+  - Performance
+  - Configurability
+    - Configuring per-stage constraints and limits

@@ -1,12 +1,13 @@
 - v0.0.1 Functional requirements
   - Execution requests (ER)
-    - Specifying the files
+    - Specifying the files (F)
       - If only one .zip file is provided, this is considered the archive of the source files
       - An array of file names + file content (string or base64 encoded)
       - .cutor-env: this is the nix shell file
       - .cutor-build: executable to run before compiling the code (optional)
       - .cutor-compile: executable to run in order to compile the code (optional)
       - .cutor-run: executable to run in order to run the code
+    - Specifying runtime data (RD)
       - stdin is specified as a string
       - args are specified as an array of strings
   - Submission retrieval requests (SRR)
@@ -19,7 +20,7 @@
       - signal
 
 - Future iterations
-  - ER
+  - ER.RD
     - Specify different constraints and limits
   - SRR.SBI
     - View total time taken

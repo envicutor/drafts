@@ -3,13 +3,13 @@ Overview
 
 .. _purpose-of-ces:
 
-Purpose of online :term:`code execution systems <code execution system>` in general
-***********************************************************************************
+Example use cases for online :term:`code execution systems <code execution system>` in general
+**********************************************************************************************
 - Handling code execution in programming competitions and exercises websites
   by running programs users send and returning (and/or validating) the results.
 - Handling code execution in online coding playgrounds where users can experiment with certain programming languages
   without downloading their tools locally.
-- Basically powering systems that make use of arbitrary code execution.
+- Basically powering any system that makes use of arbitrary remote code execution.
 
 .. _difference-between-ces-and-ide:
 

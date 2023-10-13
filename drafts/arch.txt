@@ -10,20 +10,20 @@
   - Client
     - Sends execute request
   - Requests handler
-    - Puts request's metadata in requests queue
+    - Puts request in requests queue
     - Creates a new submission in the submission store
     - Return the submission data
   - Executor
-    - Finds the request's metadata in the requests queue after polling
+    - Finds the request in the requests queue after polling
     - Creates a docker container from the base image
-    - Run the container to build the nix environment
+    - Run the container to build the nix environment (environment stage)
     - Update the submission in the submissions store with the environment build result
     - If environment got built successfully
-      - Run the container to execute the build script (if any)
+      - Run the container to execute the build script (if any) (build stage)
         - Update submission in submission store with the build result
-      - [If build is successful or None] Run the container to execute the compile script (if any)
+      - [If build is successful or None] Run the container to execute the compile script (if any) (compile stage)
         - Update submission in submissions store with the compile result
-      - [If build and/or compile are successful or None] Run the container to execute the run script
+      - [If build and/or compile are successful or None] Run the container to execute the run script (run stage)
         - Update submission in submissions store with the run result
     - Remove the docker container
   - Client
@@ -34,15 +34,15 @@
 
 - 0.0.2 activity flow todo
   - Cache everything
-  - Process limits/constraints
+  - Process limits/constraints for each stage
 
 - 0.0.3 activity flow todo
   - Smarter caching
-  - Rootless Docker container
+  - Rootless Docker containers, more secure Docker options
 
 ============================================================
 
-- Request structure
+- 0.0.1 Request structure
   {
     files[]: {
       name: string
@@ -53,13 +53,21 @@
     args: string[]
   }
 
-- Submission structure
+- Let stage_output =
   {
-    id: UUID
-    status: string - QUEUED | SETTING_UP_ENVIRONMENT | BUILDING | COMPILING | RUNNING
     stdout: string
     stderr: string
     output: string
     code: int
     signal: string
+  }
+
+- 0.0.1 Submission structure
+  {
+    id: UUID
+    status: string - QUEUED | SETTING_UP_ENVIRONMENT | BUILDING | COMPILING | RUNNING
+    environment: stage_output
+    build: stage_output
+    compile: stage_output
+    run: stage_output
   }
