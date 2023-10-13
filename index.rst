@@ -1,5 +1,5 @@
-|product-name| System Specification
-###################################
+|product-name| |product-version| System Specification
+#####################################################
 
 |product-name| is a remote :term:`code execution system`.
 It is inspired by projects like `Piston <piston-repo_>`_ and `Judge0 <judge0-repo_>`_.

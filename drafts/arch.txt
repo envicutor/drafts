@@ -1,13 +1,3 @@
-- Set up environment
-- Build additional dependencies
-- Compile code
-- Run code
-
-- Env received as shell.nix
-- Nix build shell.nix
-- Docker build base image
-- Docker run base image execute()
-
 - Micro-services
   - Shared disk: contains /nix directory, shared with Executor and Cache builder
   - Stores: submissions store, requests queue, cache queue
@@ -16,13 +6,14 @@
     modifies submission in submissions store
   - Cache builder: polls cache queue, builds the environment from environment metadata to be cached in shared volume
 
-- Iteration 1 activity flow:
+- 0.0.1 activity flow:
   - Client
     - Sends execute request
-  - Requests handler:
+  - Requests handler
     - Puts request's metadata in requests queue
     - Creates a new submission in the submission store
-  - Executor:
+    - Return the submission data
+  - Executor
     - Finds the request's metadata in the requests queue after polling
     - Creates a docker container from the base image
     - Run the container to build the nix environment
@@ -40,3 +31,35 @@
   - Request handler
     - Retrieves submission from the submissions store
     - Sends it to the client
+
+- 0.0.2 activity flow todo
+  - Cache everything
+  - Process limits/constraints
+
+- 0.0.3 activity flow todo
+  - Smarter caching
+  - Rootless Docker container
+
+============================================================
+
+- Request structure
+  {
+    files[]: {
+      name: string
+      content: string
+      encoding: string - base64 | utf8 - default utf8
+    }
+    stdin: string
+    args: string[]
+  }
+
+- Submission structure
+  {
+    id: UUID
+    status: string - QUEUED | SETTING_UP_ENVIRONMENT | BUILDING | COMPILING | RUNNING
+    stdout: string
+    stderr: string
+    output: string
+    code: int
+    signal: string
+  }
