@@ -6,7 +6,7 @@
     modifies submission in submissions store
   - Cache builder: polls cache queue, builds the environment from environment metadata to be cached in shared volume
 
-- 0.0.1 activity flow:
+- v0.0.1 Activity flow:
   - Client
     - Sends execute request
   - Requests handler
@@ -32,17 +32,15 @@
     - Retrieves submission from the submissions store
     - Sends it to the client
 
-- 0.0.2 activity flow todo
+- Future iterations activity flow todo
   - Cache everything
   - Process limits/constraints for each stage
-
-- 0.0.3 activity flow todo
   - Smarter caching
   - Rootless Docker containers, more secure Docker options
 
 ============================================================
 
-- 0.0.1 Request structure
+- v0.0.1 Request structure
   {
     files[]: {
       name: string

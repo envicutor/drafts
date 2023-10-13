@@ -1,5 +1,5 @@
 .. |product-name| replace:: Envicutor
-.. |product-version| replace:: |product-major|.\ |product-minor|.\ |product-iteration|
+.. |product-version| replace:: |product-major|.\ |product-minor|.\ |product-patch|
 .. |product-major| replace:: 0
 .. |product-minor| replace:: 0
-.. |product-iteration| replace:: 1
+.. |product-patch| replace:: 1

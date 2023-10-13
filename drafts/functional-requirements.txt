@@ -26,4 +26,4 @@
     - View total time taken
     - View total memory consumed
     - Total disk consumed
-    - Total network consumed
+    - Total network usage
