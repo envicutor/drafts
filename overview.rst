@@ -66,7 +66,7 @@ Questions
 What programming languages does |product-name| support?
 =======================================================
 
-Any language that can run on |product-name|'s system.
+Any language that can possibly run on |product-name|'s operating system.
 
 Since |product-name| allows the specification of arbitrary :term:`dependencies`
 (which includes the available packages like compilers and interpreters during program execution)
