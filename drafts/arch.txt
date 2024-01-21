@@ -33,32 +33,96 @@
       - Send execution request
         - dependencies, compile [if needed], run, inputs, std args, environment variables, source files
         - {
-
-        }
+            "files": [
+              {
+                "name": "cutor.nix",
+                "content": "code"
+              },
+              {
+                "name": "compile.sh",
+                "content": "code"
+              },
+              {
+                "name": "run.sh",
+                "content": "code"
+              },
+              {
+                "name": "file.lang",
+                "content": "code"
+              },
+            ],
+            "inputs": "string of input data",
+            "args": [
+              "arg1",
+              "arg2",
+              "arg3"
+            ],
+            "env": {
+              "key1": "value1",
+              "key2": "value2",
+              "key3": "value3"
+            }
+          }
     - Request handler
       - Parse request
       - Create Request object
+        - Add to the request {
+          "status": "pending",
+          "dependencies": {
+            "stdout": "",
+            "stderr": "",
+            "time": "",
+            "signal": ""
+          },
+          "compile": {
+            "stdout": "",
+            "stderr": "",
+            "time": "",
+            "signal": ""
+          },
+          "run": {
+            "stdout": "",
+            "stderr": "",
+            "time": "",
+            "signal": ""
+          }
+        }
       - Store Request object in Request store
     - Request store
       - Notifies Executor with the arrival of a Request object
     - Executor
       - Retrieve Request object
       - Create Dependencies object
+        - "content of cutor.nix"
       - Store Dependencies object in Build Requests
     - Build Requests
       - Notify the Cache Builder with the new Dependencies object
     - Cache Builder
       - Retrieve Dependencies object
       - Installs Dependencies in Cache
-      - Puts a message in the build request that the request is finished
+        - Put content of Dependencies object "content of cutor.nix" in a cutor.nix file
+        - nix-shell on the directory of the files
+        - [if nix-shell fails] go to last step
+        - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
+      - Send the corresponding stdout, stderr, time, signal
     - Build requests
       - Notify the Executor with the readiness of the environment
     - Executor
+      - [if inappropriate Received signal] go to last step
       - Modifies submission request with the new status (Dependencies Installed)
+        - Update "status" to "status":"DEPENDENCIES_INSTALLED"
+      - Creates a docker container to compile and run code
       - [if specified in the Request object] Compiles the code
+        - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
       - Modifies submission request with the new status (Compiled)
+        - Update "status" to "status":"COMPILED" and update the compile object accordingly
       - Runs Code
+        - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
       - Modifies submission request with the new status and result of execution
+        - Update "status" to "status":"FINISHED" and update the run object accordingly
+      - Stop and Delete Docker container
+
+
 
   Submission Status Flow
     - Client
