@@ -1,33 +1,5 @@
 - v0.0.1 Activity flow:
 
-  Execution Flow
-    - Client
-      - Send execution request
-    - Request handler
-      - Parse request
-      - Create Submission object
-      - Store Submission object in Submission Store
-    - Submission Store
-      - Notifies Executor with the arrival of a Submission object
-    - Executor
-      - Retrieve Submission object
-      - Create Dependencies object
-      - Store Dependencies object in Build Requests
-    - Build Requests
-      - Notify the Cache Builder with the new Dependencies object
-    - Cache Builder
-      - Retrieve Dependencies object
-      - Installs Dependencies in Cache
-      - Puts a message in the build request that the request is finished
-    - Build requests
-      - Notify the Executor with the readiness of the environment
-    - Executor
-      - Modifies submission request with the new status (Dependencies Installed)
-      - [if specified in the Submission object] Compiles the code
-      - Modifies submission request with the new status (Compiled)
-      - Runs Code
-      - Modifies submission request with the new status and result of execution
-
   Execution Flow (detailed)
     - Client
       - Send execution request
@@ -48,7 +20,8 @@
               },
               {
                 "name": "file.lang",
-                "content": "code"
+                "content": "code",
+                encoding: "utf8|base64|hex"
               },
             ],
             "inputs": "string of input data",
@@ -89,7 +62,6 @@
               "signal": ""
             }
           }
-
       - Store Submission object in Submission Store
     - Submission Store
       - Notifies Executor with the arrival of a Submission object
@@ -97,8 +69,8 @@
       - Retrieve Submission object
       - Create Dependencies object
         - "content of cutor.nix"
-      - Store Dependencies object in Build Requests
-    - Build Requests
+      - Store Dependencies object in Build Messages
+    - Build Messages
       - Notify the Cache Builder with the new Dependencies object
     - Cache Builder
       - Retrieve Dependencies object
@@ -107,9 +79,9 @@
         - nix-shell on the directory of the files
         - [if nix-shell fails] go to last step
         - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
-      - Send the corresponding stdout, stderr, time, signal
-    - Build requests
-      - Notify the Executor with the readiness of the environment
+      - Send the corresponding stdout, stderr, time, signal to Build Messages
+    - Build Messages
+      - Notify the Executor of the readiness of the environment
     - Executor
       - [if inappropriate Received signal] go to last step
       - Modifies submission request with the new status (Dependencies Installed)
