@@ -1,0 +1,24 @@
+@startuml
+
+component Envicutor {
+  port p1
+  port p2
+
+  database SubmissionsStore
+
+  component RequestsHandler
+  component Executor
+
+  RequestsHandler -> SubmissionsStore
+  SubmissionsStore <- Executor
+
+  RequestsHandler - execute
+  RequestsHandler - get_submission
+  p1 -( execute
+  p2 -( get_submission
+}
+
+p1 - "/execute"
+"/get_submission" - p2
+
+@enduml

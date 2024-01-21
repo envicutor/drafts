@@ -31,3 +31,4 @@ rst_epilog = """
 .. include:: /include/links.rstinc
 .. include:: /include/substitutions.rstinc
 """
+numfig = True
