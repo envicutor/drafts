@@ -5,12 +5,12 @@
       - Send execution request
     - Request handler
       - Parse request
-      - Create Request object
-      - Store Request object in Request store
-    - Request store
-      - Notifies Executor with the arrival of a Request object
+      - Create Submission object
+      - Store Submission object in Submission Store
+    - Submission Store
+      - Notifies Executor with the arrival of a Submission object
     - Executor
-      - Retrieve Request object
+      - Retrieve Submission object
       - Create Dependencies object
       - Store Dependencies object in Build Requests
     - Build Requests
@@ -23,7 +23,7 @@
       - Notify the Executor with the readiness of the environment
     - Executor
       - Modifies submission request with the new status (Dependencies Installed)
-      - [if specified in the Request object] Compiles the code
+      - [if specified in the Submission object] Compiles the code
       - Modifies submission request with the new status (Compiled)
       - Runs Code
       - Modifies submission request with the new status and result of execution
@@ -65,33 +65,36 @@
           }
     - Request handler
       - Parse request
-      - Create Request object
-        - Add to the request {
-          "status": "pending",
-          "dependencies": {
-            "stdout": "",
-            "stderr": "",
-            "time": "",
-            "signal": ""
-          },
-          "compile": {
-            "stdout": "",
-            "stderr": "",
-            "time": "",
-            "signal": ""
-          },
-          "run": {
-            "stdout": "",
-            "stderr": "",
-            "time": "",
-            "signal": ""
+      - Create Submission object
+        - wrap user request inside Request object
+        - Add
+          "Response":{
+            "status": "pending",
+            "dependencies": {
+              "stdout": "",
+              "stderr": "",
+              "time": "",
+              "signal": ""
+            },
+            "compile": {
+              "stdout": "",
+              "stderr": "",
+              "time": "",
+              "signal": ""
+            },
+            "run": {
+              "stdout": "",
+              "stderr": "",
+              "time": "",
+              "signal": ""
+            }
           }
-        }
-      - Store Request object in Request store
-    - Request store
-      - Notifies Executor with the arrival of a Request object
+
+      - Store Submission object in Submission Store
+    - Submission Store
+      - Notifies Executor with the arrival of a Submission object
     - Executor
-      - Retrieve Request object
+      - Retrieve Submission object
       - Create Dependencies object
         - "content of cutor.nix"
       - Store Dependencies object in Build Requests
@@ -112,7 +115,7 @@
       - Modifies submission request with the new status (Dependencies Installed)
         - Update "status" to "status":"DEPENDENCIES_INSTALLED"
       - Creates a docker container to compile and run code
-      - [if specified in the Request object] Compiles the code
+      - [if specified in the Submission object] Compiles the code
         - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
       - Modifies submission request with the new status (Compiled)
         - Update "status" to "status":"COMPILED" and update the compile object accordingly
@@ -128,59 +131,26 @@
     - Client
       - Request Viewing Submission Status
     - Request handler
-      - Return Request object
+      - Return Submission.Response Object
 
   Viewing Dependencies Flow
     - Client
       - Request Viewing all Dependencies
     - Request handler
       - Parse request
-      - Create Request object
-      - Store Request object in Request Store
+      - Create Submission object
+      - Store Submission object in Submission Store
       - waits for modification
-    - Request Store
-      - Notifies Executor with the arrival of the Request object
+    - Submission Store
+      - Notifies Executor with the arrival of the Submission object
     - Executor
-      - Modifies the Request object by adding Listed packages from cache
-    - Request Store
+      - Modifies the Submission object by adding Listed packages from cache
+    - Submission Store
       - Notifies the Request handler with the completion of the Request
     - Request handler
-      - Return Request object
+      - Return Submission.Response Object
 
 
 - Future iterations activity flow todo
-  - Process limits/constraints for each stage
   - Smarter caching (delete unused dependencies)
   - Rootless Docker containers, more secure Docker options
-
-============================================================
-
-- v0.0.1 Request structure
-  {
-    files[]: {
-      name: string
-      content: string
-      encoding: string - base64 | utf8 - default utf8
-    }
-    stdin: string
-    args: string[]
-  }
-
-- Let stage_output =
-  {
-    stdout: string
-    stderr: string
-    output: string
-    code: int
-    signal: string
-  }
-
-- 0.0.1 Submission structure
-  {
-    id: UUID
-    status: string - QUEUED | SETTING_UP_ENVIRONMENT | BUILDING | COMPILING | RUNNING
-    environment: stage_output
-    build: stage_output
-    compile: stage_output
-    run: stage_output
-  }
