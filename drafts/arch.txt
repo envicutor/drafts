@@ -1,39 +1,58 @@
-- Micro-services
-  - Shared disk: contains /nix directory, shared with Executor and Cache builder
-  - Stores: submissions store, requests queue, cache queue
-  - Requests handler: get requests from user, put requests metadata in requests queue and submissions store
-  - Executor: polls requests queue, sets up environment, puts environment metadata in cache queue, executes request,
-    modifies submission in submissions store
-  - Cache builder: polls cache queue, builds the environment from environment metadata to be cached in shared volume
-
 - v0.0.1 Activity flow:
-  - Client
-    - Sends execute request
-  - Requests handler
-    - Puts request in requests queue
-    - Creates a new submission in the submission store
-    - Return the submission data
-  - Executor
-    - Finds the request in the requests queue after polling
-    - Creates a docker container from the base image
-    - Run the container to build the nix environment (environment stage)
-    - Update the submission in the submissions store with the environment build result
-    - If environment got built successfully
-      - Run the container to execute the build script (if any) (build stage)
-        - Update submission in submission store with the build result
-      - [If build is successful or None] Run the container to execute the compile script (if any) (compile stage)
-        - Update submission in submissions store with the compile result
-      - [If build and/or compile are successful or None] Run the container to execute the run script (run stage)
-        - Update submission in submissions store with the run result
-    - Remove the docker container
-  - Client
-    - Sends get submission request
-  - Request handler
-    - Retrieves submission from the submissions store
-    - Sends it to the client
+
+  Execution Flow  
+    - Client 
+      - Send execution request
+    - Request handler  
+      - Parse request
+      - Create Request object
+      - Store Request object in Request store  
+    - Request store          
+      - Notifies Executor with the arrival of a pending submission
+    - Executor 
+      - Retrieve Request object 
+      - Create Dependencies object 
+      - Store Dependencies object in Build Requests 
+    - Build Requests 
+      - Notify the Cache Builder with the new Dependencies object
+    - Cache Builder 
+      - Retrieve Dependencies object 
+      - Installs Dependencies in Cache
+      - Puts a message in the build request that the request is finished 
+    - Build requests 
+      - Notify the Executor with the readiness of the environment
+    - Executor 
+      - Modifies submission request with the new status (Dependencies Installed)
+      - [if specified in the Request object] Compiles the code
+      - Modifies submission request with the new status (Compiled)
+      - Runs Code 
+      - Modifies submission request with the new status and result of execution
+  
+  Submission Status Flow
+    - Client
+      - Request Viewing Submission Status 
+    - Request handler
+      - Return Request object
+  
+  Viewing Dependencies Flow
+    - Client 
+      - Request Viewing all Dependencies
+    - Request handler
+      - Parse request
+      - Create Request object
+      - Store Request object in Request Store
+      - waits for modification 
+    - Request Store
+      - Notifies Executor with the arrival of the Request object
+    - Executor
+      - Modifies the Request object by adding Listed packages from cache
+    - Request Store
+      - Notifies the Request handler with the completion of the Request
+    - Request handler
+      - Return Request object
+
 
 - Future iterations activity flow todo
-  - Cache everything
   - Process limits/constraints for each stage
   - Smarter caching
   - Rootless Docker containers, more secure Docker options
