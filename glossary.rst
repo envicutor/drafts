@@ -9,7 +9,7 @@ Glossary
     It takes a request containing information about certain code to execute: language, source code, files, etc.
     and returns the result after (or, in some cases, during) executing the code.
 
-  Execution environment
+  Dependencies
     The set of packages (programming language compilers, execution tools, etc.) that are available during execution,
     their configuration and the executing user's environment variables.
 

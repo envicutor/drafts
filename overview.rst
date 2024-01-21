@@ -11,15 +11,10 @@ Example use cases for online :term:`code execution systems <code execution syste
   without downloading their tools locally.
 - Basically powering any system that makes use of arbitrary remote code execution.
 
-.. _difference-between-ces-and-ide:
+How code execution systems complement online IDEs
+*************************************************
 
-The difference between code execution systems and online IDEs
-*************************************************************
-
-Don't confuse :term:`code execution systems <code execution system>` with online IDEs.
-Code execution systems are only back-end systems that are concerned with executing code.
-Online IDEs are full-stack systems that can integrate with these code execution systems to provide code execution
-functionalities.
+Online IDEs are full-stack systems that can integrate with code execution systems to be able to run code.
 
 The clients and stakeholders of a code execution system
 *******************************************************
@@ -33,15 +28,18 @@ a system that makes use of remote code execution.
 How some code execution systems work (and the problem)
 ******************************************************
 Code execution systems like `Piston <piston-repo_>`_ and `Judge0 <judge0-repo_>`_ are typically coded with support for
-certain :term:`execution environments <execution environment>`.
-As a result, the number of execution environments a program can run in is limited to the number of supported execution
-environments in the system.
-Adding support for new execution environments requires modifying the code execution system.
+certain :term:`dependencies` (compilers, packages, etc.) that the user can run their code with.
+Adding support for new dependencies requires modifying the code execution system (i.e, modifying the code repository).
+
+For example, in Piston,
+`the Java 15.0.2 JDK dependency is pre-determined.
+<https://github.com/engineer-man/piston/blob/fd8e25608ff94b88599ddef06da01b9723a081ad/packages/java/15.0.2/build.sh>`_
+Using a higher Java version would require modifying the linked shell script.
 
 A high-level view of how such code execution systems work is as follows:
 
-- **Client to system:** please execute program P with configuration C and execution environment E.
-- If E is a supported execution environment:
+- **Client to system:** please execute program P that requires certain dependencies.
+- If these dependencies are supported (the code execution system has these dependencies pre-determined in the code):
 
   - **System:** executes program P and returns the output.
 
@@ -53,14 +51,14 @@ A high-level view of how such code execution systems work is as follows:
 
 How |product-name| works (and the problem's solution)
 *****************************************************
-|Product-name| allows clients to specify the :term:`execution environment` their program will execute in.
+|Product-name| allows clients to specify the dependencies for their program.
 A high-level view of how it works is as follows:
 
-- **Client to system:** please execute program P with configuration C and execution environment E.
-- **System:** sets up environment E, executes the program and returns the output.
+- **Client to system:** please execute program P with that needs certain dependencies.
+- **System:** installs (if needed) the dependencies, executes the program and returns the output.
 
-The ultimate goal is to provide an intersection between `Piston's <piston-repo_>`_ (or `Judge0's <judge0-repo_>`_)
-features and the ability to run programs in an arbitrary execution environment of the user's choice.
+We aim to extend `Piston's <piston-repo_>`_ (or `Judge0's <judge0-repo_>`_)
+features with the ability to run programs with arbitrary dependencies.
 
 Questions
 *********
@@ -70,14 +68,6 @@ What programming languages does |product-name| support?
 
 Any language that can run on |product-name|'s system.
 
-Since |product-name| allows the specification of arbitrary execution environments
-and since the term ":term:`execution environment`" includes the available packages during program execution
-which can include compilers and interpreters, then |product-name| shall be able to run any language that has support
-for its system.
-
-`Repl.it <replit-website_>`_ provides the ability to configure execution environments, how is |product-name| different?
-=======================================================================================================================
-
-Repl.it is an online IDE that does not expose its code execution system
-(check :ref:`the difference between an online IDE and a code execution system <difference-between-ces-and-ide>`).
-Hence, Repl.it can not be used for the :ref:`purposes our code execution system is used for <purpose-of-ces>`.
+Since |product-name| allows the specification of arbitrary :term:`dependencies`
+(which includes the available packages like compilers and interpreters during program execution)
+then |product-name| shall be able to run any language.
