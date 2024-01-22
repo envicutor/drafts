@@ -25,6 +25,15 @@
               },
             ],
             "limits":{ (SubmissionRequests.PerRequestLimits, Configurability.limits)
+              "dependencies":
+              {
+                "time": int,
+                "memory": int,
+                "Processes": int,
+                "Output": int,
+                "Error": int,
+                "FileSize": int
+              },
               "run":
               {
                 "time": int,
@@ -44,7 +53,7 @@
                 "FileSize": int
               }
             },
-            "test_cases": [ (SubmissionRequests.Multiple)
+            "test_cases": [ (SubmissionRequests.Run.Multiple)
               {
                 "inputs": "string of input data", (SubmissionRequests.STDIN)
                 "args": ["arg1", "arg2", ...], (SubmissionRequests.ARGS)
@@ -87,7 +96,7 @@
           }
       - Store Submission object in Submission Store
       - Sends a message to the Submission queue
-        - Submission_id: string
+        - submission_id: id
     - Executor
       - Retrieve Submission object
       - Update time_stamp of the Submission object
@@ -149,24 +158,6 @@
       - Request Viewing Submission Status
     - Request handler
       - Return Submission.Response Object (SubmissionStatus.Result)
-
-  Viewing Dependencies Flow
-    - Client
-      - Request Viewing all Dependencies
-    - Request handler
-      - Parse request
-      - Create Submission object
-      - Store Submission object in Submission Store
-      - waits for modification
-    - Submission Store
-      - Notifies Executor with the arrival of the Submission object
-    - Executor
-      - Modifies the Submission object by adding Listed packages from cache
-    - Submission Store
-      - Notifies the Request handler with the completion of the Request
-    - Request handler
-      - Return Submission.Response Object (PackagesRequest.Retrieve)
-
 
 - Future iterations activity flow todo
   - Smarter caching (delete unused dependencies)
