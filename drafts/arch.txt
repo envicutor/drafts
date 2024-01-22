@@ -110,6 +110,7 @@
       - Store Dependencies object in Build store
       - Send Message to Build messages
         - build_id: string
+      - wait for the result
     - Cache Builder
       - Retrieve Dependencies object
       - Installs Dependencies in Cache (SubmissionRequests.cache, Performance.Cache)
