@@ -42,7 +42,7 @@ What programming languages do they support?
     the client can provide the names of the required packages for the interpreters/compilers of these languages.
   - This is similar to how replit has recently supported all languages. (https://blog.replit.com/nix)
 
-how similar/different your idea is than google colab ?
+how similar/different your idea is than google colab?
   - Google Colab is a full-stack system that has the specific purpose of helping us use Jupyter notebooks in the browser
   - In addition to the general-purpose use-cases mentioned above,
     one might also be able to create a Google Colab clone using our system

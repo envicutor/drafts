@@ -41,6 +41,8 @@
       - Create Submission object
         - wrap user request inside Request object
         - Add
+          "Submission_id": string,
+          "invisibility_Time_stamp": string,
           "Response":{
             "status": "pending",
             "dependencies": {
@@ -63,15 +65,21 @@
             }
           }
       - Store Submission object in Submission Store
-    - Submission Store
-      - Notifies Executor with the arrival of a Submission object
+      - Sends a message to the Submission queue
+        - Submission_id: string
     - Executor
       - Retrieve Submission object
+      - Update time_stamp of the Submission object
+      - keep updating time stamp every n secs in the background
       - Create Dependencies object
-        - "content of cutor.nix"
-      - Store Dependencies object in Build Messages
-    - Build Messages
-      - Notify the Cache Builder with the new Dependencies object
+        - {
+            build_id: string,
+            "invisibility_Time_stamp": string,
+            "content of cutor.nix"
+          }
+      - Store Dependencies object in Build store
+      - Send Message to Build messages
+        - build_id: string
     - Cache Builder
       - Retrieve Dependencies object
       - Installs Dependencies in Cache
@@ -80,8 +88,6 @@
         - [if nix-shell fails] go to last step
         - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
       - Send the corresponding stdout, stderr, time, signal to Build Messages
-    - Build Messages
-      - Notify the Executor of the readiness of the environment
     - Executor
       - [if inappropriate Received signal] go to last step
       - Modifies submission request with the new status (Dependencies Installed)
@@ -97,7 +103,17 @@
         - Update "status" to "status":"FINISHED" and update the run object accordingly
       - Stop and Delete Docker container
 
-
+  Health checking flow
+    - Submission Health Checker
+      - checks all invisibility_Time_stamps in Submission store and
+        if one goes above a certain limit reset submission object in the store and
+        send message to the Submission Messages
+      - do this every n secs
+    - Build Health Checker
+      - checks all invisibility_Time_stamps in Build store and
+        if one goes above a certain limit reset dependency object in the store and
+        send message to the Build Messages
+      - do this every n secs
 
   Submission Status Flow
     - Client
