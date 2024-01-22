@@ -13,7 +13,7 @@
   - Submission status request (SubmissionStatus)
     - The client shall be able to:
       - Check:
-        - If their submission got picked up by a worker (Pending)
+        - if their submission is still in queue (Pending)
         - Whether the dependencies of their submission got installed
           successfully (dependencies stage) (DependenciesInstalled)
         - Whether the their submission's code finished compiling (compile stage) (Compiled)
@@ -22,11 +22,13 @@
   - Get packages request (PackagesRequest)
     - The client shall be able to retrieve the cached packages (Retrieve)
   - Execution limits (Limits)
-    - For each stage, the client shall be able to specify linux "prlimits" (PrLimits)
+    - For each stage, the client shall be able to specify linux "prlimits" (PerRequestLimits)
+    - For the entire system there's a config file that has the maximum possible values of per request limits (GlobalLimits)
 
 - Non-Functional requirements
   - Isolation (Isolation)
-    - Every Submission shall not see nor affect other submissions
+    - Every Submission shall not see nor affect other submissions (Submission)
+    - Every Submission Dependencies shall not conflict with other Submission Dependencies (Dependencies)
   - Security (Security)
     - Clients shall not be able to escape the code execution activity and gain access to the underlying system
       (Escaping)
