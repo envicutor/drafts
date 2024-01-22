@@ -25,19 +25,23 @@
     - For each stage, the client shall be able to specify linux "prlimits" (PrLimits)
 
 - Non-Functional requirements
-  - Isolation
+  - Isolation (Isolation)
     - Every Submission shall not see nor affect other submissions
-  - Security
+  - Security (Security)
     - Clients shall not be able to escape the code execution activity and gain access to the underlying system
-  - Performance
+      (Escaping)
+  - Performance (Performance)
     - The system shall be able to accommodate cached nix packages which decreases latency when client asks
-      for a dependency that has been specified by (possibly) another client
-    - The system shall provide the nix-shell dependencies to decrease the nix-shell start-up time
-  - Availability
+      for a dependency that has been specified by (possibly) another client (Cache)
+    - The system shall provide the nix-shell dependencies to decrease the nix-shell start-up time (Nix)
+  - Availability (Availability)
     - The system shall be able to accommodate at least 1 redundant code executors to prevent down-time
+      (Executor)
     - The system shall be able to accommodate at least 1 redundant cache builders to prevent down-time
-  - Scalability
-    - The System administrator shall be able to increase/decrease the number of executors in the system
+      (CacheBuilder)
+  - Scalability (Scalability)
+    - The System administrator shall be able to increase/decrease the number of executors in the system (Executor)
     - The System administrator shall be able to increase/decrease the number of cache builders in the system
-  - Configurability
-    - Configuring per-stage constraints and limits
+      (CacheBuilder)
+  - Configurability (Configurability)
+    - Configuring per-stage limits (Limits)
