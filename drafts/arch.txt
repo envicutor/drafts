@@ -89,18 +89,21 @@
         - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
       - Send the corresponding stdout, stderr, time, signal to Build Messages
     - Executor
-      - [if inappropriate Received signal] go to last step
+      - [if inappropriate Received signal] update Submission object accordingly and go to last step
       - Modifies submission request with the new status (Dependencies Installed)
         - Update "status" to "status":"DEPENDENCIES_INSTALLED"
-      - Creates a docker container to compile and run code
+      - Create files from the content of {"cutor.nix", "files", "compile.sh", "run.sh"}
+      - Creates a docker container to compile and run code and mount volumes {"/nix", "nixpkgs.tarball", "shell.nix", "files"}
+      - Start nix-shell to isolate the dependencies
       - [if specified in the Submission object] Compiles the code
-        - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
-      - Modifies submission request with the new status (Compiled)
-        - Update "status" to "status":"COMPILED" and update the compile object accordingly
+        - [if compile failed] update Submission Object accordingly and go to last step
+        - [if Process takes more than pre-determined memory, time, stdout, stderr] update Submission object accordingly
+          and go to last step
+        - Update the Submission object accordingly
       - Runs Code
-        - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
-      - Modifies submission request with the new status and result of execution
-        - Update "status" to "status":"FINISHED" and update the run object accordingly
+        - [if Process takes more than pre-determined memory, time, stdout, stderr] update Submission Object accordingly
+          and go to last step
+        - Update the Submission object accordingly
       - Stop and Delete Docker container
 
   Health checking flow
