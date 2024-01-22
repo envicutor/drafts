@@ -8,6 +8,7 @@
         - The environment variables that the execution needs (Environment)
         - The standard input that the execution needs (STDIN)
         - The standard arguments that the execution needs (ARGS)
+    - The system shall cache newly requested dependencies
   - Submission status request (SubmissionStatus)
     - The client shall be able to:
       - Check:
@@ -21,3 +22,21 @@
     - The client shall be able to retrieve the cached packages (Retrieve)
   - Execution limits (Limits)
     - For each stage, the client shall be able to specify linux "prlimits" (PrLimits)
+
+- Non-Functional requirements
+  - Isolation
+    - Every Submission shall not see nor affect other submissions
+  - Security
+    - Clients shall not be able to escape the code execution activity and gain access to the underlying system
+  - Performance
+    - The system shall be able to accommodate cached nix packages which decreases latency when client asks
+      for a dependency that has been specified by (possibly) another client
+    - The system shall provide the nix-shell dependencies to decrease the nix-shell start-up time
+  - Availability
+    - The system shall be able to accommodate at least 1 redundant code executors to prevent down-time
+    - The system shall be able to accommodate at least 1 redundant cache builders to prevent down-time
+  - Scalability
+    - The System administrator shall be able to increase/decrease the number of executors in the system
+    - The System administrator shall be able to increase/decrease the number of cache builders in the system
+  - Configurability
+    - Configuring per-stage constraints and limits
