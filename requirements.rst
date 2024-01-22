@@ -53,7 +53,8 @@ Execution limits (``Limits``)
 
 - For each stage (dependencies, compile, run), the client shall be able to specify linux `prlimits <prlimits_>`_.
   (``PerRequestLimits``)
-- For the entire system there's a config file that has the maximum possible values of per request limits. (``GlobalLimits``)
+- For the entire system there's a config file that has the maximum possible values of per request limits.
+(``GlobalLimits``)
 
 Non-functional requirements
 ***************************
