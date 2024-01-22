@@ -15,4 +15,5 @@ by allowing the users to run their code with arbitrary :term:`dependencies` (:re
    development-methodology.rst
    requirements.rst
    component.rst
+   flow.rst
    glossary.rst
