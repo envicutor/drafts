@@ -5,10 +5,11 @@
         - The dependencies that their code needs as nix packages (Dependencies)
         - How to compile the code as a shell script (Compile)
         - How to run the code as a shell script (Run)
+          - Different test cases to run on (Multiple)
         - The environment variables that the execution needs (Environment)
         - The standard input that the execution needs (STDIN)
         - The standard arguments that the execution needs (ARGS)
-    - The system shall cache newly requested dependencies
+    - The system shall cache newly requested dependencies (Cache)
   - Submission status request (SubmissionStatus)
     - The client shall be able to:
       - Check:

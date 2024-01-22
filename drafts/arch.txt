@@ -24,12 +24,13 @@
                 encoding: "utf8|base64|hex"
               },
             ],
-            "inputs": "string of input data",
-            "args": [
-              "arg1",
-              "arg2",
-              "arg3"
-            ],
+            "test_cases": [
+              {
+                "inputs": "string of input data",
+                "args": ["arg1", "arg2", ...],
+              },
+              ...
+            ]
             "env": {
               "key1": "value1",
               "key2": "value2",
@@ -92,18 +93,23 @@
       - [if inappropriate Received signal] update Submission object accordingly and go to last step
       - Modifies submission request with the new status (Dependencies Installed)
         - Update "status" to "status":"DEPENDENCIES_INSTALLED"
-      - Create files from the content of {"cutor.nix", "files", "cutor-compile.sh", "cutor-run.sh"}
-      - Creates a docker container to compile and run code and mount volumes {"/nix", "nixpkgs.tarball", "shell.nix", "files"}
-      - Start nix-shell to isolate the dependencies
-      - [if specified in the Submission object] Compiles the code
-        - [if compile failed] update Submission Object accordingly and go to last step
-        - [if Process takes more than pre-determined memory, time, stdout, stderr] update Submission object accordingly
-          and go to last step
-        - Update the Submission object accordingly
-      - Runs Code
-        - [if Process takes more than pre-determined memory, time, stdout, stderr] update Submission Object accordingly
-          and go to last step
-        - Update the Submission object accordingly
+      - Create a docker container as a child process and mount:
+        - /nix (from the "cache" volume)
+        - shell.nix, nixpkgs tarball, executor program (shall be on the filesystem from the base image)
+        - cutor.nix, files, cutor-compile.sh, cutor-run.sh, cutor-env.sh, cutor-args.sh, cutor-inputs.sh
+          (created from the submission request)
+      - Run the runner program which:
+        - Starts nix-shell to isolate the dependencies
+        - Exports cutor-env.sh
+        - [if specified in the Submission object] Runs compile.sh
+          - On output, error, exit: signal to parent process
+          - [if compile failed] abort
+          - [if Process takes more than pre-determined memory, time, stdout, stderr] signal to parent process, abort
+        - For each case in submission.test_cases
+          - Run run.sh and provide it arguments from cutor-args.sh and input from cutor-inputs.sh
+            - On output, error, exit: signal to parent process
+            - [if Process takes more than pre-determined memory, time, stdout, stderr] signal to parent process, abort
+      - Listen to child process signals and update submission object accordingly
       - Stop and Delete Docker container
 
   Health checking flow
