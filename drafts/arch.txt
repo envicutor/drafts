@@ -2,7 +2,7 @@
 
   Execution Flow (detailed)
     - Client
-      - Send execution request
+      - Send submission request
         - dependencies, compile [if needed], run, inputs, std args, environment variables, source files
         - {
             "files": [
@@ -11,11 +11,11 @@
                 "content": "code"
               },
               {
-                "name": "compile.sh",
+                "name": "cutor-compile.sh",
                 "content": "code"
               },
               {
-                "name": "run.sh",
+                "name": "cutor-run.sh",
                 "content": "code"
               },
               {
@@ -92,7 +92,7 @@
       - [if inappropriate Received signal] update Submission object accordingly and go to last step
       - Modifies submission request with the new status (Dependencies Installed)
         - Update "status" to "status":"DEPENDENCIES_INSTALLED"
-      - Create files from the content of {"cutor.nix", "files", "compile.sh", "run.sh"}
+      - Create files from the content of {"cutor.nix", "files", "cutor-compile.sh", "cutor-run.sh"}
       - Creates a docker container to compile and run code and mount volumes {"/nix", "nixpkgs.tarball", "shell.nix", "files"}
       - Start nix-shell to isolate the dependencies
       - [if specified in the Submission object] Compiles the code
