@@ -125,6 +125,7 @@ The execution flow
 
   - Store that Submission object in SubmissionStore
   - Send a message to the SubmissionStore containing the submission id
+  - Return the submission id to the client
 
 - Worker
 
@@ -224,7 +225,7 @@ Get Submission Status flow
 
 - Client
 
-  - Request Viewing Submission Status.
+  - Request Viewing Submission status via the submission id.
 
 - Request handler
 

@@ -1,4 +1,3 @@
-- Separate request and response
 - Read documents as a new person
 - Formal way to define the schema of requests, responses, messages, statuses
 - Dependencies stage seem to do some common things as the run stage and the compile stage (stdout, stderr, signal, time)

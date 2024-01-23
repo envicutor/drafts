@@ -12,7 +12,3 @@ Glossary
   Dependencies
     The set of packages (programming language compilers, execution tools, etc.) that are available during execution,
     their configuration and the executing user's environment variables.
-
-    .. note::
-
-      This term does not refer to the operating system on which the code is executed.
