@@ -21,8 +21,7 @@ The execution flow
     ``SubmissionRequests.Run.Multiple``,
     ``SubmissionRequests.STDIN``,
     ``SubmissionRequests.ARGS``,
-    ``SubmissionRequests.Environment``
-    ):
+    ``SubmissionRequests.Environment``):
 
     .. code-block::
 
@@ -47,7 +46,7 @@ The execution flow
           },
           ...
         ],
-        "limits":{
+        "limits": {
           "dependencies":
           {
             "time": int,
@@ -94,80 +93,82 @@ The execution flow
 
   - Create Submission object (``SubmissionStatus.pending``):
 
-      .. code-block::
-
-        {
-          "submission_id": id,
-          "invisibility_timestamp": timestamp,
-          "request": the client request mentioned above
-          "response": {
-            "status": "pending",
-            "dependencies": {
-              "stdout": "",
-              "stderr": "",
-              "time": "",
-              "signal": ""
-            },
-            "compile": {
-              "stdout": "",
-              "stderr": "",
-              "time": "",
-              "signal": ""
-            },
-            "run": {
-              "stdout": "",
-              "stderr": "",
-              "time": "",
-              "signal": ""
-            }
-          }
-        }
-
-  - Store Submission object in SubmissionStore
-  - Send a message to the SubmissionMessages
-
-    - submission_id: id
-
-- Worker
-
-  - Consume message from the SubmissionMessages component
-  - Keep updating the "invisibility timestamp" of the Submission object every n secs to signal that you are healthy
-  - Create Dependencies object
-
     .. code-block::
 
       {
-        "dependencies_id": string,
-        "invisibility_timestamp": timestamp,
-        "dependencies": content of cutor.nix
+        "id": id,
+        "lease": timestamp,
+        "request": the client request mentioned above,
+        "response": {
+          "status": "pending",
+          "dependencies": {
+            "stdout": "",
+            "stderr": "",
+            "time": "",
+            "signal": ""
+          },
+          "compile": {
+            "stdout": "",
+            "stderr": "",
+            "time": "",
+            "signal": ""
+          },
+          "run": {
+            "stdout": "",
+            "stderr": "",
+            "time": "",
+            "signal": ""
+          }
+        }
       }
 
-  - Store Dependencies object in BuildStore
-  - Send message to BuildMessages
-
-    - build_id: string
-
-  - Wait for the result
-
-- CacheBuilder
-
-  - Retrieve Dependencies object
-  - Install Dependencies in Cache (``SubmissionRequests.cache``, ``Performance.Cache``)
-
-    - Put content of Dependencies object "content of cutor.nix" in a cutor.nix file
-    - nix-shell on the directory of the files
-    - [if nix-shell fails] go to last step
-    - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
-
-  - Send the corresponding stdout, stderr, time, signal to BuildMessages
+  - Store Submission object in SubmissionStore
+  - Send a message to the SubmissionStore containing the submission id
 
 - Worker
 
-  - Consume message from CacheBuilder
-  - [if inappropriate received signal] update Submission object accordingly and go to last step
-  - Modify submission request with the new status
+  - Consume message from the SubmissionStore
+  - Fetch the corresponding Submission object
+  - Keep updating the lease of the Submission object every n milliseconds to signal that you are healthy
+  - If dependencies are specified:
 
-    - Update "status" to "status":"DEPENDENCIES_INSTALLED" (``SubmissionStatus.DependenciesInstalled``)
+    - Create Dependencies object
+
+      .. code-block::
+
+        {
+          "id": string,
+          "lease": timestamp,
+          "dependencies": content of cutor.nix
+        }
+
+    - Store Dependencies object in BuildStore
+    - Send a message to the BuildStore with the id of the Dependencies object
+    - Wait for the result
+
+- CacheBuilder
+
+  - Consume a message from the BuildStore
+  - Retrieve the corresponding Dependencies object
+  - Install the dependencies with the Cache volume mounted by:
+
+    - Putting the dependencies in a ``cutor.nix`` file
+    - Running ``nix-shell`` on the directory of the files
+    - [if ``nix-shell`` fails] going to last step
+    - [if Process takes more than pre-determined memory, time, stdout, stderr] going to last step
+    - (``SubmissionRequests.cache``, ``Performance.Cache``)
+
+  - Send the stdout, stderr, time, signal message to the BuildStore
+
+- Worker
+
+  - If dependencies are specified:
+
+    - Consume message from CacheBuilder
+    - [if inappropriate received signal] update Submission object accordingly and go to last step
+    - Modify submission request with the new status
+
+      - Update "status" to "status":"DEPENDENCIES_INSTALLED" (``SubmissionStatus.DependenciesInstalled``)
 
   - Create a docker container as a child process and mount:
 
@@ -177,22 +178,22 @@ The execution flow
       (created from the submission request)
     - (``Isolation.Submission``, ``Security``, ``Escaping``)
 
-  - Run the runner program which:
+  - Run the runner program inside the container which:
 
-    - Start nix-shell to isolate the dependencies (``Isolation.Dependencies``)
-    - Export cutor-env.sh
-    - [if specified in the Submission object] Run compile.sh
+    - Starts nix-shell to isolate the dependencies (``Isolation.Dependencies``)
+    - Exports ``cutor-env.sh``
+    - [if specified in the Submission object] Runs ``compile.sh``
 
-      - On output, error, exit: signal to parent process (``SubmissionStatus.Compiled``)
-      - [if compile failed] abort
-      - [if Process takes more than pre-determined memory, time, stdout, stderr] signal to parent process, abort
+      - On output, error, exit: signals to parent process (``SubmissionStatus.Compiled``)
+      - [if compile failed] aborts
+      - [if Process takes more than pre-determined memory, time, stdout, stderr] signals to parent process, aborts
 
-    - For each case in submission.test_cases
+    - For each case in ``submission.test_cases``
 
-      - Run run.sh and provide it arguments from cutor-args.sh and input from cutor-inputs.sh
+      - Run ``run.sh`` and provide it arguments from ``cutor-args.sh`` and input from ``cutor-inputs.sh``
 
         - On output, error, exit: signal to parent process (``SubmissionStatus.Ran``)
         - [if Process takes more than pre-determined memory, time, stdout, stderr] signal to parent process, abort
 
-  - Listen to child process signals and update submission object accordingly
+  - Listen to child process signals and update Submission object accordingly
   - Stop and delete the Docker container

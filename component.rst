@@ -52,8 +52,8 @@ receiving messages from the Workers and allowing the CacheBuilder to view the re
 CacheBuilder
 ============
 
-Fetching the dependencies object from the BuildStore after receiving a notification about it and installing the dependencies in the cache
-and sends the corresponding result to the BuildStore.
+Fetching the dependencies object from the BuildStore after receiving a notification about it and installing the
+dependencies in the cache and sends the corresponding result to the BuildStore.
 
 CacheBuilderHealthChecker
 =========================
