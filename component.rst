@@ -15,31 +15,27 @@ Components Responsibilities
 RequestHandler
 ===============
 
-Receiving requests from the client, massaging them into submission objects, sending them to the SubmissionStore component
-and sending a message to the SubmissionMessages queue to notify the Worker components about the arrival of a new request.
+Receiving requests from the client, massaging them into submission objects, sending them to the SubmissionStore
+and sending a message to the SubmissionStore to notify the Workers about the arrival of a new request.
 
 SubmissionStore
 ================
 
-Storing submission objects that comes from the RequestHandler component and returning them when asked.
+Storing submission objects that come from the RequestHandler, returning them when asked,
+receiving messages from the RequestHandler and allowing the Workers to view the received message.
 
-SubmissionMessages
-==================
+WorkerHealthChecker
+===================
 
-Receiving messages from the RequestHandler and allowing the Worker components to view them.
-
-SubmissionHeathChecker
-======================
-
-Checking the health of the Worker components by checking a timestamp that the Worker constantly updates on submissions.
-If it is too old, the SubmissionHeathChecker assumes the Worker failed to process the submission
-and sends a new message about the submission to the SubmissionMessages component.
+Checking the health of the Workers by checking a timestamp that the Workers constantly update on submissions.
+If it is too old, the WorkerHealthChecker assumes the Worker has failed to process the submission
+and sends a new message about the submission to the SubmissionStore.
 
 Worker
 ======
 
-Fetching the submission from the SubmissionStore component after receiving a notification about it,
-sending messages to the BuildMessages component to request that the dependencies be installed in the cache
+Fetching the submission from the SubmissionStore after receiving a notification about it,
+sending messages to the BuildStore to request that the dependencies be installed in the cache
 and processing the submission.
 
 Cache
@@ -47,23 +43,19 @@ Cache
 
 Storing the dependencies as nix packages and being available for mount while processing submissions.
 
-BuildMessages
-=============
-
-Receiving messages from the Worker component and allowing the CacheBuilder component to view them.
-
 BuildStore
 ==========
 
-Storing dependency objects that come from the Worker components and returning them when asked.
+Storing dependency objects that come from the Workers, returning them when asked,
+receiving messages from the Workers and allowing the CacheBuilder to view the received message.
 
 CacheBuilder
 ============
 
-Fetching the dependencies object from the BuildStore component after receiving a notification about it and installing the dependencies in the cache
-and sends the corresponding result to the BuildMessages component.
+Fetching the dependencies object from the BuildStore after receiving a notification about it and installing the dependencies in the cache
+and sends the corresponding result to the BuildStore.
 
-BuildHealthChecker
-==================
+CacheBuilderHealthChecker
+=========================
 
-Same as the SubmissionHeathChecker but for build requests.
+Same as the WorkerHealthChecker but for build requests.
