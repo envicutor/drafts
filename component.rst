@@ -31,9 +31,10 @@ Checking the health of the Workers by checking a timestamp that the Workers cons
 If it is too old, the WorkerHealthChecker assumes the Worker has failed to process the submission
 and sends a new message about the submission to the SubmissionStore.
 
+.. _worker-component:
+
 Worker
 ======
-
 Fetching the submission from the SubmissionStore after receiving a notification about it,
 sending messages to the BuildStore to request that the dependencies be installed in the cache
 and processing the submission.
@@ -48,6 +49,8 @@ BuildStore
 
 Storing dependency objects that come from the Workers, returning them when asked,
 receiving messages from the Workers and allowing the CacheBuilder to view the received message.
+
+.. _cache-builder-component:
 
 CacheBuilder
 ============

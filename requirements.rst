@@ -7,17 +7,12 @@ Format
 ******
 
 The text inside parentheses after each requirement represents the "label" of the requirement.
-Some labels are mapped to steps in the activity flow to show how each requirement is satisfied.
+Some labels are mapped to steps in the :ref:`activity flow <flow>` to show how each requirement is satisfied.
 The labels that are not mapped to the activity flow reflect requirements that the architecture achieves naturally.
 
-The header of each (non-)functional requirement represents the topmost label,
+The heading of each (non-)functional requirement represents the topmost label,
 the bullet points represent inner labels and each indent in the bullet points represents a more inner label.
 An example of how the labels will appear in the activity flow is: ``Topmost.Inner.Inner``
-
-
-.. todo::
-
-  Put the appropriate reference to the activity flow when its done.
 
 Functional requirements
 ***********************
@@ -66,8 +61,8 @@ Non-functional requirements
 Isolation (``Isolation``)
 =========================
 
-- Every Submission shall not see nor affect other submissions. (``Submission``)
-- Every Submission dependencies shall not conflict with other Submission Dependencies. (``Dependencies``)
+- Every submission shall not see nor affect other submissions. (``Submission``)
+- Every submission dependencies shall not conflict with other submission dependencies. (``Dependencies``)
 
 Security (``Security``)
 ========================
@@ -87,18 +82,18 @@ Performance (``Performance``)
 Availability (``Availability``)
 ===============================
 
-- The system shall be able to accommodate at least 1 redundant code Worker to prevent down-time. (``Worker``)
-- The system shall be able to accommodate at least 1 redundant cache builder to prevent down-time. (``CacheBuilder``)
+- The system shall be able to accommodate at least 1 redundant code :ref:`worker-component` to prevent down-time. (``Worker``)
+- The system shall be able to accommodate at least 1 redundant :ref:`CacheBuilder <cache-builder-component>` to prevent down-time. (``CacheBuilder``)
 
 Scalability (``Scalability``)
 =============================
 
-- The system administrator shall be able to increase the number of Workers in the system as needed. (``Worker``)
-- The system administrator shall be able to increase the number of cache builders in the system as needed.
+- The system administrator shall be able to increase the number of :ref:`Workers <worker-component>` in the system as needed. (``Worker``)
+- The system administrator shall be able to increase the number of :ref:`CacheBuilders <cache-builder-component>` in the system as needed.
   (``CacheBuilder``)
 
 Fault Tolerance (``FaultTolerance``)
 ====================================
 
-- The system shall continue functioning normally when a Worker fails. (``Worker``)
-- The system shall continue functioning normally when a CacheBuilder fails. (``CacheBuilder``)
+- The system shall continue functioning normally when a :ref:`worker-component` fails. (``Worker``)
+- The system shall continue functioning normally when a :ref:`CacheBuilder <cache-builder-component>` fails. (``CacheBuilder``)

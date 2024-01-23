@@ -12,3 +12,7 @@ Glossary
   Dependencies
     The set of packages (programming language compilers, execution tools, etc.) that are available during execution,
     their configuration and the executing user's environment variables.
+  
+  Nix
+    A declarative package manager that |product-name| uses to install and cache submission dependencies.
+    https://nixos.org/

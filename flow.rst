@@ -1,3 +1,5 @@
+.. _flow:
+
 Activity flow
 #############
 
