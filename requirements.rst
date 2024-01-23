@@ -7,11 +7,13 @@ Format
 ******
 
 The text inside parentheses after each requirement represents the "label" of the requirement.
-This label is mapped to steps in the activity flow to show how each requirement is satisfied.
+Some labels are mapped to steps in the activity flow to show how each requirement is satisfied.
+The labels that are not mapped to the activity flow reflect requirements that the architecture achieves naturally.
 
 The header of each (non-)functional requirement represents the topmost label,
 the bullet points represent inner labels and each indent in the bullet points represents a more inner label.
 An example of how the labels will appear in the activity flow is: ``Topmost.Inner.Inner``
+
 
 .. todo::
 
@@ -85,12 +87,18 @@ Performance (``Performance``)
 Availability (``Availability``)
 ===============================
 
-- The system shall be able to accommodate at least 1 redundant code executor to prevent down-time. (``Executor``)
+- The system shall be able to accommodate at least 1 redundant code Worker to prevent down-time. (``Worker``)
 - The system shall be able to accommodate at least 1 redundant cache builder to prevent down-time. (``CacheBuilder``)
 
 Scalability (``Scalability``)
 =============================
 
-- The system administrator shall be able to increase the number of executors in the system as needed. (``Executor``)
+- The system administrator shall be able to increase the number of Workers in the system as needed. (``Worker``)
 - The system administrator shall be able to increase the number of cache builders in the system as needed.
   (``CacheBuilder``)
+
+Fault Tolerance (``FaultTolerance``)
+====================================
+
+- The system shall continue functioning normally when a Worker fails. (``Worker``)
+- The system shall continue functioning normally when a CacheBuilder fails. (``CacheBuilder``)

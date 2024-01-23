@@ -201,3 +201,31 @@ The execution flow
   - Listen to child process signals and update Submission object accordingly
     (``SubmissionStatus.Compiled``, ``SubmissionStatus.Ran``)
   - Stop and delete the Docker container
+
+Health checking flow
+********************
+
+- WorkerHealthChecker (``Availability.Worker``, ``FaultTolerance.Worker``)
+
+  - Checks all leases in SubmissionStore and
+    if one is too old, reset the Submission object in the SubmissionStore and
+    send message to the SubmissionStore with submission id.
+  - Do this every n secs.
+
+- Build Health Checker (``Availability.CacheBuilder``, ``FaultTolerance.CacheBuilder```)
+
+  - checks all leases in BuildStore and
+    if one is too old, reset the Dependency object in the BuildStore and
+    send message to the BuildStore with Dependency object id.
+  - Do this every n secs.
+
+Get Submission Status flow
+**************************
+
+- Client
+
+  - Request Viewing Submission Status.
+
+- Request handler
+
+  - Return Submission.Response Object (SubmissionStatus.Result).
