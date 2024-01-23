@@ -8,3 +8,4 @@
     - Scaling cache builders without executors?
     - Scaling executors without cache builder?
   - Extensibility?
+  - Decreasing load on workers to handle stuff requests that do not need installation
