@@ -4,7 +4,8 @@ Activity flow
 What it is
 **********
 Provided are simplified sequence of steps that Envicutor takes to achieve certain goals (ie. to complete certain flows).
-Next to some steps, there are labels in parentheses that refer to the labels in the :ref:`requirements <requirements>`.
+Next to some steps, there are labels in parentheses that refer to the labels in the :ref:`requirements <requirements>`
+to show how the requirements are satisfied.
 
 The execution flow
 ******************
@@ -97,7 +98,7 @@ The execution flow
 
       {
         "id": id,
-        "lease": timestamp,
+        "lease": null,
         "request": the client request mentioned above,
         "response": {
           "status": "pending",
@@ -122,69 +123,71 @@ The execution flow
         }
       }
 
-  - Store Submission object in SubmissionStore
+  - Store that Submission object in SubmissionStore
   - Send a message to the SubmissionStore containing the submission id
 
 - Worker
 
   - Consume message from the SubmissionStore
-  - Fetch the corresponding Submission object
-  - Keep updating the lease of the Submission object every n milliseconds to signal that you are healthy
+  - Fetch the corresponding Submission object (according to the submission id in the message)
+  - Keep updating the lease of the Submission object every n milliseconds with now's timestamp
+    to signal that you are healthy
   - If dependencies are specified:
 
-    - Create Dependencies object
+    - Check which dependencies requisites are not cached
+    - If there are requisites that are not cached
 
-      .. code-block::
+      - Create a Dependencies object
 
-        {
-          "id": string,
-          "lease": timestamp,
-          "dependencies": content of cutor.nix
-        }
+        .. code-block::
 
-    - Store Dependencies object in BuildStore
-    - Send a message to the BuildStore with the id of the Dependencies object
-    - Wait for the result
+          {
+            "id": id,
+            "lease": timestamp,
+            "paths": string
+          }
+
+      - Send a message containing them to BuildStore
+      - Wait for a reply in the BuildStore
 
 - CacheBuilder
 
   - Consume a message from the BuildStore
-  - Retrieve the corresponding Dependencies object
-  - Install the dependencies with the Cache volume mounted by:
+  - Retrieve the corresponding Dependencies object (according to the dependencies object id in the message)
+  - Keep updating the lease of the Dependencies object every n milliseconds with now's timestamp
+    to signal that you are healthy
+  - Install the dependencies (with the Cache volume mounted) (``SubmissionRequests.cache``, ``Performance.Cache``):
 
-    - Putting the dependencies in a ``cutor.nix`` file
-    - Running ``nix-shell`` on the directory of the files
-    - [if ``nix-shell`` fails] going to last step
-    - [if Process takes more than pre-determined memory, time, stdout, stderr] going to last step
-    - (``SubmissionRequests.cache``, ``Performance.Cache``)
+    - [if the process fails] go to last step
+    - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
 
-  - Send the stdout, stderr, time, signal message to the BuildStore
+  - Send the a message containing the stdout, stderr, time, signal, code of the installation process
+    to the BuildStore as a reply to the consumed message
+  - Delete the Dependencies object
 
 - Worker
 
   - If dependencies are specified:
 
     - Consume message from CacheBuilder
-    - [if inappropriate received signal] update Submission object accordingly and go to last step
-    - Modify submission request with the new status
+    - [if inappropriate received signal or code] update Submission object accordingly and go to last step
+    - Modify submission request with the new status (``SubmissionStatus.DependenciesInstalled``)
 
-      - Update "status" to "status":"DEPENDENCIES_INSTALLED" (``SubmissionStatus.DependenciesInstalled``)
+  - Create a docker container as a child process that has:
 
-  - Create a docker container as a child process and mount:
+    - ``/nix`` (mounted from the "cache" volume)
+    - ``shell.nix``, nixpkgs tarball, worker program (from the filesystem in the base image)
+    - ``cutor.nix``, files, ``cutor-compile.sh``, ``cutor-run.sh``, ``cutor-env.sh``, ``cutor-args.sh``,
+      ``cutor-inputs.sh`` (created from the submission request)
+    - (``Performance.Nix``, ``Isolation.Submission``, ``Security``, ``Escaping``)
 
-    - /nix (from the "cache" volume)
-    - shell.nix, nixpkgs tarball, worker program (shall be on the filesystem from the base image) (Performance.Nix)
-    - cutor.nix, files, cutor-compile.sh, cutor-run.sh, cutor-env.sh, cutor-args.sh, cutor-inputs.sh
-      (created from the submission request)
-    - (``Isolation.Submission``, ``Security``, ``Escaping``)
-
-  - Run the runner program inside the container which:
+  - Run the worker program inside the container which:
 
     - Starts nix-shell to isolate the dependencies (``Isolation.Dependencies``)
     - Exports ``cutor-env.sh``
     - [if specified in the Submission object] Runs ``compile.sh``
 
-      - On output, error, exit: signals to parent process (``SubmissionStatus.Compiled``)
+      - On output, error, exit: signals to parent process
       - [if compile failed] aborts
       - [if Process takes more than pre-determined memory, time, stdout, stderr] signals to parent process, aborts
 
@@ -192,8 +195,9 @@ The execution flow
 
       - Run ``run.sh`` and provide it arguments from ``cutor-args.sh`` and input from ``cutor-inputs.sh``
 
-        - On output, error, exit: signal to parent process (``SubmissionStatus.Ran``)
+        - On output, error, exit: signal to parent process
         - [if Process takes more than pre-determined memory, time, stdout, stderr] signal to parent process, abort
 
   - Listen to child process signals and update Submission object accordingly
+    (``SubmissionStatus.Compiled``, ``SubmissionStatus.Ran``)
   - Stop and delete the Docker container

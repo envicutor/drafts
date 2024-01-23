@@ -1,3 +1,4 @@
 - What to mount
   - /nix
   - local nixpkgs
+- Warm up nix shell in base images (maybe won't need to mount local nixpkgs then)

@@ -1,11 +1,5 @@
 - Separate request and response
 - Non-functional fault-tolerance
 - Read documents as a new person
-- Formal way to define the schema of requests, responses, messages
+- Formal way to define the schema of requests, responses, messages, statuses
 - Dependencies stage seem to do some common things as the run stage and the compile stage (stdout, stderr, signal, time)
-- Advantages of cache builder
-  - Scalability valid point?
-    - Scaling cache builders without executors?
-    - Scaling executors without cache builder?
-  - Extensibility?
-  - Decreasing load on workers to handle stuff requests that do not need installation
