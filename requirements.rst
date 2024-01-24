@@ -35,6 +35,8 @@ Submission requests (``SubmissionRequests``)
 
 - The system shall cache newly requested dependencies. (``Cache``)
 
+.. _submission_status_request:
+
 Submission status request (``SubmissionStatus``)
 ================================================
 
@@ -52,7 +54,7 @@ Submission status request (``SubmissionStatus``)
 Execution limits (``Limits``)
 =============================
 
-- For each stage (dependencies, compile, run), the client shall be able to specify linux `prlimits <prlimits_>`_.
+- For each stage (dependencies installed, compiled, ran), the client shall be able to specify linux `prlimits <prlimits_>`_.
   (``PerRequestLimits``)
 - For the entire system there's a config file that has the maximum possible values of per request limits.
   (``GlobalLimits``)
