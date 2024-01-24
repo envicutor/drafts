@@ -10,7 +10,7 @@ Next to some steps are some labels in parentheses that refer to the labels in th
 to show how the requirements are satisfied.
 
 Execution flow
-******************
+**************
 
 - Client
 
@@ -203,7 +203,7 @@ Execution flow
 
   - Listen to child process signals and update Submission object accordingly
     (``SubmissionStatus.Compiled``, ``SubmissionStatus.Ran``)
-  - Stop and delete the Docker container
+  - Clean up files, stop and delete the Docker container
 
 Health checking flow
 ********************
