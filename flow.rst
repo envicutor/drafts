@@ -219,7 +219,7 @@ Health checking flow
         - Reset the Submission object in the SubmissionStore
         - Send a message to the SubmissionStore with submission id to cause a Worker to work on the submission
 
-- Build Health Checker (``Availability.CacheBuilder``, ``FaultTolerance.CacheBuilder``)
+- CacheBuilderHealthChecker (``Availability.CacheBuilder``, ``FaultTolerance.CacheBuilder``)
 
   - Every n seconds
 
