@@ -209,17 +209,28 @@ Health checking flow
 
 - WorkerHealthChecker (``Availability.Worker``, ``FaultTolerance.Worker``)
 
-  - Checking all leases in SubmissionStore and
-    if one is too old, reset the Submission object in the SubmissionStore and
-    send message to the SubmissionStore with submission id
-  - Do this every n secs
+  - Every n seconds
 
-- Build Health Checker (``Availability.CacheBuilder``, ``FaultTolerance.CacheBuilder```)
+    - For each Submission object in SubmissionStore with lease not null and status not "ran"
 
-  - Checking all leases in BuildStore and
-    if one is too old, reset the Dependencies object in the BuildStore and
-    send message to the BuildStore with Dependencies object id
-  - Do this every n secs
+      - If lease - now's timestamp > threshold
+
+        - Assume that the Worker that was working on it is dead
+        - Reset the Submission object in the SubmissionStore
+        - Send a message to the SubmissionStore with submission id to cause a Worker to work on the submission
+
+- Build Health Checker (``Availability.CacheBuilder``, ``FaultTolerance.CacheBuilder``)
+
+  - Every n seconds
+
+    - For each Dependencies object in BuildStore with lease not null and status not "ran"
+
+      - If lease - now's timestamp > threshold
+
+        - Assume that the CacheBuilder that was working on it is dead
+        - Reset the Dependencies object in the BuildStore
+        - Send a message to the BuildStore with the Dependencies object id to cause a CacheBuilder
+          to install the dependencies
 
 Getting the submission status flow
 **********************************
