@@ -1,0 +1,15 @@
+title CacheBuilder health checking
+control CacheBuilderHealthChecker
+database BuildStore
+
+activate CacheBuilderHealthChecker
+activate BuildStore
+loop every n seconds
+  CacheBuilderHealthChecker -> BuildStore: get next Dependencies object "d" with lease not null
+  opt s.lease - now() > threshold
+    CacheBuilderHealthChecker -> BuildStore: reset the lease of the Dependencies object
+    CacheBuilderHealthChecker -> BuildStore: send message containing Dependencies object id
+  end
+end
+deactivate BuildStore
+deactivate CacheBuilderHealthChecker

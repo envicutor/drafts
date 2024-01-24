@@ -216,7 +216,7 @@ Health checking flow
       - If lease - now's timestamp > threshold
 
         - Assume that the Worker that was working on it is dead
-        - Reset the Submission object in the SubmissionStore
+        - Reset the response and the lease of the Submission object in the SubmissionStore
         - Send a message to the SubmissionStore with submission id to cause a Worker to work on the submission
 
 - CacheBuilderHealthChecker (``Availability.CacheBuilder``, ``FaultTolerance.CacheBuilder``)
@@ -228,7 +228,7 @@ Health checking flow
       - If lease - now's timestamp > threshold
 
         - Assume that the CacheBuilder that was working on it is dead
-        - Reset the Dependencies object in the BuildStore
+        - Reset the lease of the Dependencies object in the BuildStore
         - Send a message to the BuildStore with the Dependencies object id to cause a CacheBuilder
           to install the dependencies
 

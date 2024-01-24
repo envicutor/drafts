@@ -1,0 +1,15 @@
+title Worker health checking
+control WorkerHealthChecker
+database SubmissionStore
+
+activate WorkerHealthChecker
+activate SubmissionStore
+loop every n seconds
+  WorkerHealthChecker -> SubmissionStore: get next Submission object "s" with lease not null and status not "ran"
+  opt s.lease - now() > threshold
+    WorkerHealthChecker -> SubmissionStore: reset response and lease in Submission object
+    WorkerHealthChecker -> SubmissionStore: send message containing submission id
+  end
+end
+deactivate SubmissionStore
+deactivate WorkerHealthChecker
