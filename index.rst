@@ -16,5 +16,6 @@ by allowing the users to run their code with arbitrary :term:`dependencies` (:re
    requirements.rst
    use-case.rst
    component.rst
+   sequence.rst
    flow.rst
    glossary.rst

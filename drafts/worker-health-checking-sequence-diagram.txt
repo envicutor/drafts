@@ -5,10 +5,12 @@ database SubmissionStore
 activate WorkerHealthChecker
 activate SubmissionStore
 loop every n seconds
-  WorkerHealthChecker -> SubmissionStore: get next Submission object "s" with lease not null and status not "ran"
-  opt s.lease - now() > threshold
-    WorkerHealthChecker -> SubmissionStore: reset response and lease in Submission object
-    WorkerHealthChecker -> SubmissionStore: enqueue the submission id in the SubmissionStore
+  WorkerHealthChecker -> SubmissionStore: get all Submission objects "s" with lease not null and status not "ran"
+  loop for each submission in s
+    opt submission.lease - now() > threshold
+      WorkerHealthChecker -> SubmissionStore: reset response and lease in Submission object
+      WorkerHealthChecker -> SubmissionStore: enqueue the submission id in the SubmissionStore
+    end
   end
 end
 deactivate SubmissionStore

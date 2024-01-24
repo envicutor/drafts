@@ -1,4 +1,4 @@
-title Execution Sequence
+title Get submission status
 
 actor Client
 boundary RequestHandler

@@ -5,10 +5,12 @@ database BuildStore
 activate CacheBuilderHealthChecker
 activate BuildStore
 loop every n seconds
-  CacheBuilderHealthChecker -> BuildStore: get next Dependencies object "d" with lease not null
-  opt s.lease - now() > threshold
-    CacheBuilderHealthChecker -> BuildStore: reset the lease of the Dependencies object
-    CacheBuilderHealthChecker -> BuildStore: enqueue the Dependencies object id in the BuildStore
+  CacheBuilderHealthChecker -> BuildStore: get all Dependencies objects "d" with lease not null
+  loop for each dependencies in d
+    opt dependencies.lease - now() > threshold
+      CacheBuilderHealthChecker -> BuildStore: reset the lease of the Dependencies object
+      CacheBuilderHealthChecker -> BuildStore: enqueue the Dependencies object id in the BuildStore
+    end
   end
 end
 deactivate BuildStore
