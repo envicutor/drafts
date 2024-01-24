@@ -8,7 +8,7 @@ loop every n seconds
   CacheBuilderHealthChecker -> BuildStore: get next Dependencies object "d" with lease not null
   opt s.lease - now() > threshold
     CacheBuilderHealthChecker -> BuildStore: reset the lease of the Dependencies object
-    CacheBuilderHealthChecker -> BuildStore: send message containing Dependencies object id
+    CacheBuilderHealthChecker -> BuildStore: enqueue the Dependencies object id in the BuildStore
   end
 end
 deactivate BuildStore

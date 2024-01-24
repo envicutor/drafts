@@ -8,7 +8,7 @@ loop every n seconds
   WorkerHealthChecker -> SubmissionStore: get next Submission object "s" with lease not null and status not "ran"
   opt s.lease - now() > threshold
     WorkerHealthChecker -> SubmissionStore: reset response and lease in Submission object
-    WorkerHealthChecker -> SubmissionStore: send message containing submission id
+    WorkerHealthChecker -> SubmissionStore: enqueue the submission id in the SubmissionStore
   end
 end
 deactivate SubmissionStore

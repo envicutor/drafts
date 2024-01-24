@@ -14,35 +14,33 @@ activate RequestHandler
 RequestHandler->RequestHandler: create Submission object
 RequestHandler->SubmissionStore: send Submission object
 activate SubmissionStore
-RequestHandler->SubmissionStore: send submission message
+RequestHandler->SubmissionStore: enqueue submission id
 deactivate RequestHandler
-SubmissionStore->SubmissionStore: store Submission object
-Worker->SubmissionStore: pop message
+Worker->SubmissionStore: pop submission id
 activate Worker
 Worker->SubmissionStore: retrieve Submission object
 loop every n milliseconds while submission status is not ran
-  Worker-->SubmissionStore: update lease
+  Worker-->SubmissionStore: update Submission object lease
 end
 Worker->Worker: create Dependencies object
 opt Dependencies not cached
   Worker->BuildStore: send Dependencies object
   activate BuildStore
-  Worker->BuildStore: send dependency message
-  CacheBuilder->BuildStore: pop message
+  Worker->BuildStore: enqueue Dependencies object id
+  CacheBuilder->BuildStore: pop Dependencies object id
   activate CacheBuilder
   CacheBuilder->BuildStore: retrieve Dependencies object
-  loop every n milliseconds while dependency object still in store
-    CacheBuilder-->BuildStore: update lease
+  loop every n milliseconds while Dependencies object still in store
+    CacheBuilder-->BuildStore: update Dependencies object lease
    end
   CacheBuilder->Cache: install dependencies
-  CacheBuilder->BuildStore: send message about the status of installed dependencies
+  CacheBuilder->BuildStore: send message about the status of\ninstalled dependencies
   CacheBuilder->BuildStore: delete Dependencies object
   deactivate CacheBuilder
-  BuildStore<-Worker: wait for message
-  Worker->BuildStore: pop message
+  Worker->BuildStore: consume message
   deactivate BuildStore
   opt dependency install fails
-    Worker->SubmissionStore: update Submission object with dependency install failure
+    Worker->SubmissionStore: update Submission object\nwith dependency install failure
   end
 end
 opt installing dependencies didn't fail or all dependencies were cached
@@ -54,10 +52,10 @@ opt installing dependencies didn't fail or all dependencies were cached
     Container->Container: execute the compile instructions
     alt compile fails
       Container->Worker: return compile failed
-      Worker->SubmissionStore:update the Submission object with failure of compilation
+      Worker->SubmissionStore:update the Submission object with\nfailure of compilation stage
     else
-      Container->Worker: return the stdout, stderr, signal, exit code for the compile stage
-      Worker->SubmissionStore: update the Submission object with the received data
+      Container->Worker: return the stdout, stderr, signal, exit code for\nthe compile stage
+      Worker->SubmissionStore: update the Submission object with\nthe received data
     end
   end
   opt compiled successfully or no compile existed
@@ -65,12 +63,12 @@ opt installing dependencies didn't fail or all dependencies were cached
       Container->Container: execute the run instructions
       opt run fails
         Container->Worker: return run failed
-        Worker->SubmissionStore: update the submission object with the failure of the running (execution)
+        Worker->SubmissionStore: update the Submission object with the\nfailure of the run stage
       end
     end
     opt all test cases ran successfully
-      Container->Worker: return the stdout, stderr, signal, exit code for the run stage
-      Worker->SubmissionStore: update the Submission object with the received data
+      Container->Worker: return the stdout, stderr, signal, exit code\nfor the run stage
+      Worker->SubmissionStore: update the Submission object with\nthe received data
     end
   end
   Worker->Container: <<destroy>>

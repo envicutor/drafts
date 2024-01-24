@@ -126,13 +126,13 @@ Execution flow
       }
 
   - Store that Submission object in SubmissionStore
-  - Send a message to the SubmissionStore containing the submission id
+  - Enqueue the submission id in the SubmissionStore
   - Return the submission id to the client
 
 - Worker
 
-  - Consume message from the SubmissionStore
-  - Fetch the corresponding Submission object (according to the submission id in the message)
+  - Pop submission id from the SubmissionStore
+  - Fetch the corresponding Submission object
   - Keep updating the lease of the Submission object every n milliseconds with now's timestamp
     to signal that you are healthy
   - Check which dependencies requisites are not cached
@@ -148,13 +148,14 @@ Execution flow
           "paths": string
         }
 
-    - Send a message containing them to BuildStore
+    - Store the Dependencies object in the BuildStore
+    - Enqueue the Dependencies object id in the BuildStore
     - Wait for a reply in the BuildStore
 
 - CacheBuilder
 
-  - Consume a message from the BuildStore
-  - Retrieve the corresponding Dependencies object (according to the dependencies object id in the message)
+  - Pop the Dependencies object id from the BuildStore
+  - Retrieve the corresponding Dependencies object
   - Keep updating the lease of the Dependencies object every n milliseconds with now's timestamp
     to signal that you are healthy
   - Install the dependencies (with the Cache volume mounted) (``SubmissionRequests.Cache``, ``Performance.Cache``):
@@ -162,15 +163,14 @@ Execution flow
     - [if the process fails] go to last step
     - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
 
-  - Send the a message containing the stdout, stderr, time, signal, code of the installation process
-    to the BuildStore as a reply to the consumed message
+  - Send the a message containing the stdout, stderr, time, signal, code of the installation process to the BuildStore
   - Delete the Dependencies object from the BuildStore (not from the cache)
 
 - Worker
 
   - If dependencies are not cached:
 
-    - Consume message from CacheBuilder
+    - Consume the message from CacheBuilder
     - [if inappropriate received signal or code] update Submission object accordingly and go to last step
 
   - Modify submission request with the new status (``SubmissionStatus.DependenciesInstalled``)
@@ -217,7 +217,7 @@ Health checking flow
 
         - Assume that the Worker that was working on it is dead
         - Reset the response and the lease of the Submission object in the SubmissionStore
-        - Send a message to the SubmissionStore with submission id to cause a Worker to work on the submission
+        - Enqueue the submission id in the submission store
 
 - CacheBuilderHealthChecker (``Availability.CacheBuilder``, ``FaultTolerance.CacheBuilder``)
 
@@ -229,8 +229,7 @@ Health checking flow
 
         - Assume that the CacheBuilder that was working on it is dead
         - Reset the lease of the Dependencies object in the BuildStore
-        - Send a message to the BuildStore with the Dependencies object id to cause a CacheBuilder
-          to install the dependencies
+        - Enqueue the Dependencies object id in the BuildStore
 
 Getting the submission status flow
 **********************************
