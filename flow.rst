@@ -222,8 +222,8 @@ Health checking flow
     send message to the BuildStore with Dependency object id
   - Do this every n secs
 
-Get Submission Status flow
-**************************
+Getting the submission status flow
+**********************************
 
 - Client
 
