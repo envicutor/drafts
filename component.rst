@@ -15,13 +15,13 @@ Components Responsibilities
 RequestHandler
 ===============
 
-Receiving requests from the client, massaging them into submission objects, sending them to the SubmissionStore
+Receiving requests from the client, massaging them into Submission objects, sending them to the SubmissionStore
 and sending a message to the SubmissionStore to notify the Workers about the arrival of a new request.
 
 SubmissionStore
 ================
 
-Storing submission objects that come from the RequestHandler, returning them when asked,
+Storing Submission objects that come from the RequestHandler, returning them when asked,
 receiving messages from the RequestHandler and allowing the Workers to view the received message.
 
 WorkerHealthChecker
@@ -55,8 +55,8 @@ receiving messages from the Workers and allowing the CacheBuilder to view the re
 CacheBuilder
 ============
 
-Fetching the dependencies object from the BuildStore after receiving a notification about it and installing the
-dependencies in the cache and sends the corresponding result to the BuildStore.
+Fetching the dependencies object from the BuildStore after receiving a notification about it, installing the
+dependencies in the cache and sending the corresponding result to the BuildStore.
 
 CacheBuilderHealthChecker
 =========================

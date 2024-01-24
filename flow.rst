@@ -6,10 +6,10 @@ Activity flow
 What it is
 **********
 Provided are simplified sequence of steps that Envicutor takes to achieve certain goals (ie. to complete certain flows).
-Next to some steps, there are labels in parentheses that refer to the labels in the :ref:`requirements <requirements>`
+Next to some steps, there are some labels in parentheses that refer to the labels in the :ref:`requirements <requirements>`
 to show how the requirements are satisfied.
 
-The execution flow
+Execution flow
 ******************
 
 - Client
@@ -159,7 +159,7 @@ The execution flow
   - Retrieve the corresponding Dependencies object (according to the dependencies object id in the message)
   - Keep updating the lease of the Dependencies object every n milliseconds with now's timestamp
     to signal that you are healthy
-  - Install the dependencies (with the Cache volume mounted) (``SubmissionRequests.cache``, ``Performance.Cache``):
+  - Install the dependencies (with the Cache volume mounted) (``SubmissionRequests.Cache``, ``Performance.Cache``):
 
     - [if the process fails] go to last step
     - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
@@ -210,14 +210,14 @@ Health checking flow
 
 - WorkerHealthChecker (``Availability.Worker``, ``FaultTolerance.Worker``)
 
-  - Checks all leases in SubmissionStore and
+  - Checking all leases in SubmissionStore and
     if one is too old, reset the Submission object in the SubmissionStore and
     send message to the SubmissionStore with submission id.
   - Do this every n secs.
 
 - Build Health Checker (``Availability.CacheBuilder``, ``FaultTolerance.CacheBuilder```)
 
-  - checks all leases in BuildStore and
+  - Checking all leases in BuildStore and
     if one is too old, reset the Dependency object in the BuildStore and
     send message to the BuildStore with Dependency object id.
   - Do this every n secs.
