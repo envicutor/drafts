@@ -6,7 +6,7 @@ Activity flow
 What it is
 **********
 Provided are simplified sequence of steps that Envicutor takes to achieve certain goals (ie. to complete certain flows).
-Next to some steps, there are some labels in parentheses that refer to the labels in the :ref:`requirements <requirements>`
+Next to some steps are some labels in parentheses that refer to the labels in the :ref:`requirements <requirements>`
 to show how the requirements are satisfied.
 
 Execution flow
@@ -32,7 +32,7 @@ Execution flow
         "files": [
           {
             "name": "cutor.nix",
-            "content": "content"
+            "content": "required dependencies to execute the program as nix packages"
           },
           {
             "name": "cutor-compile.sh",
@@ -166,7 +166,7 @@ Execution flow
 
   - Send the a message containing the stdout, stderr, time, signal, code of the installation process
     to the BuildStore as a reply to the consumed message
-  - Delete the Dependencies object
+  - Delete the Dependencies object from the BuildStore (not from the cache)
 
 - Worker
 
@@ -212,23 +212,23 @@ Health checking flow
 
   - Checking all leases in SubmissionStore and
     if one is too old, reset the Submission object in the SubmissionStore and
-    send message to the SubmissionStore with submission id.
-  - Do this every n secs.
+    send message to the SubmissionStore with submission id
+  - Do this every n secs
 
 - Build Health Checker (``Availability.CacheBuilder``, ``FaultTolerance.CacheBuilder```)
 
   - Checking all leases in BuildStore and
     if one is too old, reset the Dependency object in the BuildStore and
-    send message to the BuildStore with Dependency object id.
-  - Do this every n secs.
+    send message to the BuildStore with Dependency object id
+  - Do this every n secs
 
 Get Submission Status flow
 **************************
 
 - Client
 
-  - Request Viewing Submission status via the submission id.
+  - Request Viewing Submission status via the submission id
 
 - Request handler
 
-  - Return Submission.Response Object (SubmissionStatus.Result).
+  - Return Submission.Response Object (SubmissionStatus.Result)

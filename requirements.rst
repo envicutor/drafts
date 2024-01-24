@@ -47,6 +47,8 @@ Submission status request (``SubmissionStatus``)
   - Whether the their submission's code finished running (run stage). (``Ran``)
   - The result of their submission (each stage's stderr, stdout, signal, time, memory). (``Result``)
 
+.. _execution_limits:
+
 Execution limits (``Limits``)
 =============================
 
