@@ -1,4 +1,3 @@
 - Formal way to define the schema of requests, responses, messages, statuses
 - Dependencies stage seem to do some common things as the run stage and the compile stage (stdout, stderr, signal, time)
 - Clean up stuck files and containers in worker on startup
-- Need a way to stop updating the lease (in flow)

@@ -135,6 +135,9 @@ Execution flow
   - Fetch the corresponding Submission object
   - Keep updating the lease of the Submission object every n milliseconds with now's timestamp
     to signal that you are healthy
+
+    - If the submissions's status is "ran", stop updating the lease
+
   - Check which dependencies requisites are not cached
   - If there are requisites that are not cached
 
@@ -152,12 +155,17 @@ Execution flow
     - Enqueue the Dependencies object id in the BuildStore
     - Wait for a reply in the BuildStore
 
+      - If reply takes too long, go to clean up step (abort)
+
 - CacheBuilder
 
   - Pop the Dependencies object id from the BuildStore
   - Retrieve the corresponding Dependencies object
   - Keep updating the lease of the Dependencies object every n milliseconds with now's timestamp
     to signal that you are healthy
+
+    - If the Dependencies object does not exist anymore, stop updating the lease
+
   - Install the dependencies (with the Cache volume mounted) (``SubmissionRequests.Cache``, ``Performance.Cache``):
 
     - [if the process fails] go to last step
