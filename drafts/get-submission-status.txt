@@ -1,0 +1,9 @@
+title Execution Sequence
+
+actor Client
+boundary RequestHandler
+database SubmissionStore
+
+Client->RequestHandler: send a get submission status request
+RequestHandler->SubmissionStore: retreive Submission object "s"
+RequestHandler->Client: return s.response
