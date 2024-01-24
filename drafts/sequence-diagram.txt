@@ -1,0 +1,78 @@
+title Execution Sequence
+
+actor Client
+boundary RequestHandler
+database SubmissionStore
+control Worker
+database BuildStore
+control CacheBuilder
+database Cache
+control Container
+
+Client->RequestHandler: send a submission request
+activate RequestHandler
+RequestHandler->RequestHandler: create Submission object
+RequestHandler->SubmissionStore: send Submission object
+activate SubmissionStore
+RequestHandler->SubmissionStore: send submission message
+deactivate RequestHandler
+SubmissionStore->SubmissionStore: store Submission object
+Worker->SubmissionStore: pop message
+activate Worker
+Worker->SubmissionStore: retrieve Submission object
+loop every n msec while submission status is not ran
+  Worker-->SubmissionStore: update lease 
+end
+Worker->Worker: create Dependencies object
+opt Depencies not cached 
+  Worker->BuildStore: send Dependencies object
+  activate BuildStore
+  Worker->BuildStore: send dependency message
+  CacheBuilder->BuildStore: pop message
+  activate CacheBuilder
+  CacheBuilder->BuildStore: retrieve Dependencies object
+  loop every n msec while dependency object still in store
+    CacheBuilder-->BuildStore: update lease 
+   end
+  CacheBuilder->Cache: install dependencies
+  CacheBuilder->BuildStore: send message about the status of installed dependencies
+  CacheBuilder->BuildStore: delete Dependencies object
+  deactivate CacheBuilder
+  BuildStore<-Worker: wait for message
+  Worker->BuildStore: pop message
+  deactivate BuildStore
+  opt dependency install fails
+    Worker->SubmissionStore: update Submission object with dependency install failure
+  end
+end
+opt installing dependencies didn't fail or all dependencies were cached
+  Worker->SubmissionStore: update Submission object
+  Worker->*Container: <<create>>
+  opt compilation was requested
+    Container->Cache: execute the compile instructions
+    activate Container
+    alt compile fails
+      Container->Worker: return compile failed
+      Worker->SubmissionStore:update the Submission object with failure of compilation
+    else
+      Container->Worker: return the stdout, stderr, signal, exit code for the compile stage
+      Worker->SubmissionStore: update the Submission object with the received data
+    end
+  end
+  opt compiled successfully or no compile existed
+    Container->Cache: execute the run instructions
+    alt run fails
+      Container->Worker: return run failed
+      Worker->SubmissionStore: update the submission object with the failure of the running (execution)
+    else
+      Container->Worker: return the stdout, stderr, signal, exit code for the run stage
+      Worker->SubmissionStore: update the Submission object with the received data
+    end
+  end  
+  Worker->Container: <<destory>>
+  deactivate Container
+  destroy Container
+end
+Worker->Worker: clean up files
+deactivate Worker
+deactivate SubmissionStore
