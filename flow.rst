@@ -135,23 +135,21 @@ Execution flow
   - Fetch the corresponding Submission object (according to the submission id in the message)
   - Keep updating the lease of the Submission object every n milliseconds with now's timestamp
     to signal that you are healthy
-  - If dependencies are specified:
+  - Check which dependencies requisites are not cached
+  - If there are requisites that are not cached
 
-    - Check which dependencies requisites are not cached
-    - If there are requisites that are not cached
+    - Create a Dependencies object
 
-      - Create a Dependencies object
+      .. code-block::
 
-        .. code-block::
+        {
+          "id": id,
+          "lease": timestamp,
+          "paths": string
+        }
 
-          {
-            "id": id,
-            "lease": timestamp,
-            "paths": string
-          }
-
-      - Send a message containing them to BuildStore
-      - Wait for a reply in the BuildStore
+    - Send a message containing them to BuildStore
+    - Wait for a reply in the BuildStore
 
 - CacheBuilder
 
@@ -170,11 +168,12 @@ Execution flow
 
 - Worker
 
-  - If dependencies are specified:
+  - If dependencies are not cached:
 
     - Consume message from CacheBuilder
     - [if inappropriate received signal or code] update Submission object accordingly and go to last step
-    - Modify submission request with the new status (``SubmissionStatus.DependenciesInstalled``)
+
+  - Modify submission request with the new status (``SubmissionStatus.DependenciesInstalled``)
 
   - Create a docker container as a child process that has:
 
@@ -218,8 +217,8 @@ Health checking flow
 - Build Health Checker (``Availability.CacheBuilder``, ``FaultTolerance.CacheBuilder```)
 
   - Checking all leases in BuildStore and
-    if one is too old, reset the Dependency object in the BuildStore and
-    send message to the BuildStore with Dependency object id
+    if one is too old, reset the Dependencies object in the BuildStore and
+    send message to the BuildStore with Dependencies object id
   - Do this every n secs
 
 Getting the submission status flow
