@@ -159,3 +159,9 @@ Queues and Pub/Sub channels
     - explanation: the CacheBuilder uses it to send the confirmation of the installation of the dependencies
       type: Pub/Sub channel
       location: BuildStore
+
+Endpoints
+*********
+
+- ``POST /submission``: create a new submission.
+- ``GET /submission/{id}``: get the status of the submission with id ``id``.
