@@ -1,0 +1,15 @@
+# nix-shell --command worker_program
+/*
+cmd_opts
+  - env
+  - test_cases
+*/
+
+- main()
+  - env = json.parse(cmd_opts("env"))
+  - for key in env:
+    - export key = env
+  - if file_exists("compile.sh")
+    - cp = create_child_process("compile.sh")
+    - cp.on_output((output) => print(json.stringify({ stage: "compile", type: "output", value: output })))
+    - cp.on_error((error) => print(json.stringify({ stage: "compile", type: "error", value: error })))

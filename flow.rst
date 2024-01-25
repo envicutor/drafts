@@ -191,14 +191,12 @@ Execution flow
 
     - ``/nix`` (mounted from the "cache" volume)
     - ``shell.nix``, nixpkgs tarball, worker program (from the filesystem in the base image)
-    - ``cutor.nix``, files, ``cutor-compile.sh``, ``cutor-run.sh``, ``cutor-env.sh``, ``cutor-args.sh``,
-      ``cutor-inputs.sh`` (created from the submission request)
+    - ``cutor.nix``, files, ``cutor-compile.sh``, ``cutor-run.sh`` (created from the submission request)
     - (``Performance.Nix``, ``Isolation.Submission``, ``Security``, ``Escaping``)
 
-  - Run the worker program inside the container which:
+  - Run the worker program inside a nix-shell (``Isolation.Dependencies``) inside the container which:
 
-    - Starts nix-shell to isolate the dependencies (``Isolation.Dependencies``)
-    - Exports ``cutor-env.sh``
+    - Exports the environment variables
     - [if specified in the Submission object] Runs ``compile.sh``
 
       - On output, error, exit: signals to parent process
@@ -207,7 +205,7 @@ Execution flow
 
     - For each case in ``submission.test_cases``
 
-      - Run ``run.sh`` and provide it arguments from ``cutor-args.sh`` and input from ``cutor-inputs.sh``
+      - Run ``run.sh`` with the case inputs and args
 
         - On output, error, exit: signal to parent process
         - [if Process takes more than pre-determined memory, time, stdout, stderr] signal to parent process, abort

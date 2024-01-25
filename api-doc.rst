@@ -89,6 +89,7 @@ Interface objects
       explanation: the constraints of different stages while processing the submission
     - key: test_cases
       type: TestCase[]
+      constraint: at least one test case must exist
       explanation: the test cases the submission shall run on (run stage)
     - key: env
       type: Env
