@@ -3,13 +3,23 @@
 cmd_opts
   - env
   - test_cases
+  - compile and run limits
 */
-
+- bool runStage(string filename, string stageName, limit stageLimits)
+    - bool compileSuccessful = true
+    - cp = create_child_process("prlimit --rss " + stageLimits.memory + " filename")
+    - cp.on_output((output) => print(json.stringify({ stage: "stageName", type: "output", value: output })))
+    - cp.on_error((error) => print(json.stringify({ stage: "stageName", type: "error", value: error })))
+    - cp.on_exit((code, signal) => {print(json.stringify({stage: "stageName", type: "exit", value: {code:code, signal:signal}}))}, compileSuccessful = !code )
+    - return compileSuccessful
 - main()
   - env = json.parse(cmd_opts("env"))
+  - compileLimits = json.parse(cmd_opts("compileLimits))
+  - runLimits = json.parse(cmd_opts("runLimits"))
   - for key in env:
     - export key = env
+  - bool compileSuccessful = true
   - if file_exists("compile.sh")
-    - cp = create_child_process("compile.sh")
-    - cp.on_output((output) => print(json.stringify({ stage: "compile", type: "output", value: output })))
-    - cp.on_error((error) => print(json.stringify({ stage: "compile", type: "error", value: error })))
+    - compileSuccessful = runStage("compile.sh", "compile", compileLimits)
+  - if compileSuccessful
+      - runStage("run.sh", "run", runLimits)
