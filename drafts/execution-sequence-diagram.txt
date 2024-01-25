@@ -19,7 +19,7 @@ deactivate RequestHandler
 Worker->SubmissionStore: pop submission id
 activate Worker
 Worker->SubmissionStore: retrieve Submission object
-loop every n milliseconds while submission status is not "ran"
+loop every n milliseconds while submission status is not "FINISHED"
   Worker-->SubmissionStore: update Submission object lease
 end
 Worker->Worker: create Dependencies object

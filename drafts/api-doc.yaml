@@ -1,0 +1,131 @@
+File:
+  - key: name
+    type: string
+  - key: content
+    type: string
+  - key: encoding
+    type: string
+    optional: true
+    one_of:
+      - utf8
+      - base64
+      - hex
+
+Limit:
+  - key: time
+    type: int
+    explanation: the maximum amount of time a stage is allowed to take
+  - key: memory
+    type: int
+    explanation: the maximum amount of memory a stage is allowed to use
+  - key: processes
+    type: int
+    explanation: the maximum number of processes that can be started within a stage
+  - key: output
+    type: int
+    explanation: the maximum number of characters in stdout a stage can produce
+  - key: error
+    type: int
+    explanation: the maximum number of characters in stderr a stage can produce
+  - key: file_size
+    type: int
+    explanation: the maximum size of a file that can be created in a stage
+
+Limits:
+  - key: dependencies
+    type: Limit
+    optional: true
+    explanation: the constraints of the dependencies installation stage
+  - key: run
+    type: Limit
+    optional: true
+    explanation: the constraints of the code running stage
+  - key: compile
+    type: Limit
+    optional: true
+    explanation: the constraints of the code compilation stage
+
+Env:
+  - key: any string
+    type: string
+
+TestCase:
+  - key: inputs
+    type: string
+    optional: true
+    explanation: the stdin to be provided in that test case
+  - key: args
+    type: string[]
+    optional: true
+    explanation: the stdargs to be provided in that test case
+
+Request:
+  - key: files
+    type: File[]
+    shall_include:
+      - |
+        A file with name "cutor.nix" which is a nix function that takes an argument called pkgs and returns
+        an array containing the packages to be installed. The nixpkgs will be injected into that argument.
+        For example:
+        { pkgs }:
+          with pkgs; [ python3 ]
+      - A file with name "cutor-run.sh" that is a shell script that has the instructions to run the code
+    might_include:
+      - A file with name cutor-compile.sh that is a shell script that has the instructions to compile the code
+      - Any other files that who names are not one of the names mentioned above
+  - key: limits
+    type: Limits
+    optional: true
+    explanation: the constraints of different stages while processing the submission
+  - key: test_cases
+    type: TestCase[]
+    explanation: the test cases the submission shall run on (run stage)
+  - key: env
+    type: Env
+    explanation: |
+      The environment variables that shall be supplied while processing the submission (compile and run stage)
+
+StageOutput:
+  - key: stdout
+    type: string
+  - key: stderr
+    type: string
+  - key: time
+    type: int
+    explanation: the time in milliseconds that stage took
+  - key: signal
+    type: string
+    explanation: the signal that caused the process to exit
+  - key: signal
+    type: string
+    explanation: the signal that caused the process to exit
+
+Response:
+  - key: status
+    type: string
+    one_of:
+      - SUBMITTED
+      - DEPENDENCIES_INSTALLED
+      - COMPILED
+      - FINISHED
+    explanation: |
+      Submitted: the submission was created
+      DEPENDENCIES_INSTALLED: the dependencies installation stage completed successfully
+      COMPILED: the compilation stage completed successfully
+      FINISHED: all the stages completed successfully, or the submission was aborted prematurely due to an error
+  - key: dependencies
+    type: StageOutput
+  - key: compile
+    type: StageOutput
+  - key: run
+    type: StageOutput
+
+Submission:
+  - key: id
+    type: string
+  - key: lease
+    type: string | null
+  - key: request
+    type: Request
+  - key: Response
+    type: Response

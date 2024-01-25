@@ -9,6 +9,10 @@ Provided are simplified sequence of steps that Envicutor takes to achieve certai
 Next to some steps are some labels in parentheses that refer to the labels in the :ref:`requirements <requirements>`
 to show how the requirements are satisfied.
 
+.. todo::
+
+  Link to the API documentation when done.
+
 Execution flow
 **************
 
@@ -94,7 +98,7 @@ Execution flow
 
 - RequestHandler
 
-  - Create Submission object (``SubmissionStatus.pending``):
+  - Create Submission object (``SubmissionStatus.Submitted``):
 
     .. code-block::
 
@@ -103,24 +107,27 @@ Execution flow
         "lease": null,
         "request": the client request mentioned above,
         "response": {
-          "status": "pending",
+          "status": "IN_QUEUE",
           "dependencies": {
             "stdout": "",
             "stderr": "",
             "time": "",
             "signal": ""
+            "code": ""
           },
           "compile": {
             "stdout": "",
             "stderr": "",
             "time": "",
             "signal": ""
+            "code": ""
           },
           "run": {
             "stdout": "",
             "stderr": "",
             "time": "",
             "signal": ""
+            "code": ""
           }
         }
       }
@@ -136,7 +143,7 @@ Execution flow
   - Keep updating the lease of the Submission object every n milliseconds with now's timestamp
     to signal that you are healthy
 
-    - If the submissions's status is "ran", stop updating the lease
+    - If the submissions's status is "FINISHED", stop updating the lease
 
   - Check which dependencies requisites are not cached
   - If there are requisites that are not cached
@@ -209,7 +216,7 @@ Execution flow
         - [if Process takes more than pre-determined memory, time, stdout, stderr] signal to parent process, abort
 
   - Listen to child process signals and update Submission object accordingly
-    (``SubmissionStatus.Compiled``, ``SubmissionStatus.Ran``)
+    (``SubmissionStatus.Compiled``, ``SubmissionStatus.FINISHED``)
   - Clean up files, stop and delete the Docker container
 
 Health checking flow
@@ -219,7 +226,7 @@ Health checking flow
 
   - Every n seconds
 
-    - For each Submission object in SubmissionStore with lease not null and status not "ran"
+    - For each Submission object in SubmissionStore with lease not null and status not "FINISHED"
 
       - If lease - now's timestamp > threshold
 
@@ -231,7 +238,7 @@ Health checking flow
 
   - Every n seconds
 
-    - For each Dependencies object in BuildStore with lease not null and status not "ran"
+    - For each Dependencies object in BuildStore with lease not null and status not "FINISHED"
 
       - If lease - now's timestamp > threshold
 

@@ -42,11 +42,11 @@ Submission status request (``SubmissionStatus``)
 
 - The client shall be able to check:
 
-  - If their submission is still in queue. (``Pending``)
+  - If their submission was submitted successfully. (``Submitted``)
   - Whether the dependencies of their submission got installed successfully (dependencies stage).
     (``DependenciesInstalled``)
   - Whether the their submission's code finished compiling (compile stage). (``Compiled``)
-  - Whether the their submission's code finished running (run stage). (``Ran``)
+  - Whether the their submission's code finished running (run stage). (``Finished``)
   - The result of their submission (each stage's stderr, stdout, signal, time, memory). (``Result``)
 
 .. _execution_limits:
@@ -54,7 +54,7 @@ Submission status request (``SubmissionStatus``)
 Execution limits (``Limits``)
 =============================
 
-- For each stage (dependencies installed, compiled, ran), the client shall be able to specify linux `prlimits <prlimits_>`_.
+- For each stage (dependencies, compile, run), the client shall be able to specify linux `prlimits <prlimits_>`_.
   (``PerRequestLimits``)
 - For the entire system there's a config file that has the maximum possible values of per request limits.
   (``GlobalLimits``)
