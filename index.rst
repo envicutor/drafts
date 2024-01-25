@@ -18,4 +18,5 @@ by allowing the users to run their code with arbitrary :term:`dependencies` (:re
    component.rst
    sequence.rst
    flow.rst
+   api-doc.rst
    glossary.rst

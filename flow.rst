@@ -9,16 +9,12 @@ Provided are simplified sequence of steps that Envicutor takes to achieve certai
 Next to some steps are some labels in parentheses that refer to the labels in the :ref:`requirements <requirements>`
 to show how the requirements are satisfied.
 
-.. todo::
-
-  Link to the API documentation when done.
-
 Execution flow
 **************
 
 - Client
 
-  - Send submission request (``SubmissionRequests.files``,
+  - Send :ref:`submission request <interface-objects>` (``SubmissionRequests.files``,
     ``SubmissionRequests.Dependencies``,
     ``SubmissionRequests.compile``,
     ``SubmissionRequests.run``,
@@ -98,7 +94,7 @@ Execution flow
 
 - RequestHandler
 
-  - Create Submission object (``SubmissionStatus.Submitted``):
+  - Create :ref:`Submission object <interface-objects>` (``SubmissionStatus.Submitted``):
 
     .. code-block::
 
@@ -133,7 +129,7 @@ Execution flow
       }
 
   - Store that Submission object in SubmissionStore
-  - Enqueue the submission id in the SubmissionStore
+  - :ref:`Enqueue the submission id <queues-channels>` in the SubmissionStore
   - Return the submission id to the client
 
 - Worker
@@ -148,7 +144,7 @@ Execution flow
   - Check which dependencies requisites are not cached
   - If there are requisites that are not cached
 
-    - Create a Dependencies object
+    - Create a :ref:`Dependencies object <interface-objects>`
 
       .. code-block::
 
@@ -159,7 +155,7 @@ Execution flow
         }
 
     - Store the Dependencies object in the BuildStore
-    - Enqueue the Dependencies object id in the BuildStore
+    - :ref:`Enqueue the Dependencies object id <queues-channels>` in the BuildStore
     - Wait for a reply in the BuildStore
 
       - If reply takes too long, go to clean up step (abort)
@@ -178,14 +174,15 @@ Execution flow
     - [if the process fails] go to last step
     - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
 
-  - Send the a message containing the stdout, stderr, time, signal, code of the installation process to the BuildStore
+  - Send the a message containing the stdout, stderr, time, signal,
+    code of the installation process to the BuildStore :ref:`as a reply to the worker <queues-channels>`
   - Delete the Dependencies object from the BuildStore (not from the cache)
 
 - Worker
 
   - If dependencies are not cached:
 
-    - Consume the message from CacheBuilder
+    - Consume the message that the CacheBuilder sent
     - [if inappropriate received signal or code] update Submission object accordingly and go to last step
 
   - Modify submission request with the new status (``SubmissionStatus.DependenciesInstalled``)
@@ -255,4 +252,4 @@ Getting the submission status flow
 
 - Request handler
 
-  - Return Submission.Response Object (SubmissionStatus.Result)
+  - Return Submission.response object (SubmissionStatus.Result)
