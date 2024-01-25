@@ -1,5 +1,0 @@
-Why are workspace containerized instead of using the normal file system?
-    - We need it to be completely isolated.
-    - Imagine, for example, the client wants to test a web application which is exposed on a certain port
-    - Though we can probably do such isolation in a lightweight manner (without Docker containers)
-        - Check Riju
