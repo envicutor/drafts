@@ -1,0 +1,12 @@
+SubmissionQueue:
+  - explanation: holds submission ids
+    type: queue
+    location: SubmissionStore
+DependenciesQueue:
+  - explanation: holds dependencies ids
+    type: queue
+    location: BuildStore
+Dependencies{id}:
+  - explanation: the CacheBuilder uses it to send the confirmation of the installation of the dependencies
+    type: pub-sub channel
+    location: BuildStore

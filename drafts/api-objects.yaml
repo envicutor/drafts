@@ -17,7 +17,7 @@ Limit:
     explanation: the maximum amount of time a stage is allowed to take
   - key: memory
     type: int
-    explanation: the maximum amount of memory a stage is allowed to use
+    explanation: the maximum amount of memory in bytes a stage is allowed to use
   - key: processes
     type: int
     explanation: the maximum number of processes that can be started within a stage
@@ -29,7 +29,7 @@ Limit:
     explanation: the maximum number of characters in stderr a stage can produce
   - key: file_size
     type: int
-    explanation: the maximum size of a file that can be created in a stage
+    explanation: the maximum size of a file in bytes that can be created in a stage
 
 Limits:
   - key: dependencies
@@ -50,7 +50,7 @@ Env:
     type: string
 
 TestCase:
-  - key: inputs
+  - key: input
     type: string
     optional: true
     explanation: the stdin to be provided in that test case
@@ -72,7 +72,7 @@ Request:
       - A file with name "cutor-run.sh" that is a shell script that has the instructions to run the code
     might_include:
       - A file with name cutor-compile.sh that is a shell script that has the instructions to compile the code
-      - Any other files that who names are not one of the names mentioned above
+      - Any other files that whose names are not one of the names mentioned above
   - key: limits
     type: Limits
     optional: true
@@ -93,9 +93,9 @@ StageOutput:
   - key: time
     type: int
     explanation: the time in milliseconds that stage took
-  - key: signal
-    type: string
-    explanation: the signal that caused the process to exit
+  - key: code
+    type: int
+    explanation: the code the process exited with
   - key: signal
     type: string
     explanation: the signal that caused the process to exit
@@ -127,5 +127,5 @@ Submission:
     type: string | null
   - key: request
     type: Request
-  - key: Response
+  - key: response
     type: Response
