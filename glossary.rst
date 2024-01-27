@@ -17,8 +17,12 @@ Glossary
     A declarative package manager that |product-name| uses to install and cache submission dependencies.
     https://nixos.org/
 
+  nsjail
+    A sandboxing software that allows for isolation from the host and other processes.
+    https://github.com/google/nsjail
+
   STDOUT
     Standard output.
-    
+
   STDERR
     Standard error.

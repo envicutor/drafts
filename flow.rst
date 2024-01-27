@@ -187,32 +187,34 @@ Execution flow
 
   - Modify submission request with the new status (``SubmissionStatus.DependenciesInstalled``)
 
-  - Create a docker container as a child process that has:
+  - Create directory with the submission id as its name with:
 
-    - ``/nix`` (mounted from the "cache" volume)
-    - ``shell.nix``, nixpkgs tarball, worker program (from the filesystem in the base image)
     - ``cutor.nix``, files, ``cutor-compile.sh``, ``cutor-run.sh`` (created from the submission request)
-    - (``Performance.Nix``, ``Isolation.Submission``, ``Security``, ``Escaping``)
+    - ``shell.nix`` (mounted from the worker)
 
-  - Run the worker program inside a nix-shell (``Isolation.Dependencies``) inside the container which:
+  - If specified in the Submission object
 
-    - Exports the environment variables
-    - [if specified in the Submission object] Runs ``compile.sh``
+    - Create :term:`nsjail` sandbox with:
 
-      - On output, error, exit: signals to parent process
-      - [if compile failed] aborts
-      - [if Process takes more than pre-determined memory, time, stdout, stderr] signals to parent process, aborts
+      - ``cutor-compile.sh`` as its command
+      - ``submission id`` directory created from the last step (mounted from the worker)
+      - ``/nix`` (mounted from the "cache" volume)
+      - The environment variables exported
+      - (``Performance.Nix``, ``Isolation.Submission``, ``Security``, ``Escaping``)
+
+  - If compile succeeds or no compile specified
+
+    - Update Submission object with status COMPILED (``SubmissionStatus.Compiled``)
 
     - For each case in ``submission.test_cases``
 
-      - Run ``run.sh`` with the case inputs and args
+      - Create :term:`nsjail` sandbox with:
 
-        - On output, error, exit: signal to parent process
-        - [if Process takes more than pre-determined memory, time, stdout, stderr] signal to parent process, abort
+        - ``cutor-run.sh`` as its command
+        - [if run failed] aborts
 
-  - Listen to child process signals and update Submission object accordingly
-    (``SubmissionStatus.Compiled``, ``SubmissionStatus.FINISHED``)
-  - Clean up files, stop and delete the Docker container
+  - Update Submission object with status FINISHED (``SubmissionStatus.FINISHED``)
+  - Clean up files
 
 Health checking flow
 ********************
