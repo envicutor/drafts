@@ -4,4 +4,5 @@ nixpkgs-bbe7d8f876fbbe7c959c90ba2ae2852220573261/
 nixpkgs/
 a.out
 isolate/
+nsjail/
 Dockerfile

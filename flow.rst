@@ -103,7 +103,7 @@ Execution flow
         "lease": null,
         "request": the client request mentioned above,
         "response": {
-          "status": "IN_QUEUE",
+          "status": "SUBMITTED",
           "dependencies": {
             "stdout": "",
             "stderr": "",
@@ -185,14 +185,14 @@ Execution flow
     - Consume the message that the CacheBuilder sent
     - [if inappropriate received signal or code] update Submission object accordingly and go to last step
 
-  - Modify submission request with the new status (``SubmissionStatus.DependenciesInstalled``)
+  - Modify submission request status to ``DEPENDENCIES_INSTALLED`` (``SubmissionStatus.DependenciesInstalled``)
 
   - Create directory with the submission id as its name with:
 
     - ``cutor.nix``, files, ``cutor-compile.sh``, ``cutor-run.sh`` (created from the submission request)
     - ``shell.nix`` (mounted from the worker)
 
-  - If specified in the Submission object
+  - If compilation is specified in the Submission object
 
     - Create :term:`nsjail` sandbox with:
 
@@ -202,9 +202,9 @@ Execution flow
       - The environment variables exported
       - (``Performance.Nix``, ``Isolation.Submission``, ``Security``, ``Escaping``)
 
-  - If compile succeeds or no compile specified
+  - If compile is successful or no compile is specified:
 
-    - Update Submission object with status COMPILED (``SubmissionStatus.Compiled``)
+    - Update Submission object with status ``COMPILED`` (``SubmissionStatus.Compiled``)
 
     - For each case in ``submission.test_cases``
 
@@ -213,7 +213,7 @@ Execution flow
         - ``cutor-run.sh`` as its command
         - [if run failed] aborts
 
-  - Update Submission object with status FINISHED (``SubmissionStatus.FINISHED``)
+  - Update Submission object with status ``FINISHED`` (``SubmissionStatus.FINISHED``)
   - Clean up files
 
 Health checking flow
