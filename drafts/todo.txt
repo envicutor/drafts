@@ -1,5 +1,12 @@
 - Read documents as a new person
 - Find a better name for CacheBuilder?
 - Dependencies stage seem to do some common things as the run stage and the compile stage (stdout, stderr, signal, time)
-- Isolation
-  - nsjail
+- Flow that describes what happens once a worker is started (cleaning up stuck files, warming up the cache)
+- Worker program vs running nsjail and nix-shell each time
+  - Worker program
+    - + No nix-shell overhead (can be high)
+    - - Needs messaging between the worker program and the worker
+- How to ensure all CacheBuilder instances and worker instances see the same packages?
+  - How do they "see"?
+    - Nix channels?
+      - Solution: let the user specify the shell.nix
