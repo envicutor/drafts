@@ -6,7 +6,7 @@
   - Worker program
     - + No nix-shell overhead (can be high)
     - - Needs messaging between the worker program and the worker
-- How to ensure all CacheBuilder instances and worker instances see the same packages?
-  - How do they "see"?
-    - Nix channels?
-      - Solution: let the user specify the shell.nix
+- Nix channels
+  - Are they cached in the /nix/store?
+- nix-shell --dry-run can take a long time
+  - Send the nix-shell file to the builder?
