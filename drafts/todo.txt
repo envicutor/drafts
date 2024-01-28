@@ -1,12 +1,25 @@
 - Read documents as a new person
 - Find a better name for CacheBuilder?
 - Dependencies stage seem to do some common things as the run stage and the compile stage (stdout, stderr, signal, time)
+- Get rid of env in Submission object
+- nsjail command
+  - nsjail --really_quiet -m none:/tmp:tmpfs -R "/dev/null" -R "/dev/urandom" -B /app:/app --cwd /app -R /usr/bin -R /nix -e --chroot / --user=99999 --group=99999 -- /nix/store/fviln222hm2x4mwxmgc0jh4sb1wknd5z-nix-2.19.3/bin/nix-shell --run "python3 test.py"
+  - No chroot
+  - No -e
+  - Can the user edit the nix store if it is mounted rw? Yes
+- Give the shell.nix to the builder
+- Let user provide shell.nix
+- Use a runner program inside the worker
+- Mount /root
 - Flow that describes what happens once a worker is started (cleaning up stuck files, warming up the cache)
-- Worker program vs running nsjail and nix-shell each time
-  - Worker program
-    - + No nix-shell overhead (can be high)
-    - - Needs messaging between the worker program and the worker
-- Nix channels
-  - Are they cached in the /nix/store?
-- nix-shell --dry-run can take a long time
-  - Send the nix-shell file to the builder?
+
+- Problem nix-store can't be mounted read only
+  - Use nix commands through a daemon that has access to the read-write nix-store on the host, mount the daemon socket
+    to nsjail. This daemon only allows safe nix store actions
+  - opt2: compile_script, run_script shall reference absolute paths inside the nix store. Don't use nix-shell
+
+To nix-shell or not to nix-shell
+  - nix-shell
+    - Takes some time to start up
+  - No nix-shell
+    - User has to configure the compile and run scripts env vars

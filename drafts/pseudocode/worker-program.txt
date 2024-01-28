@@ -1,4 +1,4 @@
-# nix-shell --command worker_program
+# nix-shell --run worker_program
 /*
 cmd_opts
   - env
