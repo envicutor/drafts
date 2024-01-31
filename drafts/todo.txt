@@ -2,16 +2,12 @@
 - Find a better name for CacheBuilder?
 - Dependencies stage seem to do some common things as the run stage and the compile stage (stdout, stderr, signal, time)
 - Get rid of env in Submission object
-- nsjail command
-  - nsjail --really_quiet -m none:/tmp:tmpfs -R "/dev/null" -R "/dev/urandom" -B /app:/app --cwd /app -R /usr/bin -R /nix -e --chroot / --user=99999 --group=99999 -- /nix/store/fviln222hm2x4mwxmgc0jh4sb1wknd5z-nix-2.19.3/bin/nix-shell --run "python3 test.py"
-  - No chroot
-  - No -e
-  - Can the user edit the nix store if it is mounted rw? Yes
 - Give the shell.nix to the builder
 - Let user provide shell.nix
 - Use a runner program inside the worker
 - Mount /root
 - Flow that describes what happens once a worker is started (cleaning up stuck files, warming up the cache)
+- Submission on disk, lease in memory
 
 - Problem nix-store can't be mounted read only
   - Use nix commands through a daemon that has access to the read-write nix-store on the host, mount the daemon socket
@@ -23,3 +19,35 @@ To nix-shell or not to nix-shell
     - Takes some time to start up
   - No nix-shell
     - User has to configure the compile and run scripts env vars
+
+- What is the problem?
+  - I want to build nix shell
+    - No builders shall modify the nix store
+      - Multi-user nix
+    - Builders on different machines shall have access to the same store
+      - Central builder?
+        - Load?
+        - Probably last resort
+      - Local store, consolidate every once in a while?
+        - How?
+      - Local store, consolidated response on request
+        - How?
+        - Builder
+          - Receives shell.nix
+          - For every dependency in shell.nix
+            - Send a broadcast message to all builders: "do you have this dependency?"
+          - If all builders say "no"
+            - Make a build request for this dependency
+      - Shared store
+        - Performance?
+        - Conflicts?
+        - Multi-user nix?
+        - "With a Nix store residing on an NFS filesystem, concurrent use of Nix may corrupt Nix's sqlite database.
+          To prevent this, set use-sqlite-wal = false. Since nix/pull/5475 nix/pull/5475 and it's backports to the
+          stable branches, a patch that was previously described in this wiki is no longer needed for using Nix on WSL
+          (Windows' Subsystem for Linux) and NFS filesystems."
+  - I want to run nix shell
+    - Workers shall have access to the same nix store?
+      - Sharing with builders?
+      - Copying from builders?
+  - I want a default nix channel
