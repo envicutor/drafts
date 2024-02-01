@@ -7,8 +7,32 @@
 - Submission on disk, lease in memory
 - SubmissionsStore -> Database, InMemoryStore
 
-- CacheBuilders uses nix-serve to serve its nix-store
-  - Workers have the CacheBuilders as substituters.
+- Provide a way to make dependencies ephermal
+  - Process each submission in a Docker container?
+- If I were to use nix-shell, how do I:
+  - Ensure that scripts inside the nix-shell don't affect the system
+    - Process submissions inside a docker container
+  - Measure and constrain the dependencies installation resources
+    - Measure and constrain resources of nix-build in the worker and the CacheBuilder
+    - Don't measure and constrain the resources of starting up nix-shell (already guaranteed that they are below limits
+      since they passed nix build)
+      - What about infinite loops in shellHook?
+      - What about large memory allocation in shellHook?
+      - We need to constrain nix-shell
+    - Measure and constrain nix-shell + compile
+    - Measure and constrain nix-shell + run
+- How do I know which stage the docker process is in?
+  - Worker program on the Docker container that writes to information about the stage
 
-- To nix-shell or not to nix-shell
-  - nix-build?
+- Inside CacheBuilder
+  - Run nsjail nix-build shell.nix
+    - Stuff here must be secure
+    - We need to run nix daemon and the process inside nsjail must connect to nix-daemon
+      - nsjail must be started with a unique user that is not root
+- Worker program inside Docker container
+  - Run nsjail nix-build shell.nix
+  - Output info about dependencies installation
+  - Run nsjail nix-shell --command compile.sh
+  - Output info about run stage
+  - Run nsjail nix-shell --command compile.sh
+  - Output info about compile stage

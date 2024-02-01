@@ -48,6 +48,7 @@ in pkgs.mkShell {
     # ruby
     rustc
     lua
+    dotnet-sdk
     # cln-m1
     # cln-m2
     # cln-m3
