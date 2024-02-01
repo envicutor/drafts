@@ -1,0 +1,14 @@
+- nix-shell --run worker_program
+  - How to timeout nix-shell?
+  - Worker program shall say: I'M READY
+    - Parent process will then stop the timeout timer
+    - What about memory limits?
+
+- Opt 1: running nix-shell without running nix-shell
+- Opt 2: not running nix-shell, having compile_script, run_script
+- Root of the problem: we are not sure what nix-shell is going to do (it might exceed the limits)
+
+- Dependencies installation stage
+  - nsjail nix-shell
+- After dependencies installation stage (compile, run)
+  - nix-shell, without nsjail, worker program which uses nsjail

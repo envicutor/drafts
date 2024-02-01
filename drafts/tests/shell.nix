@@ -47,6 +47,7 @@ in pkgs.mkShell {
     # ghc
     # ruby
     rustc
+    lua
     # cln-m1
     # cln-m2
     # cln-m3
