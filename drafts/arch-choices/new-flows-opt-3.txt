@@ -1,0 +1,12 @@
+- Inside CacheBuilder
+  - Run nsjail nix-build shell.nix
+    - Stuff here must be secure
+    - We need to run nix daemon and the process inside nsjail must connect to nix-daemon
+      - nsjail must be started with a unique user that is not root
+- Worker program inside Docker container
+  - Run nsjail nix-build shell.nix
+  - Output info about dependencies installation
+  - Run nsjail nix-shell --command compile.sh
+  - Output info about run stage
+  - Run nsjail nix-shell --command compile.sh
+  - Output info about compile stage

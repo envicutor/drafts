@@ -1,0 +1,16 @@
+- Provide a way to make dependencies ephermal
+  - Process each submission in a Docker container?
+- If I were to use nix-shell, how do I:
+  - Ensure that scripts inside the nix-shell don't affect the system
+    - Process submissions inside a docker container
+  - Measure and constrain the dependencies installation resources
+    - Measure and constrain resources of nix-build in the worker and the CacheBuilder
+    - Don't measure and constrain the resources of starting up nix-shell (already guaranteed that they are below limits
+      since they passed nix build)
+      - What about infinite loops in shellHook?
+      - What about large memory allocation in shellHook?
+      - We need to constrain nix-shell
+    - Measure and constrain nix-shell + compile
+    - Measure and constrain nix-shell + run
+- How do I know which stage the docker process is in?
+  - Worker program on the Docker container that writes to information about the stage
