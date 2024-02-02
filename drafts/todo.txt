@@ -1,5 +1,5 @@
 - Read documents as a new person
-- Add sandkasten to inspiration
+- Add Sandkasten to inspiration
 - Dependencies stage seem to do some common things as the run stage and the compile stage (stdout, stderr, signal, time)
 - Get rid of env in Submission object
 - Add cache boolean in submission request
@@ -7,6 +7,7 @@
 - Flow that describes what happens once a worker is started (cleaning up stuck files)
 - Submission on disk, lease in memory
 - SubmissionsStore -> Database, InMemoryStore
+- Use a proper component diagram generator?
 
 - Are we ready to start modifying the documents?
   - No obvious security exploits
@@ -17,22 +18,32 @@
   - Cache nix shell builds
     - Make use of nix substituters and nix-serve
   - Time to install dependencies shall be constrainable
-    - nix-build shell.nix shall run inside nsjail in the builder
-      - nsjail command content?
-    - nix-build shell.nix shall run inside nsjail in the worker
-      - nsjail command content?
   - nix shell builds shall not affect the cache system
     - Run nix-daemon on cache builder
     - Use other users to run the nix-build
-      - Channels?
-        - Find a way to have shared channels
+      - fetchTarball downloads to the user directory
+        - I don't want ~/.cache to be shared with other users
+          - Have a separate Docker container for the build process as well?
+      - Any problem with channels?
+        - What happens when I write import <nixpkgs>
+          - NIX_PATH is looked up (channels are indirectly used)
+        - No problem since the one running the daemon is the one providing the NIX_PATH
+  - nix-build shell.nix shall run inside nsjail in the builder
+    - Need to limit time
+    - Need to limit memory
+    - Need to connect to nix-daemon socket
+    - Need to be able to use the shared channel (if possible) or download my own channel
+    - Experiment
   - Workers shall access the nix-shell-builds cache
     - nix-build with substituters from env vars (the CacheBuilders as substituters)
   - Executing on workers shall not affect the system
     - Start a Docker container for each submission
     - nsjail nix-build
+      - Content?
     - nsjail nix-shell compile.sh
+      - Content?
     - nsjail nix-shell run.sh
+      - Content?
   - Update submission object in different stages
     - Container init that takes outputs of nix-build, nix-shell compile.sh, nix-shell run.sh and massages them in its
       own output
@@ -41,13 +52,24 @@
     - Worker shall monitor the stdout of the docker container (which will be the stdout of the container init)
       - How to know if the container init fails? Is it useful to know?
         - Exit code of the docker container is the same exit code of the container init so I can easily determine?
+          - Experiment
       - Parse the message and update the submission object accordingly
   - Ability to not cache
     - boolean cache option. On false, don't enqueue dependencies object
 
 - Questions
-  - Dockerfile of builder image?
+  - Dockerfile and volumes of
+    - CacheBuilder container?
+    - Builder runner container?
+    - Worker container?
+    - Worker runner container?
+  - Dockerfile and volumes of
+  - Dockerfile and volumes of runner image?
+  - Dockerfile and volumes of
   - Need for BuilderHealthChecker?
     - Failure to cache will just cause a cache miss
     - Maybe ditch CacheBuilderHealthChecker, BuildStore
       - Store dependencies object in the queue
+  - What if executor goes down while a submission Docker container started by it is running?
+    - It will exit and/or constraints will get handled by the container init
+    - WorkerHealthChecker will handle the rescheduling of the submission
