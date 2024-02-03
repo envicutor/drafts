@@ -20,7 +20,8 @@
   - Time to install dependencies shall be constrainable
   - nix shell builds shall not affect the cache system
     - Run nix-daemon on cache builder
-    - Use other users to run the nix-build
+    - Use other users on a child Docker container to run the nix-build
+      - Child Docker container content?
       - fetchTarball downloads to the user directory
         - I don't want ~/.cache to be shared with other users
           - Have a separate Docker container for the build process as well?
@@ -32,18 +33,37 @@
     - Need to limit time
     - Need to limit memory
     - Need to connect to nix-daemon socket
-    - Need to be able to use the shared channel (if possible) or download my own channel
+      - Do I need a nix-daemon socket?
+        - Yes, to write on the nix store on CacheBuilder (we are a user on the system)
+          - If CacheBuilder is a Docker container, we won't be able to mount the nix-daemon socket
+            - Use modern solutions for Docker in Docker
+              - sysbox
+    - Have RW access to ~/.cache (we are in a separate container anyway)
     - Experiment
-  - Workers shall access the nix-shell-builds cache
+  - Workers shall access the CacheBuilder cache
     - nix-build with substituters from env vars (the CacheBuilders as substituters)
   - Executing on workers shall not affect the system
     - Start a Docker container for each submission
-    - nsjail nix-build
       - Content?
-    - nsjail nix-shell compile.sh
-      - Content?
-    - nsjail nix-shell run.sh
-      - Content?
+    - Container init
+      - nsjail nix-build
+        - Content?
+          - Need to limit time
+          - Need to limit memory
+          - Need to get the caches from the CacheBuilder
+          - Need to connect to nix-daemon socket?
+            - Do we need a nix-daemon socket?
+              - No, we are a user with an isolated workflow
+          - Have RW access to ~ (we are in a separate container anyway)
+          - Consider mounting / RW?
+            - Security vulnerabilities can make users gain access to the worker
+      - nsjail nix-shell compile.sh
+        - Content?
+          - Same as above
+      - nsjail nix-shell run.sh
+        - Content?
+          - Need to have access to the files created from compile
+          - Same as above
   - Update submission object in different stages
     - Container init that takes outputs of nix-build, nix-shell compile.sh, nix-shell run.sh and massages them in its
       own output
