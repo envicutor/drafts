@@ -8,88 +8,44 @@
 - Submission on disk, lease in memory
 - SubmissionsStore -> Database, InMemoryStore
 - Use a proper component diagram generator?
+- Do new architecture
+  - Remove CacheBuilderHealthChecker
+  - Store shell.nix directly in the queue
+  - Ability to not cache
 
 - Are we ready to start modifying the documents?
   - No obvious security exploits
   - No obvious flow gaps
   - No infeasible to implement flow steps
 
-- What do I want?
-  - Cache nix shell builds
-    - Make use of nix substituters and nix-serve
-  - Time to install dependencies shall be constrainable
-  - nix shell builds shall not affect the cache system
-    - Run nix-daemon on cache builder
-    - Use other users on a child Docker container to run the nix-build
-      - Child Docker container content?
-      - fetchTarball downloads to the user directory
-        - I don't want ~/.cache to be shared with other users
-          - Have a separate Docker container for the build process as well?
-      - Any problem with channels?
-        - What happens when I write import <nixpkgs>
-          - NIX_PATH is looked up (channels are indirectly used)
-        - No problem since the one running the daemon is the one providing the NIX_PATH
-  - nix-build shell.nix shall run inside nsjail in the builder
-    - Need to limit time
-    - Need to limit memory
-    - Need to connect to nix-daemon socket
-      - Do I need a nix-daemon socket?
-        - Yes, to write on the nix store on CacheBuilder (we are a user on the system)
-          - If CacheBuilder is a Docker container, we won't be able to mount the nix-daemon socket
-            - Use modern solutions for Docker in Docker
-              - sysbox
-    - Have RW access to ~/.cache (we are in a separate container anyway)
-    - Experiment
-  - Workers shall access the CacheBuilder cache
-    - nix-build with substituters from env vars (the CacheBuilders as substituters)
-  - Executing on workers shall not affect the system
-    - Start a Docker container for each submission
-      - Content?
-    - Container init
-      - nsjail nix-build
-        - Content?
-          - Need to limit time
-          - Need to limit memory
-          - Need to get the caches from the CacheBuilder
-          - Need to connect to nix-daemon socket?
-            - Do we need a nix-daemon socket?
-              - No, we are a user with an isolated workflow
-          - Have RW access to ~ (we are in a separate container anyway)
-          - Consider mounting / RW?
-            - Security vulnerabilities can make users gain access to the worker
-      - nsjail nix-shell compile.sh
-        - Content?
-          - Same as above
-      - nsjail nix-shell run.sh
-        - Content?
-          - Need to have access to the files created from compile
-          - Same as above
-  - Update submission object in different stages
-    - Container init that takes outputs of nix-build, nix-shell compile.sh, nix-shell run.sh and massages them in its
-      own output
-      - Any way to avoid nix-shell two times?
-    - Docker container will have the container init as its init process
-    - Worker shall monitor the stdout of the docker container (which will be the stdout of the container init)
-      - How to know if the container init fails? Is it useful to know?
-        - Exit code of the docker container is the same exit code of the container init so I can easily determine?
-          - Experiment
-      - Parse the message and update the submission object accordingly
-  - Ability to not cache
-    - boolean cache option. On false, don't enqueue dependencies object
+- CacheBuilder
+  - Create a directory with shell.nix
+  - Create a child Docker container with nsjail nix-build as its init program
+    - nsjail
+      - Need to limit time
+      - Need to limit memory
+      - Need to connect to nix-daemon socket (multi-user system)
+      - Have RW access to ~ (we are in a separate container anyway)
+- Worker
+  - Does not need to be nix-based
+  - Create a directory with shell.nix, cutor-compile.sh, cutor-run.sh (submission directory)
+  - Create a child Docker container with worker init program as its init program
+    - nsjail nix-build shell.nix
+      - Need to limit time
+      - Need to limit memory
+      - Need the submission directory mounted
+      - Need to get the caches from the CacheBuilder
+      - Need to connect to nix-daemon to get the consistent configuration from the child container
+      - Have RW access to ~ (we are in a separate container anyway)
+    - nsjail nix-shell cutor-compile.sh
+      - Same as above
+    - nsjail nix-shell cutor-run.sh
+        - Same as above
+    - Clean up submission directory
 
 - Questions
-  - Dockerfile and volumes of
+  - Requirements of
     - CacheBuilder container?
-    - Builder runner container?
-    - Worker container?
-    - Worker runner container?
-  - Dockerfile and volumes of
-  - Dockerfile and volumes of runner image?
-  - Dockerfile and volumes of
-  - Need for BuilderHealthChecker?
-    - Failure to cache will just cause a cache miss
-    - Maybe ditch CacheBuilderHealthChecker, BuildStore
-      - Store dependencies object in the queue
-  - What if executor goes down while a submission Docker container started by it is running?
-    - It will exit and/or constraints will get handled by the container init
-    - WorkerHealthChecker will handle the rescheduling of the submission
+    - CacheBuilder child container?
+    - Worker child container?
+    - Worker child container?
