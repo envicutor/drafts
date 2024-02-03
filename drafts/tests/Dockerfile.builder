@@ -17,4 +17,4 @@ RUN dockerd & cd /runner && ls && \
   rm -rf -- /runner
 
 # TODO: change /bin/bash to the builder program
-CMD "/root/.nix-profile/bin/nix-daemon & /bin/sleep 0.5 && /bin/ps | /bin/grep -q nix-daemon && /bin/bash || exit 1"
+CMD ["bash", "-c", "/root/.nix-profile/bin/nix-daemon & /bin/sleep 0.5 && /bin/ps | /bin/grep -q nix-daemon && exec /bin/bash || exit 1"]
