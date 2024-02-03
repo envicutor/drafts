@@ -1,23 +1,3 @@
-- Read documents as a new person
-- Add Sandkasten to inspiration
-- Dependencies stage seem to do some common things as the run stage and the compile stage (stdout, stderr, signal, time)
-- Get rid of env in Submission object
-- Add cache boolean in submission request
-- Let user provide shell.nix
-- Flow that describes what happens once a worker is started (cleaning up stuck files)
-- Submission on disk, lease in memory
-- SubmissionsStore -> Database, InMemoryStore
-- Use a proper component diagram generator?
-- Do new architecture
-  - Remove CacheBuilderHealthChecker
-  - Store shell.nix directly in the queue
-  - Ability to not cache
-
-- Are we ready to start modifying the documents?
-  - No obvious security exploits
-  - No obvious flow gaps
-  - No infeasible to implement flow steps
-
 - CacheBuilder
   - Create a directory with shell.nix
   - Create a child Docker container with nsjail nix-build as its init program
@@ -42,3 +22,21 @@
     - nsjail nix-shell cutor-run.sh
         - Same as above
     - Clean up submission directory
+
+
+- CacheBuilder container
+  - Needs to be able to start Docker
+  - Needs to have nix to be able to start nix-daemon
+  - Needs to have a persistent nix directory
+- CacheBuilder child container
+  - Needs to have nix-daemon socket mounted to pass it to nsjail
+  - Needs to have nsjail
+  - Needs to have nix (as a client to nix-daemon)
+  - Read-only /nix from CacheBuilder to pass it to nsjail
+- Worker container
+  - Needs to be able to start Docker
+- Worker child container
+  - Nix commands need to be configured to use cache substituter
+  - Needs to have nix to be able to start nix-daemon and pass the socket to nsjail
+  - Needs to have worker-init baked in
+  - Needs R/W access to the submission directory to pass it R/W to nsjail
