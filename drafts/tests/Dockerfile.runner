@@ -1,3 +1,4 @@
+# Consider making it the same as the one in nestybox/ubuntu-jammy-docker
 FROM ubuntu:jammy
 
 # apt update, apt upgrade, install pacakges required for nix and nsjail
@@ -32,4 +33,4 @@ RUN for i in $(seq 1001 1500); do \
       useradd -M runner$i -g $i -u $i ; \
     done
 
-ENTRYPOINT ["/bin/bash"]
+CMD ["sleep", "0"]
