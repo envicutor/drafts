@@ -23,18 +23,18 @@
         - Same as above
     - Clean up submission directory
 
-
 - CacheBuilder container
-  - Needs to be able to start Docker
+  - Needs to be able to start Docker and have the child container image
   - Needs to have nix to be able to start nix-daemon
   - Needs to have a persistent nix directory
 - CacheBuilder child container
-  - Needs to have nix-daemon socket mounted to pass it to nsjail
-  - Needs to have nsjail
   - Needs to have nix (as a client to nix-daemon)
+  - Needs to have nsjail
+  - Needs to have multiple users
+  - Needs to have nix-daemon socket mounted to pass it to nsjail
   - Read-only /nix from CacheBuilder to pass it to nsjail
 - Worker container
-  - Needs to be able to start Docker
+  - Needs to be able to start Docker and have the child container image
 - Worker child container
   - Nix commands need to be configured to use cache substituter
   - Needs to have nix to be able to start nix-daemon and pass the socket to nsjail

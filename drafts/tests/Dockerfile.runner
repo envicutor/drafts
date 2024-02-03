@@ -1,0 +1,35 @@
+FROM ubuntu:jammy
+
+# apt update, apt upgrade, install pacakges required for nix and nsjail
+RUN apt update && apt upgrade -y && apt-get install -y \
+  xz-utils \
+  autoconf \
+  bison \
+  flex \
+  gcc \
+  g++ \
+  git \
+  libprotobuf-dev \
+  libnl-route-3-dev \
+  libtool \
+  make \
+  pkg-config \
+  protobuf-compiler \
+  curl \
+  && rm -rf /var/lib/apt/lists/*
+
+# install nix
+RUN /bin/bash -c "sh <(curl -L https://nixos.org/nix/install) --daemon --yes" || exit 1
+ENV NIX_REMOTE=daemon
+
+# install nsjail
+COPY nsjail/ /nsjail
+RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
+
+# create 500 users (script taken from Piston)
+RUN for i in $(seq 1001 1500); do \
+      groupadd -g $i runner$i && \
+      useradd -M runner$i -g $i -u $i ; \
+    done
+
+ENTRYPOINT ["/bin/bash"]

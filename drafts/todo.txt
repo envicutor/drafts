@@ -12,3 +12,5 @@
   - Store shell.nix directly in the queue
   - Ability to not cache
 
+- Questions
+  - Caching images inside sysbox
