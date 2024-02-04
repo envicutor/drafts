@@ -12,8 +12,6 @@
   - Store shell.nix directly in the queue
   - Ability to not cache
 
-- Can I make images more lightweight?
-- Test installing dependencies inside of CacheBuilder prototype
 - Create worker child image prototype
 - Create worker image prototype
 - Test executing code
