@@ -12,5 +12,8 @@
   - Store shell.nix directly in the queue
   - Ability to not cache
 
-- Questions
-  - Caching images inside sysbox
+- Can I make images more lightweight?
+- Test installing dependencies inside of CacheBuilder prototype
+- Create worker child image prototype
+- Create worker image prototype
+- Test executing code

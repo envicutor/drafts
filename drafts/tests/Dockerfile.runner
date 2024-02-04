@@ -1,23 +1,24 @@
 # Consider making it the same as the one in nestybox/ubuntu-jammy-docker
-FROM ubuntu:jammy
+FROM alpine:3.19.1
 
-# apt update, apt upgrade, install pacakges required for nix and nsjail
-RUN apt update && apt upgrade -y && apt-get install -y \
-  xz-utils \
+RUN apk update && apk add \
+  xz \
   autoconf \
   bison \
   flex \
+  curl \
+  gcc \
+  build-base \
   gcc \
   g++ \
-  git \
-  libprotobuf-dev \
-  libnl-route-3-dev \
+  protobuf-dev \
+  libprotobug \
+  libnl3 \
   libtool \
   make \
   pkg-config \
-  protobuf-compiler \
-  curl \
-  && rm -rf /var/lib/apt/lists/*
+  pkgconf \
+  protoc
 
 # install nix
 RUN /bin/bash -c "sh <(curl -L https://nixos.org/nix/install) --daemon --yes" || exit 1
@@ -29,8 +30,8 @@ RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
 
 # create 500 users (script taken from Piston)
 RUN for i in $(seq 1001 1500); do \
-      groupadd -g $i runner$i && \
-      useradd -M runner$i -g $i -u $i ; \
+      addgroup -g $i runner$i && \
+      adduser -H -G $i -u $i runner$i; \
     done
 
 CMD ["sleep", "0"]
