@@ -6,11 +6,18 @@
 - Flow that describes what happens once a worker is started (cleaning up stuck files)
 - Submission on disk, lease in memory
 - SubmissionsStore -> Database, InMemoryStore
+- CacheBuilder -> CacheServer
 - Use a proper component diagram generator?
 - Do new architecture
   - Remove CacheBuilderHealthChecker
-  - Store shell.nix directly in the queue
+  - Send shell.nix directly to the CacheServer?
+    - From RequestHandler?
+      - This removes some responsibilities from the Worker
+    - From Worker?
+      - This gives me a chance to send shell.nix conditionally if dependencies installation succeeded
+  - Consider separating CacheServer container
   - Ability to not cache
+
 
 - Create worker child image prototype
 - Create worker image prototype

@@ -39,4 +39,5 @@
   - Nix commands need to be configured to use cache substituter
   - Needs to have nix to be able to start nix-daemon and pass the socket to nsjail
   - Needs to have worker-init baked in
+  - Needs to have nsjail
   - Needs R/W access to the submission directory to pass it R/W to nsjail
