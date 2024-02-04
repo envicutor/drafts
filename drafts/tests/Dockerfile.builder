@@ -1,6 +1,5 @@
 FROM alpine:3.19.1
 
-# apt update, apt upgrade, install required packages for installing nix
 RUN apk update && apk add xz curl bash shadow docker
 
 # install nix
@@ -16,4 +15,4 @@ RUN dockerd & cd /runner && \
   rm -rf -- /runner
 
 # TODO: change /bin/bash to the builder program
-CMD ["bash", "-c", "/root/.nix-profile/bin/nix-daemon & dockerd & /bin/sleep 0.5 && /bin/ps | /bin/grep -q nix-daemon && /bin/ps | /bin/grep -q dockerd && exec /bin/bash || exit 1"]
+CMD ["bash", "-c", "/root/.nix-profile/bin/nix-daemon & dockerd & /bin/sleep 2 && /bin/ps | /bin/grep -q nix-daemon && /bin/ps | /bin/grep -q dockerd && exec /bin/bash || exit 1"]

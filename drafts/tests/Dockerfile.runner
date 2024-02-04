@@ -7,7 +7,6 @@ RUN apk update && apk add xz curl bash shadow && apk add --repository=http://dl-
 RUN /bin/bash -c "sh <(curl -L https://nixos.org/nix/install) --daemon --yes" || exit 1
 ENV NIX_REMOTE=daemon
 
-
 # create 500 users (script taken from Piston)
 RUN for i in $(seq 1001 1500); do \
       groupadd -g $i runner$i && \
