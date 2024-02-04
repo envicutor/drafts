@@ -1,37 +1,17 @@
 # Consider making it the same as the one in nestybox/ubuntu-jammy-docker
 FROM alpine:3.19.1
 
-RUN apk update && apk add \
-  xz \
-  autoconf \
-  bison \
-  flex \
-  curl \
-  gcc \
-  build-base \
-  gcc \
-  g++ \
-  protobuf-dev \
-  libprotobug \
-  libnl3 \
-  libtool \
-  make \
-  pkg-config \
-  pkgconf \
-  protoc
+RUN apk update && apk add xz curl bash shadow && apk add --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ nsjail
 
 # install nix
 RUN /bin/bash -c "sh <(curl -L https://nixos.org/nix/install) --daemon --yes" || exit 1
 ENV NIX_REMOTE=daemon
 
-# install nsjail
-COPY nsjail/ /nsjail
-RUN cd /nsjail && make && mv /nsjail/nsjail /bin && rm -rf -- /nsjail
 
 # create 500 users (script taken from Piston)
 RUN for i in $(seq 1001 1500); do \
-      addgroup -g $i runner$i && \
-      adduser -H -G $i -u $i runner$i; \
+      groupadd -g $i runner$i && \
+      useradd -M runner$i -g $i -u $i ; \
     done
 
 CMD ["sleep", "0"]

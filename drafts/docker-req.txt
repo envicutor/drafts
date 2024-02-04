@@ -1,6 +1,6 @@
 - CacheBuilder
   - Create a directory with shell.nix
-  - Create a child Docker container with nsjail nix-build as its init program
+  - Create a child Docker container with nsjail nix-build as its command
     - nsjail
       - Need to limit time
       - Need to limit memory
