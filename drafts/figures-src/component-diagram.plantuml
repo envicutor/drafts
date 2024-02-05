@@ -1,0 +1,46 @@
+@startuml component diagram
+
+top to bottom direction
+
+interface "put" as cacheServerPR
+interface "get" as cacheServerGR
+
+interface "add" as databaseSubmissionAdd
+interface "read" as databaseSubmissionRead
+interface "update" as databaseSubmissionUpdate
+
+interface "enqueue" as inmemoryStoreSubmissionEnqueue
+interface "dequeue" as inmemoryStoreSubmissionDequeue
+interface "update" as inmemoryStoreSubmissionUpdate
+
+[NixStore] -up- mount
+
+[Worker] "*" ..> "*" cacheServerPR
+[Worker] "*" ..> "*" cacheServerGR
+[Worker] "*" ..> "1" inmemoryStoreSubmissionDequeue
+[Worker] "*" ..> "1" inmemoryStoreSubmissionUpdate
+[Worker] "*" ..> "1" databaseSubmissionRead
+[Worker] "*" ..> "1" databaseSubmissionUpdate
+
+[WorkerHealthChecker] "*" ..> "1" inmemoryStoreSubmissionEnqueue
+[WorkerHealthChecker] "*" ..> "1" inmemoryStoreSubmissionUpdate
+
+[RequestHandler] "1" ..> "1" inmemoryStoreSubmissionEnqueue
+[RequestHandler] "1" ..> "1" databaseSubmissionAdd
+[RequestHandler] "1" ..> "1" databaseSubmissionRead
+
+[Database] -up- databaseSubmissionAdd
+[Database] -up- databaseSubmissionUpdate
+[Database] -up- databaseSubmissionRead
+
+[InMemoryStore] -up- inmemoryStoreSubmissionDequeue
+[InMemoryStore] -up- inmemoryStoreSubmissionEnqueue
+[InMemoryStore] -up- inmemoryStoreSubmissionUpdate
+
+
+
+[CacheServer] "1" .down.> "1" mount
+[CacheServer] -up- cacheServerPR
+[CacheServer] -up- cacheServerGR
+
+@enduml
