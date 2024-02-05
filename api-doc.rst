@@ -91,10 +91,6 @@ Interface objects
       type: TestCase[]
       constraint: at least one test case must exist
       explanation: the test cases the submission shall run on (run stage)
-    - key: env
-      type: Env
-      explanation: |
-        The environment variables that shall be supplied while processing the submission (compile and run stage)
 
   StageOutput:
     - key: stdout

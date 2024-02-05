@@ -23,8 +23,7 @@ Execution flow
     ``Configurability.limits``,
     ``SubmissionRequests.Run.Multiple``,
     ``SubmissionRequests.STDIN``,
-    ``SubmissionRequests.ARGS``,
-    ``SubmissionRequests.Environment``):
+    ``SubmissionRequests.ARGS``):
 
     .. code-block::
 
@@ -85,11 +84,6 @@ Execution flow
           },
           ...
         ]
-        "env": {
-          "key1": "value1",
-          "key2": "value2",
-          "key3": "value3"
-        }
       }
 
 - RequestHandler
@@ -169,7 +163,7 @@ Execution flow
 
     - If the Dependencies object does not exist anymore, stop updating the lease
 
-  - Install the dependencies (with the Cache volume mounted) (``SubmissionRequests.Cache``, ``Performance.Cache``):
+  - Install the dependencies (with the Cache volume mounted) (``Performance.Cache``):
 
     - [if the process fails] go to last step
     - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
@@ -200,7 +194,7 @@ Execution flow
       - ``submission id`` directory created from the last step (mounted from the worker)
       - ``/nix`` (mounted from the "cache" volume)
       - The environment variables exported
-      - (``Performance.Nix``, ``Isolation.Submission``, ``Security``, ``Escaping``)
+      - (``Isolation.Submission``, ``Security``, ``Escaping``)
 
   - If compile is successful or no compile is specified:
 

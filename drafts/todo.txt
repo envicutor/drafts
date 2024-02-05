@@ -1,5 +1,4 @@
 - Read documents as a new person
-- Add Sandkasten to inspiration
 - Get rid of env in Submission object
 - Add cache boolean in submission request
 - Let user provide shell.nix
@@ -24,7 +23,6 @@
       - Use systemd for ensuring health
   - Ability to not cache
 
-- Higher priority for CacheServer than cache.nix.org
 - Create worker child image prototype
 - Create worker image prototype
 - Test executing code

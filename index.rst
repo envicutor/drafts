@@ -2,7 +2,7 @@
 #####################################################
 
 |product-name| is a remote :term:`code execution system`.
-It is inspired by projects like `Piston <piston-repo_>`_ and `Judge0 <judge0-repo_>`_.
+It is inspired by projects like `Piston <piston-repo_>`_, `Judge0 <judge0-repo_>`_ and `Sandkasten <sandkasten-repo_>`_.
 That said, |product-name| aims to be more general-purpose and extensible
 by allowing the users to run their code with arbitrary :term:`dependencies` (:ref:`see how it works <how-it-works>`).
 

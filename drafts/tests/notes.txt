@@ -1,6 +1,7 @@
 - Turn sandboxing on
 - trusted-substituters list
 - substituters priority
+  - ?priority=50 at the client
 - DOCKER_BUILDKIT=0 docker build
   - If it is intended to build a Docker image inside the build
 - Handbook: talk about sysbox

@@ -12,7 +12,7 @@ The labels that are not mapped to the activity flow reflect requirements that th
 
 The heading of each (non-)functional requirement represents the topmost label,
 the bullet points represent inner labels and each indent in the bullet points represents a more inner label.
-An example of how the labels will appear in the activity flow is: ``Topmost.Inner.Inner``
+An example of how the labels will appear in the :ref:`activity flow <flow>` is: ``Topmost.Inner.Inner``
 
 Functional requirements
 ***********************
@@ -29,11 +29,8 @@ Submission requests (``SubmissionRequests``)
 
     - Different test cases to run on. (``Multiple``)
 
-  - The environment variables that the execution needs. (``Environment``)
   - The standard input that the execution needs. (``STDIN``)
   - The standard arguments that the execution needs. (``ARGS``)
-
-- The system shall cache newly requested dependencies. (``Cache``)
 
 .. _submission_status_request:
 
@@ -56,8 +53,7 @@ Execution limits (``Limits``)
 
 - For each stage (dependencies, compile, run), the client shall be able to specify linux `prlimits <prlimits_>`_.
   (``PerRequestLimits``)
-- For the entire system there's a config file that has the maximum possible values of per request limits.
-  (``GlobalLimits``)
+- For the entire system there's a config file that has the maximum possible values per limit. (``GlobalLimits``)
 
 Non-functional requirements
 ***************************
@@ -71,33 +67,34 @@ Isolation (``Isolation``)
 Security (``Security``)
 ========================
 
-- Clients shall not be able to escape the code execution isolation and gain access to the underlying system.
+- Submissions shall not be able to escape the code execution isolation and gain access to the underlying system.
   (``Escaping``)
 
 Performance (``Performance``)
 =============================
 
-- The system shall be able to accommodate cached nix packages which decreases latency when client asks
+- The system shall be able to cache nix packages to decrease latency when a client asks
   for a dependency that has been specified by (possibly) another client. (``Cache``)
-- The system shall provide the nix-shell dependencies to decrease the nix-shell start-up time (nix-shell won't have to
-  download them). (``Nix``)
-
 
 Availability (``Availability``)
 ===============================
 
-- The system shall be able to accommodate at least 1 redundant code :ref:`worker-component` to prevent down-time. (``Worker``)
-- The system shall be able to accommodate at least 1 redundant :ref:`CacheBuilder <cache-builder-component>` to prevent down-time. (``CacheBuilder``)
+- To prevent downtime:
+
+  - The system shall be able to operate with redundant :ref:`Workers <worker-component>`. (``Worker``)
+  - The system shall be able to operate with redundant :ref:`CacheBuilders <cache-builder-component>`.
+    (``CacheBuilder``)
 
 Scalability (``Scalability``)
 =============================
 
-- The system administrator shall be able to increase the number of :ref:`Workers <worker-component>` in the system as needed. (``Worker``)
-- The system administrator shall be able to increase the number of :ref:`CacheBuilders <cache-builder-component>` in the system as needed.
-  (``CacheBuilder``)
+- The system shall be able to operate with an increased/decreased number of the following components:
+
+  - :ref:`Workers <worker-component>` (``Worker``)
+  - :ref:`CacheBuilders <cache-builder-component>` (``CacheBuilder``)
 
 Fault Tolerance (``FaultTolerance``)
 ====================================
 
 - The system shall continue functioning normally when a :ref:`worker-component` fails. (``Worker``)
-- The system shall continue functioning normally when a :ref:`CacheBuilder <cache-builder-component>` fails. (``CacheBuilder``)
+- The system shall continue functioning normally when a :ref:`cache-builder-component` fails. (``CacheBuilder``)

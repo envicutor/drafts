@@ -27,8 +27,9 @@ a system that makes use of remote code execution.
 
 How some code execution systems work (and the problem)
 ******************************************************
-Code execution systems like `Piston <piston-repo_>`_ and `Judge0 <judge0-repo_>`_ are typically coded with support for
-certain :term:`dependencies` (compilers, packages, etc.) that the user can run their code with.
+Code execution systems like `Piston <piston-repo_>`_, `Judge0 <judge0-repo_>`_ and `Sandkasten <sandkasten-repo_>`_
+are typically coded with support for certain :term:`dependencies`
+(compilers, packages, etc.) that the user can run their code with.
 Adding support for new dependencies requires modifying the code execution system (i.e, modifying the code repository).
 
 For example, in Piston,
@@ -57,7 +58,7 @@ A high-level view of how it works is as follows:
 - **Client to system:** please execute program P with that needs certain dependencies.
 - **System:** installs (if needed) the dependencies, executes the program and returns the output.
 
-We aim to extend `Piston's <piston-repo_>`_ (or `Judge0's <judge0-repo_>`_)
+We aim to extend `Piston's <piston-repo_>`_, `Judge0's <judge0-repo_>`_, and `Sandkasten's <sandkasten-repo_>`_
 features with the ability to run programs with arbitrary dependencies.
 
 Questions
