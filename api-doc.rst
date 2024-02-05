@@ -55,10 +55,6 @@ Interface objects
       optional: true
       explanation: the constraints of the code compilation stage
 
-  Env:
-    - key: any string
-      type: string
-
   TestCase:
     - key: input
       type: string

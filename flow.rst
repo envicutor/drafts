@@ -193,7 +193,6 @@ Execution flow
       - ``cutor-compile.sh`` as its command
       - ``submission id`` directory created from the last step (mounted from the worker)
       - ``/nix`` (mounted from the "cache" volume)
-      - The environment variables exported
       - (``Isolation.Submission``, ``Security``, ``Escaping``)
 
   - If compile is successful or no compile is specified:

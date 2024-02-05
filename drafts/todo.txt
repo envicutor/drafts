@@ -1,5 +1,4 @@
 - Read documents as a new person
-- Get rid of env in Submission object
 - Add cache boolean in submission request
 - Let user provide shell.nix
 - Flow that describes what happens once a worker is started (cleaning up stuck files)
