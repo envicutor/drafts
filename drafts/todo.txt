@@ -16,9 +16,15 @@
     - From Worker?
       - This gives me a chance to send shell.nix conditionally if dependencies installation succeeded
   - Consider separating CacheServer container
+    - Separating
+      - Docker server (needs access to the nix store for accessing the daemon)
+      - Nix daemon server (needs access to the nix store for serving the daemon and storing the built stuff)
+      - Handler
+    - No separating
+      - Use systemd for ensuring health
   - Ability to not cache
 
-
+- Higher priority for CacheServer than cache.nix.org
 - Create worker child image prototype
 - Create worker image prototype
 - Test executing code

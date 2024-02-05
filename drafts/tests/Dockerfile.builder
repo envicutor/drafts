@@ -1,6 +1,6 @@
 FROM alpine:3.19.1
 
-RUN apk update && apk add xz curl bash shadow docker
+RUN apk update && apk add xz curl bash shadow docker supervisor && rm  -rf /tmp/* /var/cache/apk/*
 
 # install nix, nix-serve
 RUN /bin/bash -c "sh <(curl -L https://nixos.org/nix/install) --daemon --yes" && \
@@ -18,6 +18,9 @@ RUN dockerd & cd /runner && \
   rm -f /run/docker/containerd/containerd.pid && \
   rm -rf -- /runner
 
-# TODO: change /bin/bash to the builder program
-# TODO: consider using systemd or separating the containers
-CMD ["bash", "-c", "/root/.nix-profile/bin/nix-daemon & dockerd & /root/.nix-profile/bin/nix-serve --listen 0.0.0.0:8000 & /bin/sleep 2 && exec /bin/bash || exit 1"]
+# Configure supervisord
+RUN mkdir -p /var/log/supervisor
+COPY supervisord.conf /etc/
+
+# TODO: run the actual CacheServer code via supervisor
+CMD ["supervisord", "-n"]
