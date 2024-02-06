@@ -1,4 +1,4 @@
-Use case diagram
+Use Case Diagram
 ################
 
 Diagram

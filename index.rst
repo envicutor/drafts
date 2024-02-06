@@ -12,7 +12,7 @@ by allowing the users to run their code with arbitrary :term:`dependencies` (:re
    :numbered:
 
    overview.rst
-   development-methodology.rst
+   development.rst
    requirements.rst
    use-case.rst
    component.rst

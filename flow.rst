@@ -1,6 +1,6 @@
 .. _flow:
 
-Activity flow
+Activity Flow
 #############
 
 What it is
