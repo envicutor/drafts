@@ -37,10 +37,11 @@ CacheServer->Container:dependencies
 
 Container->Container:install uncached dependencies 
 alt installing dependencies didn't fail
+opt cache is true in request
 CacheServer<--Container:shell.nix
 NixStore<-CacheServer:install dependencies
 deactivate CacheServer
-
+end
 deactivate NixStore
 Worker<--Container:return dependencies install success
 Worker-->Database:update Submission object

@@ -95,15 +95,25 @@ Request:
       type: File[]
       shall_include:
         - |
-          A file with name "cutor.nix" which is a nix function that takes an argument called pkgs and returns
-          an array containing the packages to be installed. The nixpkgs will be injected into that argument.
-          For example:
-          { pkgs }:
-            with pkgs; [ python3 ]
+          A file with name "shell.nix" which is a nix shell that determines the environment in which the code is going
+          to be executed.
+          Example
+            { pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/4fddc9be4eaf195d631333908f2a454b03628ee5.tar.gz") {} }:
+              pkgs.mkShell {
+                nativeBuildInputs = with pkgs; [
+                  rustc
+                  lua
+                  dotnet-sdk
+                ];
+              }
         - A file with name "cutor-run.sh" that is a shell script that has the instructions to run the code
       might_include:
         - A file with name cutor-compile.sh that is a shell script that has the instructions to compile the code
         - Any other files that whose names are not one of the names mentioned above
+    - key: cache
+      type: bool
+      optional: true
+      explanation: whether or not the worker will ask the cache server to cache dependencies
     - key: limits
       type: Limits
       optional: true
