@@ -23,7 +23,8 @@ Execution flow
     ``Configurability.limits``,
     ``SubmissionRequests.Run.Multiple``,
     ``SubmissionRequests.STDIN``,
-    ``SubmissionRequests.ARGS``):
+    ``SubmissionRequests.ARGS``,
+    ``SubmissionRequests.Cache``):
 
     .. code-block::
 
@@ -137,7 +138,7 @@ Execution flow
 
     - ``shell.nix``, files, ``cutor-compile.sh``, ``cutor-run.sh`` (created from the submission request)
 
-  - Create a child docker container to process the submission
+  - Create a child docker container to process the submission (``Security.Escaping``, ``Isolation.Submission``)
 
 - Container
 
@@ -154,7 +155,7 @@ Execution flow
 
   - Inside an :term:`nsjail` sandbox:
 
-    - Install dependencies specified in the ``shell.nix``
+    - Install dependencies specified in the ``shell.nix`` (``Performance.Cache``)
 
 - Container
 
@@ -170,10 +171,9 @@ Execution flow
   - [if dependencies installation fails] abort
   - If compilation is specified in the Submission object
 
-    - Create :term:`nsjail` sandbox with:
+    - Inside an :term:`nsjail` sandbox:
 
-      - ``cutor-compile.sh`` as its command
-      - (``Isolation.Submission``, ``Security``, ``Escaping``)
+      - Run ``cutor-compile.sh`` inside a nix-shell (``Isolation.Dependencies``)
 
   - Signal to the Worker the status of the compilation
 
@@ -187,9 +187,9 @@ Execution flow
 
     - For each case in ``submission.test_cases``
 
-      - Create :term:`nsjail` sandbox with:
+      - Inside an :term:`nsjail` sandbox:
 
-        - ``cutor-run.sh`` as its command
+        - Run ``cutor-run.sh`` inside a nix-shell (``Isolation.Dependencies``)
         - [if run failed] abort
 
 - Worker
@@ -201,7 +201,7 @@ Execution flow
 Health checking flow
 ********************
 
-- WorkerHealthChecker (``Availability.Worker``, ``FaultTolerance.Worker``)
+- WorkerHealthChecker (``FaultTolerance.Worker``)
 
   - Every n seconds
 

@@ -31,6 +31,7 @@ Submission requests (``SubmissionRequests``)
 
   - The standard input that the execution needs. (``STDIN``)
   - The standard arguments that the execution needs. (``ARGS``)
+  - Whether or not the dependencies of the submission shall be cached. (``Cache``)
 
 .. _submission_status_request:
 
