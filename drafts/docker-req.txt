@@ -1,4 +1,4 @@
-- CacheBuilder
+- CacheServer
   - Create a directory with shell.nix
   - Create a child Docker container with nsjail nix-build as its command
     - nsjail
@@ -13,7 +13,7 @@
     - nsjail nix-build shell.nix
       - Need to limit time
       - Need to limit memory
-      - Need to get the caches from the CacheBuilder
+      - Need to get the caches from the CacheServer
       - Need to connect to nix-daemon to get the consistent configuration from the child container
       - Need RW access to the submission directory
       - Have RW access to ~ (we are in a separate container anyway)
@@ -23,16 +23,16 @@
         - Same as above
     - Clean up submission directory
 
-- CacheBuilder container
+- CacheServer container
   - Needs to be able to start Docker and have the child container image
   - Needs to have nix to be able to start nix-daemon
   - Needs to have a persistent nix directory
-- CacheBuilder child container
+- CacheServer child container
   - Needs to have nix (as a client to nix-daemon)
   - Needs to have nsjail
   - Needs to have multiple users
   - Needs to have nix-daemon socket mounted to pass it to nsjail
-  - Read-only /nix from CacheBuilder to pass it to nsjail
+  - Read-only /nix from CacheServer to pass it to nsjail
 - Worker container
   - Needs to be able to start Docker and have the child container image
 - Worker child container

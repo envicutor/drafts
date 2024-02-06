@@ -5,7 +5,7 @@ boundary RequestHandler
 database SubmissionStore
 control Worker
 database BuildStore
-control CacheBuilder
+control CacheServer
 database Cache
 control Container
 
@@ -27,16 +27,16 @@ opt Dependencies not cached
   Worker->BuildStore: send Dependencies object
   activate BuildStore
   Worker->BuildStore: enqueue Dependencies object id
-  CacheBuilder->BuildStore: pop Dependencies object id
-  activate CacheBuilder
-  CacheBuilder->BuildStore: retrieve Dependencies object
+  CacheServer->BuildStore: pop Dependencies object id
+  activate CacheServer
+  CacheServer->BuildStore: retrieve Dependencies object
   loop every n milliseconds while Dependencies object still in store
-    CacheBuilder-->BuildStore: update Dependencies object lease
+    CacheServer-->BuildStore: update Dependencies object lease
    end
-  CacheBuilder->Cache: install dependencies
-  CacheBuilder->BuildStore: send message about the status of\ninstalled dependencies
-  CacheBuilder->BuildStore: delete Dependencies object
-  deactivate CacheBuilder
+  CacheServer->Cache: install dependencies
+  CacheServer->BuildStore: send message about the status of\ninstalled dependencies
+  CacheServer->BuildStore: delete Dependencies object
+  deactivate CacheServer
   Worker->BuildStore: consume message
   deactivate BuildStore
   opt dependency install fails

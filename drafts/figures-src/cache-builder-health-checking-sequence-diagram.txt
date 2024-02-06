@@ -1,17 +1,17 @@
-title CacheBuilder health checking
-control CacheBuilderHealthChecker
+title CacheServer health checking
+control CacheServerHealthChecker
 database BuildStore
 
-activate CacheBuilderHealthChecker
+activate CacheServerHealthChecker
 activate BuildStore
 loop every n seconds
-  CacheBuilderHealthChecker -> BuildStore: get all Dependencies objects "d" with lease not null
+  CacheServerHealthChecker -> BuildStore: get all Dependencies objects "d" with lease not null
   loop for each dependencies in d
     opt dependencies.lease - now() > threshold
-      CacheBuilderHealthChecker -> BuildStore: reset the lease of the Dependencies object
-      CacheBuilderHealthChecker -> BuildStore: enqueue the Dependencies object id in the BuildStore
+      CacheServerHealthChecker -> BuildStore: reset the lease of the Dependencies object
+      CacheServerHealthChecker -> BuildStore: enqueue the Dependencies object id in the BuildStore
     end
   end
 end
 deactivate BuildStore
-deactivate CacheBuilderHealthChecker
+deactivate CacheServerHealthChecker

@@ -154,7 +154,7 @@ Execution flow
 
       - If reply takes too long, go to clean up step (abort)
 
-- CacheBuilder
+- CacheServer
 
   - Pop the Dependencies object id from the BuildStore
   - Retrieve the corresponding Dependencies object
@@ -176,7 +176,7 @@ Execution flow
 
   - If dependencies are not cached:
 
-    - Consume the message that the CacheBuilder sent
+    - Consume the message that the CacheServer sent
     - [if inappropriate received signal or code] update Submission object accordingly and go to last step
 
   - Modify submission request status to ``DEPENDENCIES_INSTALLED`` (``SubmissionStatus.DependenciesInstalled``)
@@ -224,7 +224,7 @@ Health checking flow
         - Reset the response and the lease of the Submission object in the SubmissionStore
         - Enqueue the submission id in the submission store
 
-- CacheBuilderHealthChecker (``Availability.CacheBuilder``, ``FaultTolerance.CacheBuilder``)
+- CacheServerHealthChecker (``Availability.CacheServer``, ``FaultTolerance.CacheServer``)
 
   - Every n seconds
 
@@ -232,7 +232,7 @@ Health checking flow
 
       - If lease - now's timestamp > threshold
 
-        - Assume that the CacheBuilder that was working on it is dead
+        - Assume that the CacheServer that was working on it is dead
         - Reset the lease of the Dependencies object in the BuildStore
         - Enqueue the Dependencies object id in the BuildStore
 

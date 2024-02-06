@@ -149,7 +149,7 @@ Queues and Pub/Sub channels
       type: queue
       location: BuildStore
   Dependencies-(id):
-    - explanation: the CacheBuilder uses it to send the confirmation of the installation of the dependencies
+    - explanation: the CacheServer uses it to send the confirmation of the installation of the dependencies
       type: Pub/Sub channel
       location: BuildStore
 

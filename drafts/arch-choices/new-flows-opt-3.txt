@@ -1,4 +1,4 @@
-- Inside CacheBuilder
+- Inside CacheServer
   - Run nsjail nix-build shell.nix
     - Stuff here must be secure
     - We need to run nix daemon and the process inside nsjail must connect to nix-daemon

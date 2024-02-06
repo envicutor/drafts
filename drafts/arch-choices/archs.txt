@@ -1,12 +1,12 @@
 - Opt1
   - Architecture if we want the dependencies specified during submission
-    - CacheBuilders uses nix-serve to serve its nix-store
-      - Workers have the CacheBuilders as substituters (caches that substitute the main remote cache (cache.nixos.org)).
+    - CacheServers uses nix-serve to serve its nix-store
+      - Workers have the CacheServers as substituters (caches that substitute the main remote cache (cache.nixos.org)).
       - Extra flexibility if you want to build a system that provides a playground in which users can provide their own
         nix expression
         - Is caching user-specified nix expressions wasteful?
           - Even if it is wasteful, the client can prevent normal users from specifying the nix-shell
 - Opt2
   - Architecture if we want to separate dependencies installations and submissions
-    - There is a central builder that builds the dependencies to a nix store that is mounted read-only on the workers
+    - There is a central server that builds the dependencies to a nix store that is mounted read-only on the workers
     - The same as Piston/Judge0 but allowing the installation of dependencies on-the-fly
