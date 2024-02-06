@@ -1,3 +1,5 @@
 - Read documents as a new person
 - Flow that describes what happens once a worker is started (cleaning up stuck files)
-- A way to find the available cache servers during runtimex
+- A way to find the available cache servers during runtime
+  - Should we store the configuration (global limits, cache servers) in the database to be able to update them during
+    runtime?

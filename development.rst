@@ -61,18 +61,22 @@ Work Plan
     - Status
   * - Brainstorm ideas for the project
     - Done
-  * - Analyze `Piston <piston-repo_>`_ and `Judge0 <judge0-repo_>`_
-      (skim the source code and check their github issues)
+  * - Analyze similar open source systems (skim the source code and check their github issues)
     - Done
   * - Come up with an abstract idea of the project
     - Done
-  * - Reanalyze `Piston <piston-repo_>`_ and `Judge0 <judge0-repo_>`_ to verify that the problem isn't already solved
+  * - Reanalyze the open source systems to verify that the problem isn't already solved
     - Done
-  * - Brainstorm the overview of the project
+  * - Brainstorm the overview of the project (first part of the specification document)
     - Done
-  * - Write an initial guideline for collaborating on the project
+  * - Write an initial developers' guide for collaborating on the project
     - Done
-  * - Write an initial component diagram, sequence diagram, use-case diagram, api docs, object schema and activity flow
+  * - Set up continuous integration and deployment (CI/CD) for the documentation
+      (the specification document and the developers' guide)
+    - Done
+  * - Write an initial use-case diagram, component diagram and activity flow
+    - Done
+  * - Write an initial sequence diagram and an api documentation
     - Done
   * - Come up with different technologies that can be used
     - Done
@@ -82,21 +86,27 @@ Work Plan
     - Done
   * - Write a throwaway prototype for the most crucial parts of the system to check feasibility
     - Done
-  * - Update the documentation based on the new findings
+  * - Update the documentation based on findings from the prototype
     - Done
   * - Write the initial pseudocode and class diagram
     - WIP
   * - Write an initial evolutionary functioning prototype
     - WIP
-  * - Update the documentation based on findings from the prototype
+  * - Update the documentation based on findings from the evolutionary prototype
     - WIP
-  * - Refine the prototype until v0.0.1 is attained
+  * - Refine the prototype with real implementation and unit tests
+    - WIP
+  * - Refine the prototype with automated tests and continuous integration
+    - WIP
+  * - Deploy the prototype using technologies researched in the previous tasks
+    - WIP
+  * - Set up continuous deployment for the prototype
+    - WIP
+  * - Mark the prototype as V0.0.1 of the system
     - WIP
   * - Write an initial user manual for the system
     - WIP
-  * - Continuous evolution of the system
+  * - Integrate the user manual in the CI/CD pipeline of the documentation
     - WIP
-
-
-
-
+  * - Open source the system
+    - WIP
