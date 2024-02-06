@@ -15,51 +15,45 @@ Components Responsibilities
 RequestHandler
 ===============
 
-Receiving requests from the client, massaging them into Submission objects, sending them to the SubmissionStore
-and enqueueing the submission id in the SubmissionStore to notify the Workers about the arrival of a new request.
+Receiving requests from the client, massaging them into Submission objects, sending them to the Database
+and enqueueing the submission id in the InMemoryStore to notify the Workers about the arrival of a new request.
 
-SubmissionStore
+Database
 ================
 
-Storing Submission objects that come from the RequestHandler, allowing their retrieval,
-allowing RequestHandlers to enqueue submission ids and allowing the Workers to pop them.
+Storing Submission objects that come from the RequestHandler and allowing their retrieval/updating.
+
+InMemoryStore
+================
+
+Allowing RequestHandlers to enqueue submission ids, allowing the Workers to dequeue them and allowing the Workers to
+store and update the "lease" of submissions.
 
 WorkerHealthChecker
 ===================
 
-Checking the health of the Workers by checking a timestamp (lease) that the Workers constantly update on submissions.
-If the lease is too old, the WorkerHealthChecker assumes the Worker has failed to process the submission,
-resets the submission response and enqueues the submission id in the SubmissionStore.
+Checking the health of the Workers by checking a timestamp (lease) that the Workers constantly update in
+the InMemoryStore.
+If the lease is too old, the WorkerHealthChecker assumes the Worker has failed to process the submission
+and enqueues the submission id in the InMemoryStore.
 
 .. _worker-component:
 
 Worker
 ======
 
-Popping submission ids from the SubmissionStore, fetching the corresponding submissions,
-creating Dependencies objects, storing them and enqueueing their ids in the BuildStore
-to request that the dependencies be installed in the cache, and processing submissions.
+Dequeuing submission ids from the InMemoryStore, fetching and updating the corresponding submissions from the Database,
+installing dependencies if not in CacheServers, asking CacheServers to cache the dependencies,
+and processing submissions.
 
-Cache
-=====
+.. _cache-server-component:
 
-Storing the dependencies as nix packages and being available for mount while processing submissions.
-
-BuildStore
-==========
-
-Storing Dependencies objects that come from the Workers, allowing their retrieval,
-allowing Workers to enqueue Dependencies objects ids and allowing CacheBuilders to pop them.
-
-.. _cache-builder-component:
-
-CacheBuilder
+CacheServer
 ============
 
-Popping Dependencies objects ids from the BuildStore, fetching the corresponding Dependencies objects, installing the
-dependencies in the cache and sending the installation result to the BuildStore.
+Caching and serving the dependencies for the Worker.
 
-CacheBuilderHealthChecker
-=========================
+NixStore
+========
 
-Same as the WorkerHealthChecker but for CacheBuilders and dependency installation requests.
+Storage for CacheServer in which the dependencies are installed as nix packages.

@@ -82,7 +82,7 @@ Availability (``Availability``)
 - To prevent downtime:
 
   - The system shall be able to operate with redundant :ref:`Workers <worker-component>`. (``Worker``)
-  - The system shall be able to operate with redundant :ref:`CacheBuilders <cache-builder-component>`.
+  - The system shall be able to operate with redundant :ref:`CacheBuilders <cache-server-component>`.
     (``CacheBuilder``)
 
 Scalability (``Scalability``)
@@ -91,10 +91,10 @@ Scalability (``Scalability``)
 - The system shall be able to operate with an increased/decreased number of the following components:
 
   - :ref:`Workers <worker-component>` (``Worker``)
-  - :ref:`CacheBuilders <cache-builder-component>` (``CacheBuilder``)
+  - :ref:`CacheBuilders <cache-server-component>` (``CacheBuilder``)
 
 Fault Tolerance (``FaultTolerance``)
 ====================================
 
 - The system shall continue functioning normally when a :ref:`worker-component` fails. (``Worker``)
-- The system shall continue functioning normally when a :ref:`cache-builder-component` fails. (``CacheBuilder``)
+- The system shall continue functioning normally when a :ref:`cache-server-component` fails. (``CacheBuilder``)
