@@ -14,7 +14,7 @@ Execution flow
 
 - Client
 
-  - Send :ref:`submission request <interface-objects>` (``SubmissionRequests.files``,
+  - Send :ref:`submission request <submission-object>` (``SubmissionRequests.files``,
     ``SubmissionRequests.Dependencies``,
     ``SubmissionRequests.compile``,
     ``SubmissionRequests.run``,
@@ -30,7 +30,7 @@ Execution flow
       {
         "files": [
           {
-            "name": "cutor.nix",
+            "name": "shell.nix",
             "content": "required dependencies to execute the program as nix packages"
           },
           {
@@ -48,6 +48,7 @@ Execution flow
           },
           ...
         ],
+        "cache": bool,
         "limits": {
           "dependencies":
           {
@@ -88,13 +89,12 @@ Execution flow
 
 - RequestHandler
 
-  - Create :ref:`Submission object <interface-objects>` (``SubmissionStatus.Submitted``):
+  - Create :ref:`Submission object <submission-object>` (``SubmissionStatus.Submitted``):
 
     .. code-block::
 
       {
         "id": id,
-        "lease": null,
         "request": the client request mentioned above,
         "response": {
           "status": "SUBMITTED",
@@ -122,92 +122,81 @@ Execution flow
         }
       }
 
-  - Store that Submission object in SubmissionStore
-  - :ref:`Enqueue the submission id <queues>` in the SubmissionStore
+  - Store that Submission object in Database
+  - :ref:`Enqueue the submission id <queues>` in the InMemoryStore
   - Return the submission id to the client
 
 - Worker
 
-  - Pop submission id from the SubmissionStore
-  - Fetch the corresponding Submission object
-  - Keep updating the lease of the Submission object every n milliseconds with now's timestamp
+  - Pop submission id from the InMemoryStore
+  - Fetch the corresponding Submission object from the Database
+  - Create a lease in the InMemoryStore for the submission
+  - Keep updating the lease of the Submission object in the InMemoryStore every n milliseconds with now's timestamp
     to signal that you are healthy
+  - Create directory with the submission id as its name with:
 
-    - If the submissions's status is "FINISHED", stop updating the lease
+    - ``shell.nix``, files, ``cutor-compile.sh``, ``cutor-run.sh`` (created from the submission request)
 
-  - Check which dependencies requisites are not cached
-  - If there are requisites that are not cached
+  - Create a child docker container to process the submission
 
-    - Create a :ref:`Dependencies object <interface-objects>`
+- Container
 
-      .. code-block::
 
-        {
-          "id": id,
-          "lease": timestamp,
-          "paths": string
-        }
+  - Inside an :term:`nsjail` sandbox:
 
-    - Store the Dependencies object in the BuildStore
-    - :ref:`Enqueue the Dependencies object id <queues>` in the BuildStore
-    - Wait for a reply in the BuildStore
+    - Check which dependencies requisites are cached in the CacheServer
+    - Install the rest of the dependencies that are uncached
+    - If dependencies installed successfully and cache in request is true
 
-      - If reply takes too long, go to clean up step (abort)
+      - Send ``shell.nix`` to the CacheServer
 
 - CacheServer
 
-  - Pop the Dependencies object id from the BuildStore
-  - Retrieve the corresponding Dependencies object
-  - Keep updating the lease of the Dependencies object every n milliseconds with now's timestamp
-    to signal that you are healthy
+  - Inside an :term:`nsjail` sandbox:
 
-    - If the Dependencies object does not exist anymore, stop updating the lease
+    - Install dependencies specified in the ``shell.nix``
 
-  - Install the dependencies (with the Cache volume mounted) (``Performance.Cache``):
+- Container
 
-    - [if the process fails] go to last step
-    - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
-
-  - Send the a message containing the stdout, stderr, time, signal,
-    code of the installation process to the BuildStore :ref:`as a reply to the worker <queues>`
-  - Delete the Dependencies object from the BuildStore (not from the cache)
+  - Signal to the Worker the status of the dependencies installation
 
 - Worker
 
-  - If dependencies are not cached:
+  - After receiving the signal, update submission object with the appropriate status
+    (``SubmissionStatus.DependenciesInstalled``)
 
-    - Consume the message that the CacheServer sent
-    - [if inappropriate received signal or code] update Submission object accordingly and go to last step
+- Container
 
-  - Modify submission request status to ``DEPENDENCIES_INSTALLED`` (``SubmissionStatus.DependenciesInstalled``)
-
-  - Create directory with the submission id as its name with:
-
-    - ``cutor.nix``, files, ``cutor-compile.sh``, ``cutor-run.sh`` (created from the submission request)
-    - ``shell.nix`` (mounted from the worker)
-
+  - [if dependencies installation fails] abort
   - If compilation is specified in the Submission object
 
     - Create :term:`nsjail` sandbox with:
 
       - ``cutor-compile.sh`` as its command
-      - ``submission id`` directory created from the last step (mounted from the worker)
-      - ``/nix`` (mounted from the "cache" volume)
       - (``Isolation.Submission``, ``Security``, ``Escaping``)
 
-  - If compile is successful or no compile is specified:
+  - Signal to the Worker the status of the compilation
 
-    - Update Submission object with status ``COMPILED`` (``SubmissionStatus.Compiled``)
+- Worker
+
+  - After receiving the signal, update Submission object with the appropriate status (``SubmissionStatus.Compiled``)
+
+- Container
+
+  - If compile is successful or no compile is specified:
 
     - For each case in ``submission.test_cases``
 
       - Create :term:`nsjail` sandbox with:
 
         - ``cutor-run.sh`` as its command
-        - [if run failed] aborts
+        - [if run failed] abort
+
+- Worker
 
   - Update Submission object with status ``FINISHED`` (``SubmissionStatus.FINISHED``)
-  - Clean up files
+  - Kill the Container
+  - Clean up the files and remove the lease
 
 Health checking flow
 ********************
@@ -216,25 +205,12 @@ Health checking flow
 
   - Every n seconds
 
-    - For each Submission object in SubmissionStore with lease not null and status not "FINISHED"
+    - For each lease in thee InMemoryStore
 
       - If lease - now's timestamp > threshold
 
-        - Assume that the Worker that was working on it is dead
-        - Reset the response and the lease of the Submission object in the SubmissionStore
-        - Enqueue the submission id in the submission store
-
-- CacheServerHealthChecker (``Availability.CacheServer``, ``FaultTolerance.CacheServer``)
-
-  - Every n seconds
-
-    - For each Dependencies object in BuildStore with lease not null and status not "FINISHED"
-
-      - If lease - now's timestamp > threshold
-
-        - Assume that the CacheServer that was working on it is dead
-        - Reset the lease of the Dependencies object in the BuildStore
-        - Enqueue the Dependencies object id in the BuildStore
+        - Remove the least from the InMemoryStore
+        - Enqueue the submission id in the InMemoryStore
 
 Getting the submission status flow
 **********************************

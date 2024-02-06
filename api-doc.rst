@@ -1,7 +1,6 @@
 API Documentation
 #################
 
-.. _interface-objects:
 
 Interface objects
 *****************
