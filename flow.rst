@@ -123,7 +123,7 @@ Execution flow
       }
 
   - Store that Submission object in SubmissionStore
-  - :ref:`Enqueue the submission id <queues-channels>` in the SubmissionStore
+  - :ref:`Enqueue the submission id <queues>` in the SubmissionStore
   - Return the submission id to the client
 
 - Worker
@@ -149,7 +149,7 @@ Execution flow
         }
 
     - Store the Dependencies object in the BuildStore
-    - :ref:`Enqueue the Dependencies object id <queues-channels>` in the BuildStore
+    - :ref:`Enqueue the Dependencies object id <queues>` in the BuildStore
     - Wait for a reply in the BuildStore
 
       - If reply takes too long, go to clean up step (abort)
@@ -169,7 +169,7 @@ Execution flow
     - [if Process takes more than pre-determined memory, time, stdout, stderr] go to last step
 
   - Send the a message containing the stdout, stderr, time, signal,
-    code of the installation process to the BuildStore :ref:`as a reply to the worker <queues-channels>`
+    code of the installation process to the BuildStore :ref:`as a reply to the worker <queues>`
   - Delete the Dependencies object from the BuildStore (not from the cache)
 
 - Worker

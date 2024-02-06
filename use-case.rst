@@ -4,7 +4,7 @@ Use case diagram
 Diagram
 *******
 
-.. figure:: figures/use-case-diagram.svg
+.. figure:: figures/use-case-diagram.png
   :alt: Use case diagram
 
   |product-name|'s use case diagram.

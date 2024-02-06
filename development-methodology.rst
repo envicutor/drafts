@@ -44,7 +44,7 @@ In the iterative approach, the system is built in iterations.
 This helps in early implementation (refinement) and testing of the abstractions made by the developers.
 Abstractions found incorrect in a certain iteration can then be fixed in a subsequent iteration.
 
-.. figure:: figures/iterative-model.svg
+.. figure:: figures/iterative-model.png
   :alt: Iterative model
 
   The iterative model as we see it.

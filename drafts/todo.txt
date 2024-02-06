@@ -2,10 +2,6 @@
 - Add cache boolean in submission request
 - Let user provide shell.nix
 - Flow that describes what happens once a worker is started (cleaning up stuck files)
-- Submission on disk, lease in memory
-- SubmissionsStore -> Database, InMemoryStore
-- CacheServer -> CacheServer
-- Use a proper component diagram generator?
 - Do new architecture
   - Remove CacheServerHealthChecker
   - Send shell.nix directly to the CacheServer?
@@ -22,6 +18,3 @@
       - Use systemd for ensuring health
   - Ability to not cache
 
-- Create worker child image prototype
-- Create worker image prototype
-- Test executing code

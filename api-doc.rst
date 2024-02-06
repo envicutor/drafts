@@ -6,6 +6,9 @@ API Documentation
 Interface objects
 *****************
 
+File:
+=====
+
 .. code-block:: yaml
 
   File:
@@ -20,6 +23,11 @@ Interface objects
         - utf8
         - base64
         - hex
+
+Limits:
+=======
+
+.. code-block:: yaml
 
   Limit:
     - key: time
@@ -41,6 +49,11 @@ Interface objects
       type: int
       explanation: the maximum size of a file in bytes that can be created in a stage
 
+Limits:
+=======
+
+.. code-block:: yaml
+
   Limits:
     - key: dependencies
       type: Limit
@@ -55,6 +68,11 @@ Interface objects
       optional: true
       explanation: the constraints of the code compilation stage
 
+TestCase:
+=========
+
+.. code-block:: yaml
+
   TestCase:
     - key: input
       type: string
@@ -64,6 +82,13 @@ Interface objects
       type: string[]
       optional: true
       explanation: the stdargs to be provided in that test case
+
+.. _request-object:
+
+Request:
+========
+
+.. code-block:: yaml
 
   Request:
     - key: files
@@ -88,6 +113,11 @@ Interface objects
       constraint: at least one test case must exist
       explanation: the test cases the submission shall run on (run stage)
 
+StageOutput:
+============
+
+.. code-block:: yaml
+
   StageOutput:
     - key: stdout
       type: string
@@ -102,6 +132,11 @@ Interface objects
     - key: signal
       type: string
       explanation: the signal that caused the process to exit
+
+Response:
+=========
+
+.. code-block:: yaml
 
   Response:
     - key: status
@@ -123,35 +158,32 @@ Interface objects
     - key: run
       type: StageOutput
 
+.. _submission-object:
+
+SubmissionObject:
+=================
+
+.. code-block:: yaml
+
   Submission:
     - key: id
       type: string
-    - key: lease
-      type: string | null
     - key: request
       type: Request
     - key: response
       type: Response
 
-.. _queues-channels:
+.. _queues:
 
-Queues and Pub/Sub channels
-***************************
+Queues
+******
 
 .. code-block:: yaml
 
   SubmissionQueue:
     - explanation: holds submission ids
       type: queue
-      location: SubmissionStore
-  DependenciesQueue:
-    - explanation: holds dependencies ids
-      type: queue
-      location: BuildStore
-  Dependencies-(id):
-    - explanation: the CacheServer uses it to send the confirmation of the installation of the dependencies
-      type: Pub/Sub channel
-      location: BuildStore
+      location: InMemoryStore
 
 Endpoints
 *********

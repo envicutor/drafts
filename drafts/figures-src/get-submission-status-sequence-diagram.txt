@@ -2,8 +2,8 @@ title Get submission status
 
 actor Client
 boundary RequestHandler
-database SubmissionStore
+database Database
 
 Client->RequestHandler: send a get submission status request
-RequestHandler->SubmissionStore: retreive Submission object "s"
+RequestHandler->Database: retrieve Submission object "s"
 RequestHandler->Client: return s.response

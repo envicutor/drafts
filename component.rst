@@ -4,7 +4,7 @@ Component Diagram
 Diagram
 *******
 
-.. figure:: figures/component-diagram.svg
+.. figure:: figures/component-diagram.png
   :alt: Component diagram
 
   |product-name|'s component diagram.

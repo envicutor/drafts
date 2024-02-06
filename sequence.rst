@@ -25,11 +25,4 @@ Worker Health check sequence diagram
   :alt: Worker health check Sequence diagram
 
   |product-name|'s Worker health check sequence diagram.
-
-CacheServer Health check sequence diagram
-******************************************
-
-.. figure:: figures/cache-server-health-checking-sequence.svg
-  :alt: CacheServer health check Sequence diagram
-
-  |product-name|'s CacheServer health check sequence diagram.
+  
