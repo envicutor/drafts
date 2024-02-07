@@ -20,7 +20,8 @@ Execution flow
     ``SubmissionRequests.run``,
     ``SubmissionRequests.files``,
     ``SubmissionRequests.PerRequestLimits``,
-    ``Configurability.limits``,
+    ``Limits.PerRequestLimits``,
+    ``Limits.GlobalLimits``,
     ``SubmissionRequests.Run.Multiple``,
     ``SubmissionRequests.STDIN``,
     ``SubmissionRequests.ARGS``,
@@ -205,11 +206,11 @@ Health checking flow
 
   - Every n seconds
 
-    - For each lease in thee InMemoryStore
+    - For each lease in the InMemoryStore
 
       - If lease - now's timestamp > threshold
 
-        - Remove the least from the InMemoryStore
+        - Remove the lease from the InMemoryStore
         - Enqueue the submission id in the InMemoryStore
 
 Getting the submission status flow
@@ -221,4 +222,4 @@ Getting the submission status flow
 
 - Request handler
 
-  - Return Submission.response object (SubmissionStatus.Result)
+  - Return Submission.response object (``SubmissionStatus.Result``)
