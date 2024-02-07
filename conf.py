@@ -19,7 +19,12 @@ todo_include_todos = True
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-
+latex_elements = {
+  'maxlistdepth': '99',
+  'preamble': r"""
+\let\cleardoublepage=\clearpage
+"""
+}
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

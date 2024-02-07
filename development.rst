@@ -31,7 +31,7 @@ Contradictions
 The developer's mind oversaw the contradiction.
 
 Impossible-to-refine abstractions
-=============================================
+=================================
 
 Developer states abstraction "a" which violates logic.
 

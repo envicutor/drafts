@@ -1,9 +1,6 @@
 Use Case Diagram
 ################
 
-Diagram
-*******
-
 .. figure:: figures/use-case-diagram.png
   :alt: Use case diagram
 

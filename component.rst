@@ -1,9 +1,6 @@
 Component Diagram
 #################
 
-Diagram
-*******
-
 .. figure:: figures/component-diagram.png
   :alt: Component diagram
 
