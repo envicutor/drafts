@@ -5,5 +5,12 @@ boundary RequestHandler
 database Database
 
 Client->RequestHandler: send a get submission status request
+activate RequestHandler
+
 RequestHandler->Database: retrieve Submission object "s"
-RequestHandler->Client: return s.response
+activate Database
+Database-->RequestHandler: response received
+deactivate Database
+
+RequestHandler-->Client: return s.response
+deactivate RequestHandler
