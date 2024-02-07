@@ -92,11 +92,13 @@ Work Plan
     - WIP
   * - Write an initial evolutionary functioning prototype
     - WIP
+  * - Write initial unit tests
+    - WIP
   * - Update the documentation based on findings from the evolutionary prototype
     - WIP
-  * - Refine the prototype with real implementation and unit tests
+  * - Refine the prototype with real implementation, refine the unit tests and add system tests and integration tests
     - WIP
-  * - Refine the prototype with automated tests and continuous integration
+  * - Automate the tests and set up continuous integration
     - WIP
   * - Deploy the prototype using technologies researched in the previous tasks
     - WIP
