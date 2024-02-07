@@ -5,8 +5,14 @@ on:
     branches:
       - 'main'
 jobs:
-  run-push-workflow:
-    uses: envicutor/docs-workflows/.github/workflows/push.yml@main
+  run-deploy-workflow:
+    uses: envicutor/docs-workflows/.github/workflows/deploy-main.yml@main
+    with:
+      target: spec
+    secrets:
+      pat: ${{ secrets.pat }}
+  run-release-pdf-workflow:
+    uses: envicutor/docs-workflows/.github/workflows/release-pdf.yml@main
     with:
       target: spec
     secrets:
