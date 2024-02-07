@@ -32,10 +32,15 @@ are typically coded with support for certain :term:`dependencies`
 (compilers, packages, etc.) that the user can run their code with.
 Adding support for new dependencies requires modifying the code execution system (i.e, modifying the code repository).
 
-For example, in Piston,
-`the Java 15.0.2 JDK dependency is pre-determined.
-<https://github.com/engineer-man/piston/blob/fd8e25608ff94b88599ddef06da01b9723a081ad/packages/java/15.0.2/build.sh>`_
-Using a higher Java version would require modifying the linked shell script.
+For example, in Judge0,
+`the Java JDK 13.0.1 dependency is pre-determined.
+<https://github.com/judge0/compilers/blob/92fa2173c0e5ae02922bf1939085db986dfbf5c4/Dockerfile#L92>`_
+Using a higher Java version would require modifying the linked Dockerfile and rebuilding Judge0.
+
+.. note::
+
+  Piston provides a more decoupled approach to adding packages that does not require rebuilding the system
+  but adding packages requires a high amount of effort.
 
 A high-level view of how such code execution systems work is as follows:
 
