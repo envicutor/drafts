@@ -23,8 +23,8 @@ File:
         - base64
         - hex
 
-Limits:
-=======
+Limit:
+======
 
 .. code-block:: yaml
 
