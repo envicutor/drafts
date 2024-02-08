@@ -1,0 +1,60 @@
+- What code execution systems are
+  - How does a website like CodeForces run the contestants code?
+- Code execution systems examples
+  - Judge0
+  - Piston
+  - Sandkasten
+- The problems with current code execution systems
+  - Give an example of a website whose owner wants to use a language that doesn't exist on Judge0
+  - They have to be explicitly configured to support certain dependencies (interpreters, compilers, libraries, etc)
+    - Show Judge0 DockerFile
+    - Show Sandkasten nix files
+    - Show Piston's repo component
+- Proofs that these problems exist
+  - GitHub issues
+    - Piston
+      - https://github.com/engineer-man/piston/issues
+    - Judge0
+      - https://github.com/judge0/judge0/issues/425
+      - https://github.com/judge0/judge0/issues/390
+      - https://github.com/judge0/judge0/issues/176
+      - https://github.com/judge0/judge0/issues/177
+      - https://github.com/judge0/judge0/issues/266
+      - https://github.com/judge0/judge0/issues/237
+      - https://github.com/judge0/judge0/issues/268
+  - Proofs from source code
+    - Judge0 (https://github.com/judge0/compilers/blob/92fa2173c0e5ae02922bf1939085db986dfbf5c4/Dockerfile#L92)
+      - Need to update the DockerFile and rebuild the app to add a new dependency
+      - Difficulty - | Needing to reload the application 1
+    - Piston (https://github.com/engineer-man/piston/blob/master/packages/java/15.0.2/build.sh)
+      - Can update the repo component without reloading the application but updating the repo is more involved
+      - Difficulty -- | Needing to reload the application 0
+    - Sandkasten (https://github.com/Defelo/sandkasten/blob/develop/nix/packages/java.nix)
+      - Have to update the Nix file (which is relatively easy) but need to reload the application
+      - Difficulty - | Needing to reload the application 1
+- The problem's solution (Envicutor)
+  - The best of all worlds
+    - Send a shell.nix file with the submission request
+      - Difficulty - | Needing to reload the application 0
+    - Envicutor will automatically download the dependencies that are not cached and make them available to the
+      submission
+  - Go back to the website's owner who wants to use a new language Envicutor
+    - Maybe animation of Envicutor replacing Judge0 in the previous example slide
+- Envicutor requirements
+  - Bullet lists probably
+- How Envicutor works
+  - Architecture (component diagram)
+    - A day in the life of a submission (animation for creating a submission, and receiving it)
+      - Show the requirements that are satisfied during the animation
+  - How this architecture satisfies the requirements
+  - The technologies that are used
+    - With flashbacks from the "day in the life of a submission" animation
+- Work plan
+  - How we are working
+    - Iterative development
+  - Work we have done so far
+  - WIP
+    - Pseudocode
+    - Class diagram
+      - Why we don't have a class diagram for the current phase
+    - ...
