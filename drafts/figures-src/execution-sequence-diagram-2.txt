@@ -1,0 +1,48 @@
+title Execution after installing dependencies
+
+
+database Database
+control Worker
+
+control Container
+
+activate Worker
+activate Database
+activate Container
+
+opt compilation was requested and dependencies installed successfully
+  Container->Container:execute compile instructions
+  alt compile fails
+    Container-->Worker: return compile failed
+    Worker-->Database:update Submission\nobject with failure of\ncompilation stage
+  else
+    Container-->Worker:return the stdout, stderr, signal, exit code for the compile stage
+    Worker-->Database:update Submission \nobject with \nreceived data
+  end
+end
+
+
+
+opt (compiled successfully or no compile existed) and dependencies installed successfully
+  loop for each test case and while a run has not failed
+    Container->Container:execute run instructions
+    alt run fails
+      Container->Worker: return run failed
+      Worker-->Database:update Submission\nobject with failure\nof run stage
+    else
+      Container->Worker:return the stdout, stderr, signal, exit code for the run stage
+      Worker-->Database:update Submission\nobject with\nreceived data
+
+    end
+  end
+
+end
+    
+  
+  Worker->Container: <<destroy>>
+  deactivate Container
+  destroy Container
+
+Worker->Worker: clean up files
+deactivate Worker
+deactivate Database

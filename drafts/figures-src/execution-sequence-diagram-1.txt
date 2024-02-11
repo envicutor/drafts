@@ -1,0 +1,53 @@
+title Execution till installing dependencies
+
+actor Client
+boundary RequestHandler
+database InMemoryStore
+
+database Database
+control Worker
+database NixStore
+
+control CacheServer
+control Container
+Client->RequestHandler:send a \nsubmission request
+activate RequestHandler
+RequestHandler->RequestHandler:create\nSubmission object
+RequestHandler->Database:send Submission object
+activate Database
+RequestHandler->InMemoryStore:enqueue\nsubmission id
+activate InMemoryStore
+deactivate RequestHandler
+activate Worker
+Worker->InMemoryStore:pop submission id
+Worker->Database:retrieve\nSubmission object
+loop every n milliseconds while submission status is not "FINISHED"
+Worker-->InMemoryStore:update Submission object lease
+end
+  Worker->*Container: <<create>>
+  
+activate Container
+CacheServer<-Container:get dependencies
+activate CacheServer
+CacheServer->NixStore:get\ndependencies
+activate NixStore
+NixStore->CacheServer:dependencies
+CacheServer->Container:dependencies
+
+
+Container->Container:install\nuncached\ndependencies 
+alt installing dependencies fails
+   Worker<--Container:return dependencies install failure
+   Worker-->Database:update Submission\nobject with failure\nof dependencies\ninstallation stage
+else
+  opt cache is true in request
+    CacheServer<--Container:shell.nix
+    NixStore<-CacheServer:install\ndependencies
+    deactivate CacheServer
+  end
+  deactivate NixStore
+  Worker<--Container:return dependencies install success
+  Worker-->Database:update Submission\nobject with\nreceived data
+end
+  
+
