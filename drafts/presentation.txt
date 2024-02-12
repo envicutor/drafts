@@ -66,3 +66,11 @@ changes for the presentation:
   3- make gantt chart for the workflow (maybe 2-4 slides or smth) make it slide from right to left.
   4- make demo
   5- add challenges
+
+- Introduction: 3
+- Specification
+  - Package management 3
+  - Process isolation 3
+  - Availability/scalability/fault tolerance 3
+- Time plan 1
+- Conclusion/demo (day in the life of a submission) 2

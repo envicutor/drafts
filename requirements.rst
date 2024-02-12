@@ -43,8 +43,8 @@ Submission status request (``SubmissionStatus``)
   - If their submission was submitted successfully. (``Submitted``)
   - Whether the dependencies of their submission got installed successfully (dependencies stage).
     (``DependenciesInstalled``)
-  - Whether the their submission's code finished compiling (compile stage). (``Compiled``)
-  - Whether the their submission's code finished running (run stage). (``Finished``)
+  - Whether their submission's code finished compiling (compile stage). (``Compiled``)
+  - Whether their submission's code finished running (run stage). (``Finished``)
   - The result of their submission (each stage's stderr, stdout, signal, time, memory). (``Result``)
 
 .. _execution_limits:
