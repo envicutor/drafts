@@ -165,7 +165,7 @@ Response:
     - key: compile
       type: StageOutput
     - key: run
-      type: StageOutput
+      type: StageOutput[]
 
 .. _submission-object:
 

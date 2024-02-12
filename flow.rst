@@ -114,13 +114,16 @@ Execution flow
             "signal": ""
             "code": ""
           },
-          "run": {
-            "stdout": "",
-            "stderr": "",
-            "time": "",
-            "signal": ""
-            "code": ""
-          }
+          "run": [
+            {
+              "stdout": "",
+              "stderr": "",
+              "time": "",
+              "signal": ""
+              "code": ""
+            },
+            ...
+          ]
         }
       }
 
