@@ -68,9 +68,10 @@ changes for the presentation:
   5- add challenges
 
 - Introduction: 3
+- OSS: 1.5
 - Specification
   - Package management 3
-  - Process isolation 3
+  - Process isolation 2.5
   - Availability/scalability/fault tolerance 3
 - Time plan 1
 - Conclusion/demo (day in the life of a submission) 2
