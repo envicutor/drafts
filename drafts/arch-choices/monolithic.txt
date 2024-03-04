@@ -1,0 +1,32 @@
+- Problems with monolithic architecture?
+  - The load balancer can be overwhelmed with the number of concurrent connections?
+    (since we have to use websockets or SSE as they are long-lived)
+    - Is this actually a problem?
+      - Does the load balancer maintain the open connection as well or does it just redirect the client to the
+        appropriate pod?
+        - If the latter then there is no problem since there is no central bottleneck
+          - Load balancers know how to be efficient, this doesn't seem to be a problem
+            - https://stackoverflow.com/questions/8627295/websockets-with-load-balancer-scalability
+            - https://stackoverflow.com/questions/12526265/loadbalancing-web-sockets
+            - https://chat.openai.com/share/c233feb3-2208-4300-ad3e-739b299340f7
+      - So probably not an actual problem
+  - Ensuring continuity in case there is a server-side failure?
+    - Is this actually a problem?
+      - Yes
+      - If the server crashes while handling a request it will close the websocket/SSE connection
+      - If the server fails while handling a request it will close the websocket/SSE connection
+    - Is this a large enough problem?
+      - When does the server fail?
+        - Bug in logic
+          - Can't ensure continuity anyway, submission will always fail
+        - Runtime conditions (not enough memory, etc.)
+          - Probably not occasional enough
+          - Can be handled separately
+      - So probably not a large enough problem
+  - Ensuring continuity in case there is a client-side failure?
+    - Is this actually a problem?
+      - Yes, if the client loses the websocket/SSE connection for some time, the submission won't be processed
+    - Is this a large enough problem?
+      - The clients are backend systems not web browsers which should have reliable internet connection, let alone
+        the fact that they might be in the same cluster as Envicutor
+      - So probably not a large enough problem
