@@ -23,6 +23,8 @@
           - Probably not occasional enough
           - Can be handled separately
       - So probably not a large enough problem
+    - Is a mitigation available in the monolithic approach?
+      - Do something like exponential backoff on the client
   - Ensuring continuity in case there is a client-side failure?
     - Is this actually a problem?
       - Yes, if the client loses the websocket/SSE connection for some time, the submission won't be processed
@@ -30,3 +32,21 @@
       - The clients are backend systems not web browsers which should have reliable internet connection, let alone
         the fact that they might be in the same cluster as Envicutor
       - So probably not a large enough problem
+  - Large submission objects in per-worker queue
+    - Is this actually a problem?
+      - Yes, since each worker has its own in-memory queue with the submission objects
+    - Is this a large enough problem?
+      - If code execution system is used for executing large codebases, the files would increase the size of the
+        submission object
+        - Rare
+    - Is a mitigation available in the monolithic approach?
+      - On receiving the request, create the files on disk, queue in memory non-files stuff (limits, etc.)
+    - Does the microservices approach actually solve the problem?
+      - Yes, since it uses a database (with the large files) + in memory store (with the submission ids)
+  - Still have the problem of cache-server installation process shall not be able to access the worker
+    - Solve it by running the cache worker installation process in a Docker container that uses a completely isolated
+      network
+
+- Why doesn't Judge0 die from too much memory?
+  - One task per worker?
+    - No
