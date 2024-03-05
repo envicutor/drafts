@@ -32,6 +32,8 @@
       - The clients are backend systems not web browsers which should have reliable internet connection, let alone
         the fact that they might be in the same cluster as Envicutor
       - So probably not a large enough problem
+      - But the human user is a client to the client, so the client might have to make an asynchronous system with
+        health checking which is a downside
   - Large submission objects in per-worker queue
     - Is this actually a problem?
       - Yes, since each worker has its own in-memory queue with the submission objects
