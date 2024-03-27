@@ -48,7 +48,3 @@
   - Still have the problem of cache-server installation process shall not be able to access the worker
     - Solve it by running the cache worker installation process in a Docker container that uses a completely isolated
       network
-
-- Why doesn't Judge0 die from too much memory?
-  - One task per worker?
-    - No
