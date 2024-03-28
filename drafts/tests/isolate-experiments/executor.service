@@ -1,0 +1,13 @@
+[Unit]
+Description=Service that starts the executor script
+After=default.target
+DefaultDependencies=no
+Before=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/bin/bash -c "isolate --cg --init && isolate -b0 --cg --run -- /bin/echo yo && isolate -b0 --cg --cleanup; systemctl poweroff"
+
+[Install]
+WantedBy=default.target
