@@ -1,2 +1,0 @@
-docker exec -it --privileged isolate-test /bin/bash -c 'isolate --cg --init && isolate --cg --run --cg-mem=200 -- /bin/sleep 3 && isolate --cg -b0 --cleanup'
-journalctl -b -fu service --output cat
