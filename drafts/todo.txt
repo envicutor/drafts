@@ -1,5 +1,21 @@
-- Read documents as a new person
-- Flow that describes what happens once a worker is started (cleaning up stuck files)
-- A way to find the available cache servers during runtime
-  - Should we store the configuration (global limits, cache servers) in the database to be able to update them during
-    runtime?
+- How to handle multiple test cases?
+  - If we keep repeating the run stage, a submission can share files between test cases
+    - Keep copying state after compile stage with the same number of test cases
+
+- Why do people want arbitrary package installations?
+  - If self-hosted
+    - To avoid editing files in order to add support for new languages
+      - Is this a good enough reason if you don't have to reload the system to account for new packages?
+  - If using an API
+    - To get whatever language they want without asking the developers to add support for it
+
+- So we must have options to
+  - Cache packages (for self-hosted and some packages in stuff like the API)
+  - Install packages without caching (for stuff like the API API)
+    - Though installing packages without caching can't be used for stuff like contests since it will be too slow
+      - Is it too slow that it is going to be useless?
+
+- First iteration
+  - Experiment with no caching and backend hosting. See the performance
+  - Maybe find an alternative to Docker that only does network isolation.
+    - We do not need Docker's filesystem isolation, we just need an overlay on top of the nix store

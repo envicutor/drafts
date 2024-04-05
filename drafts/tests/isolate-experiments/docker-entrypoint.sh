@@ -1,4 +1,6 @@
 #!/bin/bash
 
-mkdir -p /sys/fs/cgroup/isolate/ || exit 1
+cd /sys/fs/cgroup && \
+echo '+cpuset +cpu +io +memory +pids' > cgroup.subtree_control && \
+mkdir isolate/ && \
 exec "$@"
