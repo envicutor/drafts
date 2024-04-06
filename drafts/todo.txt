@@ -18,5 +18,7 @@
 - First iteration
   - Experiment with no caching and backend hosting. See the performance
     - Disk and CPU speed bad on vscode codespaces
+    - nix-shell -p ghc --run "sleep 0" takes 44 seconds in an openshift docker image build without caching
+    - nix-shell -p ghc --run "sleep 0" takes xx seconds in an openshift docker image build with caching
   - Maybe find an alternative to Docker that only does network isolation.
     - We do not need Docker's filesystem isolation, we just need an overlay on top of the nix store
