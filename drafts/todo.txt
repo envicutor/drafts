@@ -17,5 +17,6 @@
 
 - First iteration
   - Experiment with no caching and backend hosting. See the performance
+    - Disk and CPU speed bad on vscode codespaces
   - Maybe find an alternative to Docker that only does network isolation.
     - We do not need Docker's filesystem isolation, we just need an overlay on top of the nix store
