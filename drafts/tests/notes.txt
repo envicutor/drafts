@@ -1,3 +1,5 @@
+- How to avoid downloading the tarball each time
+  - Specify the sha256
 - Turn sandboxing on
 - trusted-substituters list
 - substituters priority
