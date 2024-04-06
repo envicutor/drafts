@@ -75,3 +75,9 @@ changes for the presentation:
   - Availability/scalability/fault tolerance 3
 - Time plan 1
 - Conclusion/demo (day in the life of a submission) 2
+
+===================================
+
+Final presentation ideas
+  - Simulation testing (use CodeForces data to simulate a contest)
+  - Piston, Judge0, Sandkasten offer no network isolation with internet option on

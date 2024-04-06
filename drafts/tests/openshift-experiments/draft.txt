@@ -1,0 +1,4 @@
+- Test if nix-shell without local caching is fast enough for a general-purpose API on openshift
+  - Pod with a Docker container with nix installed on it
+  - SSH into Docker container
+  - Run nix-shell -p ghc or something
