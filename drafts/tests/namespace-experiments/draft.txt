@@ -10,5 +10,5 @@
 
 - Can we hack isolate to include internet connection in its network namespace
 
-- Know I know how to create a namespace
+- Now I know how to create a namespace
   - How do I add a network device to this namespace?
