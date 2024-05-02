@@ -22,6 +22,11 @@
     - nix-shell -p ghc --run "sleep 0" takes 2.3 seconds in an openshift docker image build with caching
   - Maybe find an alternative to Docker that only does network isolation.
     - We do not need Docker's filesystem isolation, we just need an overlay on top of the nix store
+  - TODO
+    - distributed concerns
+      - How do I ensure all instances have the same installed packages at any point in time?
+    - Safe internet
+      - Have internet connection without being able to communicate between submissions and without being able to communicate with each other and with external devices?
 
 - Isolate time limit seems to shorten if I run multiple programs under the same box
   - Does it also happen without cg?
