@@ -9,7 +9,7 @@
   - If using an API
     - To get whatever language they want without asking the developers to add support for it
 
-- So we must have options to
+- So we must have options to?
   - Cache packages (for self-hosted and some packages in stuff like the API)
   - Install packages without caching (for stuff like the API API)
     - Though installing packages without caching can't be used for stuff like contests since it will be too slow
@@ -22,11 +22,25 @@
     - nix-shell -p ghc --run "sleep 0" takes 2.3 seconds in an openshift docker image build with caching
   - Maybe find an alternative to Docker that only does network isolation.
     - We do not need Docker's filesystem isolation, we just need an overlay on top of the nix store
+  - Use Judge0-like language ids to determine language
+    - Is there a good reason to use names/aliases like in Piston?
+      - Don't think so, the main reason it exists in Piston is for the Discord bot. But even that can be worked around
   - TODO
+    - Multiple test cases
+    - Large test cases
     - distributed concerns
       - How do I ensure all instances have the same installed packages at any point in time?
+        - How to ensure a node that his been down for some time the required packages that it missed
+        - How to ensure a newly added node installs the required packages locally
+        - How to ensure running nodes make a package available for use at the same time when they all have it installed
+          - Nodes pull the available runtimes from a database
+          - A central node is responsible for putting a new runtime in the database when it makes sure all the node installed it
     - Safe internet
       - Have internet connection without being able to communicate between submissions and without being able to communicate with each other and with external devices?
+    - Endpoint for deleting packages
+      - Need to also delete its remnants
+
+- How can clients test their environments before actually adding it to the system
 
 - Isolate time limit seems to shorten if I run multiple programs under the same box
   - Does it also happen without cg?
@@ -34,3 +48,7 @@
   - Does it also happen with systemd?
     - Yes
   - https://github.com/ioi/isolate/issues/158
+
+- First iteration
+  - Endpoint for installing a package
+  - Endpoint for running code
