@@ -52,3 +52,9 @@
 - First iteration
   - Endpoint for installing a package
   - Endpoint for running code
+
+- System can provide the compile and run cmd (future iterations)
+  - For a single file
+  - What if multiple files?
+    - Then the client probably has an awareness of the programming language and can provide the compile and run cmd by
+      themselves

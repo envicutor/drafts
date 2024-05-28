@@ -81,3 +81,7 @@ changes for the presentation:
 Final presentation ideas
   - Simulation testing (use CodeForces data to simulate a contest)
   - Piston, Judge0, Sandkasten offer no network isolation with internet option on
+  - Project examples for: a simple system requires more knowledge and experience to build than a complex one
+  - Isolate without systemd
+  - Judge0 has no per-request limits
+  - Which config on client, which config on server?

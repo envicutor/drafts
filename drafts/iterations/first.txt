@@ -20,3 +20,13 @@
 - Package installation should be governed by some constraints
   - Installation time
   - Installation memory
+
+- Who should provide the compile and run command?
+  - Client (for first iteration)?
+    - But the client queries the code execution system for the available languages at runtime and the compile cmd is
+      determined at coding time
+      - Language be provided at design time?
+        - Need to know id or name in advance
+          - ids shall be stable
+
+- Ability to use nix binary cache
