@@ -79,7 +79,7 @@ changes for the presentation:
 ===================================
 
 - Final presentation ideas
-  - Simulation testing (use CodeForces data to simulate a contest)
+  - Simulation testing (use real data to simulate a contest)
   - Piston, Judge0, Sandkasten offer no network isolation with internet option on
   - How we optimized nix shell startup
   - Project examples for: a simple system requires more knowledge and experience to build than a complex one
@@ -95,3 +95,5 @@ changes for the presentation:
     - files
   - implementation detail for les oop lovers: encapsulation to ensure limits are validated against system limits
   - Configuring isolate without systemd to use cgroup v2
+  - Piston does not measure CPU time (and probably Sandkasten?)
+  - Judge0 needs sudo in worker in order to create files in workdir

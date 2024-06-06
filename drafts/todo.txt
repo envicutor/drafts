@@ -53,8 +53,12 @@
   - Endpoint for installing a package
   - Endpoint for running code
 
-- System can provide the compile and run cmd (future iterations)
-  - For a single file
-  - What if multiple files?
-    - Then the client probably has an awareness of the programming language and can provide the compile and run cmd by
-      themselves
+- Future iterations
+  - Multiple files, let client override compile, run scripts
+  - Optionally take id for runtime and make sure it does not exist
+  - Get runtime info endpoint to help in distributed systems consistency
+  - CI on packages
+    - A repo that includes request templates with CI automated tests run on them to ensure their integrity
+      - Users can fork their repository and have their own CI tests
+  - Limit overrides
+  - Interactive execution
