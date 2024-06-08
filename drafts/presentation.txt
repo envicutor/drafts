@@ -97,3 +97,5 @@ changes for the presentation:
   - Configuring isolate without systemd to use cgroup v2
   - Piston does not measure CPU time (and probably Sandkasten?)
   - Judge0 needs sudo in worker in order to create files in workdir
+  - Why SQLite?
+  - Why the project is not just a library?
