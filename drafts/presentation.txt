@@ -87,7 +87,9 @@ changes for the presentation:
   - Judge0 has no per-request limits
   - Bad examples of security
     - https://www.online-ide.com/, first search result for "online ide", lack of isolation (every one runs under the same user)
-    - Piston: everyone runs as on the same namespace (can see all processes, have access to shared /tmp, etc.)
+    - Piston
+      - Everyone runs as on the same namespace (can see all processes, have access to shared /tmp, etc.)
+      - Does it have proper memory limits?
     - Judge0: insecure --share-net flag
   - Which config on client, which config on server?
     - max system limits
@@ -97,6 +99,7 @@ changes for the presentation:
   - Configuring isolate without systemd to use cgroup v2
   - Piston does not measure CPU time (and probably Sandkasten?)
   - Judge0 needs sudo in worker in order to create files in workdir
+  - RAII pattern
   - Why SQLite?
   - Why the project is not just a library (security)
   - Why we didn't do Judge0's larger-scope architecture
