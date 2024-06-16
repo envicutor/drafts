@@ -81,6 +81,12 @@ changes for the presentation:
 - Final presentation ideas
   - Simulation testing (use real data to simulate a contest)
   - Piston, Judge0, Sandkasten offer no network isolation with internet option on
+  - Why Nix?
+    - Package A depends on C
+    - Package B depends on D
+    - C and D are conflicting
+  - Solving bad references in ~/.nix-profile problem
+    - Doing nix stuff at runtime
   - How we optimized nix shell startup
   - Project examples for: a simple system requires more knowledge and experience to build than a complex one
   - Isolate without systemd
