@@ -56,7 +56,7 @@
 - Future iterations
   - Implement bounds on limits
   - Multiple files, let client override compile, run scripts
-  - Optionally take id for runtime and make sure it does not exist
+  - Optionally take id for adding runtime and make sure it does not exist
   - Get runtime info endpoint to help in distributed systems consistency
   - CI on packages
     - A repo that includes request templates with CI automated tests run on them to ensure their integrity
@@ -66,3 +66,4 @@
   - Max stdout and stderr size
   - Ensure all boxes and tempdirs are cleaned on startup?
   - API key?
+  - How to test stuff that happen at startup?

@@ -90,7 +90,6 @@ changes for the presentation:
   - How we optimized nix shell startup
   - Project examples for: a simple system requires more knowledge and experience to build than a complex one
   - Isolate without systemd
-  - Judge0 has no per-request limits
   - Bad examples of security
     - https://www.online-ide.com/, first search result for "online ide", lack of isolation (every one runs under the same user)
     - Piston
@@ -102,9 +101,15 @@ changes for the presentation:
     - cmd
     - files
   - implementation detail: encapsulation to ensure limits are validated against system limits, combined with rust traits to avoid boilerplate/inheritance
+    - impl for Option<Limit> to avoid inheritance
   - Configuring isolate without systemd to use cgroup v2
+  - The change from nsjail to isolate
+    - CPU time
+    - Reporting metrics
+  - Why use RwLock in installation
   - Piston does not measure CPU time (and probably Sandkasten?)
   - Judge0 needs sudo in worker in order to create files in workdir
+    - Also how we avoid the isolate bug
   - RAII pattern
   - Why SQLite?
   - Why the project is not just a library (security)
