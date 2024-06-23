@@ -87,7 +87,7 @@ changes for the presentation:
     - C and D are conflicting
   - Solving bad references in ~/.nix-profile problem
     - Doing nix stuff at runtime
-  - How we optimized nix shell startup
+  - How we optimized nix shell startup -> how we optimized loading env
   - Project examples for: a simple system requires more knowledge and experience to build than a complex one
   - Isolate without systemd
   - Bad examples of security
@@ -108,8 +108,7 @@ changes for the presentation:
     - Reporting metrics
   - Why use RwLock in installation
   - Piston does not measure CPU time (and probably Sandkasten?)
-  - Judge0 needs sudo in worker in order to create files in workdir
-    - Also how we avoid the isolate bug
+  - How we avoid the isolate bug
   - RAII pattern
   - Why SQLite?
   - Why the project is not just a library (security)
