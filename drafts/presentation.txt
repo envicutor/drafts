@@ -115,3 +115,5 @@ changes for the presentation:
   - Why we didn't do Judge0's larger-scope architecture
   - How project evolved to focus mostly on short-lived one-shot submissions
   - Judge0 and Piston install pip packages globally
+  - Why no multiple test cases
+  - How we handle concurrency (semaphores, rw locks)
