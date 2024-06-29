@@ -79,41 +79,34 @@ changes for the presentation:
 ===================================
 
 - Final presentation ideas
-  - Simulation testing (use real data to simulate a contest)
-  - Piston, Judge0, Sandkasten offer no network isolation with internet option on
-  - Why Nix?
-    - Package A depends on C
-    - Package B depends on D
-    - C and D are conflicting
-  - Solving bad references in ~/.nix-profile problem
-    - Doing nix stuff at runtime
-  - How we optimized nix shell startup -> how we optimized loading env
-  - Project examples for: a simple system requires more knowledge and experience to build than a complex one
-  - Isolate without systemd
-  - Bad examples of security
+  - Why the project is not just a library (#isolation)
+  - Different levels of security (#isolation)
     - https://www.online-ide.com/, first search result for "online ide", lack of isolation (every one runs under the same user)
     - Piston
       - Everyone runs as on the same namespace (can see all processes, have access to shared /tmp, etc.)
       - Does it have proper memory limits?
-    - Judge0: insecure --share-net flag
-  - Which config on client, which config on server?
-    - max system limits
-    - cmd
-    - files
-  - implementation detail: encapsulation to ensure limits are validated against system limits, combined with rust traits to avoid boilerplate/inheritance
-    - impl for Option<Limit> to avoid inheritance
-  - Configuring isolate without systemd to use cgroup v2
-  - The change from nsjail to isolate
+  - Piston, Judge0, Sandkasten offer no network isolation (and insecure) with internet option on (#isolation)
+  - Isolate without systemd (#isolation)
+  - The change from nsjail to isolate (#isolation)
     - CPU time
     - Reporting metrics
-  - Why use RwLock in installation
-  - Piston does not measure CPU time (and probably Sandkasten?)
-  - How we avoid the isolate bug
+  - How we avoid the isolate bug (#isolation)
+  - Judge0 does not differentiate between compile limits and run limits (#execution)
+  - Piston does not measure CPU time (#execution)
+  - Why we didn't do Judge0's larger-scope architecture (#execution)
+  - Why Nix? (#package-installation-and-dependency-management)
+    - Package A depends on C
+    - Package B depends on D
+    - C and D are conflicting
+  - Solving bad references in ~/.nix-profile problem (#package-installation-and-dependency-management)
+    - Doing nix stuff at runtime
+  - How we optimized nix shell startup -> how we optimized loading env (#package-installation-and-dependency-management)
+  - Why SQLite? (#package-installation-and-dependency-management)
+  - How we handle concurrency (semaphores, rw locks) (#concurrency)
+  - Simulation testing (use real data to simulate a contest), simple online IDE, assignment grader (#testing)
+
+  - implementation detail: encapsulation to ensure limits are validated against system limits, combined with rust traits to avoid boilerplate/inheritance ()
+    - impl for Option<Limit> to avoid inheritance
   - RAII pattern
-  - Why SQLite?
-  - Why the project is not just a library (security)
-  - Why we didn't do Judge0's larger-scope architecture
   - How project evolved to focus mostly on short-lived one-shot submissions
-  - Judge0 and Piston install pip packages globally
-  - Why no multiple test cases
-  - How we handle concurrency (semaphores, rw locks)
+  - Project examples for: a simple system requires more knowledge and experience to build than a complex one

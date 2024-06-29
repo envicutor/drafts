@@ -53,7 +53,6 @@
   - Endpoint for running code
 
 - Future iterations
-  - Multiple files, let client override compile, run scripts
   - Cache compiled programs using hash
   - Implement bounds on limits
   - Optionally take id for adding runtime and make sure it does not exist
@@ -68,3 +67,8 @@
   - API key?
   - Ensure nix shell does not enter an infinite shell hook loop
   - CI/CD
+  - Test update nix concurrency
+  - How to handle large request bodies in queue?
+    - Limit queue size and return "queue full"
+    - Websockets and only accept data from client once a queue spot is ready (notifying the client once one is ready)
+    - Distributed systems request handler while limiting the number of concurrent tasks on workers
