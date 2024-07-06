@@ -92,15 +92,15 @@ changes for the presentation:
     - Reporting metrics
   - How we avoid the isolate bug (#isolation)
   - Judge0 does not differentiate between compile limits and run limits (#execution)
-  - Piston does not measure CPU time (#execution)
+  - Piston does not measure performance metrics (#execution)
   - Why we didn't do Judge0's larger-scope architecture (#execution)
   - Why Nix? (#package-installation-and-dependency-management)
     - Package A depends on C
     - Package B depends on D
     - C and D are conflicting
+  - How we optimized nix shell startup -> how we optimized loading env (#package-installation-and-dependency-management)
   - Solving bad references in ~/.nix-profile problem (#package-installation-and-dependency-management)
     - Doing nix stuff at runtime
-  - How we optimized nix shell startup -> how we optimized loading env (#package-installation-and-dependency-management)
   - Why SQLite? (#package-installation-and-dependency-management)
   - How we handle concurrency (semaphores, rw locks) (#concurrency)
   - Simulation testing (use real data to simulate a contest), simple online IDE, assignment grader (#testing)
