@@ -22,39 +22,26 @@
     - Websockets and only accept data from client once a queue spot is ready (notifying the client once one is ready)
     - Distributed systems request handler while limiting the number of concurrent tasks on workers
 
-- TA discussion
-  - What is Envicutor?
-    - Competitive programming system example
-      - User submits code through frontend
-      - Frontend sends request to backend
-      - Backend needs to execute the untrused user code
-        - With the appropriate programming language
-        - With the appropriate limits (wall_time, cpu_time, memory, extra_time, max_open_files, max_file_size, max_number_of_processes)
-        - With the appropriate metrics reported (memory, exit_code, exit_signal, exit_message, exit_status, stdout, stderr, cpu_time, wall_time)
-      - It does that by consulting a code execution system <- This is Envicutor
-  - How to build a code execution system?
-    - Isolation
-      - Definition
-        – Communicate via reading and writing to files
-        – Communicate via the local network
-        – Read sensitive data on the host system
-        – Write any residual files on the host system
-        – Gain knowledge of any other processes running on the host system
-      - Online IDE (first google search for online IDE)
-        - No isolation, just runs as a different user than that of the code execution system
-        - ps aux
-        - killall python3
-        - Can read see other people's files
-      - Piston
-        - Isolation by running each submission under a different user
-        - Tries to avoid stuff like killing other submissions processes, viewing their directories and modifying them
-        - ps aux
-        - can write to shared /tmp
-      - Judge0 and Envicutor
-        - Isolate with some differences
-          - Envicutor has cgroup2
-            - Using Isolate without systemd
-          - Envicutor has loopback interface
-          - Envicutor does not use insecure --share-net option
-        - Show how Envicutor uses isolate while running code
-    -
+- Poster
+  - Vision/objective
+    Envicutor aims to provide secure and isolated code execution environments for systems handling untrusted user-submitted code.
+  - Methodology
+    Drawing from three years of experience with open source code execution systems, Envicutor combines their strengths and introduces unique solutions to common problems.
+
+    Envicutor provides robust isolation between code execution submissions preventing them from: communicating with or affecting each other, accessing sensitive data, or leaving residual files. Many code execution systems fail to satisfy all of these requirements.
+
+    Envicutor offers fine-grained control over execution limits such as CPU-time, wall-time and memory. It reports back metrics about submissions' code execution. This is especially useful for competitive programming systems and similar platforms.
+
+    Envicutor allows managing the code execution runtimes while the system is running. Packages required by the runtimes can co-exist safely even if they have conflicting dependencies. Many code execution systems lack these features.
+  - Beneficiaries
+    Envicutor is perfect for systems that deal with short-lived untrusted code execution submissions that must execute with the least overhead. Such systems include:
+      - Competitive programming systems like Codeforces
+      - Stateless online IDEs
+      - E-graders
+  - Used technologies
+    - Core system
+      - Rust, Axum, Isolate, Nix, SQLite, Docker, Linux
+    - Testing
+      - NodeJS, React, Python
+  - Deliverables
+    - rly?
