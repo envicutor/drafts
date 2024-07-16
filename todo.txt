@@ -1,0 +1,25 @@
+- Future iterations
+  - Move nix shell when installing instead of re-writing
+  - Put trivial process instead of init process under isolate cgroup?
+  - Isolate --cleanup with aborted request fails with multiple processes? Isolate --cleanup try sigterm to isolate?
+  - Disk quota
+  - Large test cases
+  - Endpoint for garbage collection
+  - Cache compiled programs using hash
+  - Implement bounds on limits
+  - Optionally take id for adding runtime and make sure it does not exist
+  - Get runtime info endpoint to help in distributed systems consistency
+  - CI on packages
+    - A repo that includes request templates with CI automated tests run on them to ensure their integrity
+      - Users can fork their repository and have their own CI tests
+  - Limit overrides
+  - Interactive execution
+  - Max stdout and stderr size
+  - API key?
+  - Ensure nix shell does not enter an infinite shell hook loop
+  - CI/CD
+  - Test update nix concurrency
+  - How to handle large request bodies in queue?
+    - Limit queue size and return "queue full"
+    - Websockets and only accept data from client once a queue spot is ready (notifying the client once one is ready)
+    - Distributed systems request handler while limiting the number of concurrent tasks on workers
