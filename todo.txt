@@ -1,13 +1,14 @@
-- Future iterations
-  - Move nix shell when installing instead of re-writing
+- Future ideas
+  - Optionally take id for adding runtime and make sure it does not exist
+    - Proper logging
+  - More limit tests
+  - Clean up isolate on --init fail
   - Put trivial process instead of init process under isolate cgroup?
-  - Isolate --cleanup with aborted request fails with multiple processes? Isolate --cleanup try sigterm to isolate?
   - Disk quota
   - Large test cases
   - Endpoint for garbage collection
-  - Cache compiled programs using hash
+  - Cache compiled programs and resolve using hash
   - Implement bounds on limits
-  - Optionally take id for adding runtime and make sure it does not exist
   - Get runtime info endpoint to help in distributed systems consistency
   - CI on packages
     - A repo that includes request templates with CI automated tests run on them to ensure their integrity
