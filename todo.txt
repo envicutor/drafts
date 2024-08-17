@@ -1,6 +1,7 @@
 - Future ideas
-  - Optionally take id for adding runtime and make sure it does not exist
-    - Proper logging
+  - Edit runtime, re-doing nix-shell when needed
+  - Optionally take id for adding runtime and make sure it does not exist?
+  - Proper logging
   - More limit tests
   - Clean up isolate on --init fail
   - Put trivial process instead of init process under isolate cgroup?
@@ -24,3 +25,4 @@
     - Limit queue size and return "queue full"
     - Websockets and only accept data from client once a queue spot is ready (notifying the client once one is ready)
     - Distributed systems request handler while limiting the number of concurrent tasks on workers
+  - Think how to ensure residual file checks are added when we deal with temporary directories in new locations
