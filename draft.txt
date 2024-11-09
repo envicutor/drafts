@@ -1,0 +1,23 @@
+- User defines
+  - id
+  - name
+  - version
+  - nix-shell
+  - compile script
+  - run script
+  - source file name
+
+- Script
+  - For file in files
+    - Check if runtime with same id/name already exists
+    - write shell.nix
+    - Install, write env file
+    - write compile script
+    - write run script
+    - write json info
+
+- Start up
+  - For dir in directories
+    - populate id to Runtime info
+
+- We can actually run the install script as root and we don't even need Nix in the final stage.
